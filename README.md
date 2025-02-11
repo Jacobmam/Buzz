@@ -18,6 +18,8 @@ Details pro Court:
 Adresse, Zustand, Fotos
 Bewertungen und Kommentare anderer Spieler
 Google Maps-Integration (später API-Anbindung)
+
+
 2. Community-Features
 Matches erstellen:
 Datum, Uhrzeit, Court, Spiellevel festlegen
@@ -27,6 +29,8 @@ Austausch vor dem Spiel
 Bewertungen:
 Court-Bewertung nach Spielen
 Spieler-Bewertung für Fairness und Skill
+
+
 3. Gamification & Challenges
 Challenges:
 Besuche neue Courts, spiele Matches, schließe Aufgaben ab
