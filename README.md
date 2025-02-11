@@ -5,19 +5,13 @@ Die Anwendung wird in Zukunft auf die **Google Maps API** setzen, um eine präzi
 
 
 # 🚀 Features
-   
-- Finde Basketball-Courts in deiner Nähe.
+
+1. Find Court
   
 Filtermöglichkeiten:
 Stadt
 Indoor/Outdoor
 Bewertungen
-
-Details pro Court:
-Adresse, Zustand, Fotos
-Bewertungen und Kommentare anderer Spieler
-Google Maps-Integration (später API-Anbindung)
-
 
 2. Community-Features
 
