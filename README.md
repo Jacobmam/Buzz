@@ -4,9 +4,7 @@ Buzz🏀 ist eine Swift-basierte iOS-App, die Basketballspielern hilft, schnell 
 Die Anwendung wird in Zukunft auf die **Google Maps API** setzen, um eine präzisere Standortsuche und Navigation zu ermöglichen.  
 
 
-🚀 Features
-
-1. Court Finder.
+# 🚀 Features
    
 - Finde Basketball-Courts in deiner Nähe.
   
