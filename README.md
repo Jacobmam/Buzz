@@ -8,7 +8,8 @@ Eine App, um Basketball-Courts in deutschen Städten zu finden, Spiele zu organi
 🚀 Features
 
 1. Court Finder
-Finde Basketball-Courts in deiner Nähe.
+   
+- Finde Basketball-Courts in deiner Nähe.
 Filtermöglichkeiten:
 Stadt
 Indoor/Outdoor
@@ -21,6 +22,7 @@ Google Maps-Integration (später API-Anbindung)
 
 
 2. Community-Features
+
 Matches erstellen:
 Datum, Uhrzeit, Court, Spiellevel festlegen
 Spieler einladen und Matches planen
@@ -32,6 +34,7 @@ Spieler-Bewertung für Fairness und Skill
 
 
 3. Gamification & Challenges
+
 Challenges:
 Besuche neue Courts, spiele Matches, schließe Aufgaben ab
 Verdiene Badges und Punkte
