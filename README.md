@@ -1,8 +1,8 @@
-# Buzz🏀
+# **Overview** 
 
 **Overview**  
 
-**CourtFinder** ist eine Swift-basierte iOS-App, die Basketballspielern hilft, schnell und einfach einen Basketballplatz in deutschen Städten zu finden. Die App bietet eine interaktive Karte mit Standorten von Courts und ermöglicht es Nutzern, Plätze zu bewerten und Matches zu organisieren.  
+Buzz🏀 ist eine Swift-basierte iOS-App, die Basketballspielern hilft, schnell und einfach einen Basketballplatz in deutschen Städten zu finden. Die App bietet eine interaktive Karte mit Standorten von Courts und ermöglicht es Nutzern, Plätze zu bewerten und Matches zu organisieren.  
 Die Anwendung wird in Zukunft auf die **Google Maps API** setzen, um eine präzisere Standortsuche und Navigation zu ermöglichen.  
 
 
