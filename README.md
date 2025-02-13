@@ -1,3 +1,4 @@
+# Buzz - Basketball Community App
 
 ![2](https://github.com/user-attachments/assets/5e15c116-2d81-44d0-9fe9-41ae5e2fbf30)
 
