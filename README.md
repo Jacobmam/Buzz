@@ -1,10 +1,10 @@
-# **Overview**  
+# 👁️ **Overview**  
 
 Buzz🏀 ist eine Swift-basierte iOS-App, die Basketballspielern hilft, schnell und einfach einen Basketballplatz in deutschen Städten zu finden. Die App bietet eine interaktive Karte mit Standorten von Courts und ermöglicht es Nutzern, Plätze zu bewerten und Matches zu organisieren.  
 Die Anwendung wird in Zukunft auf die **Google Maps API** setzen, um eine präzisere Standortsuche und Navigation zu ermöglichen.  
 
 
-# Installation
+# 🔌 Installation
 
 Clone the Buzz App Code for Xcode using Git.
 
@@ -47,7 +47,7 @@ Achievements:
 Unlock-Badges für besondere Leistungen (z. B. „Explorer: Berlin“ oder „100 Spiele“)
 
 
-# IOS Technology Implementation
+# 💻 IOS Technology Implementation
 
 - XCode
 - MVVM Pattern
@@ -55,7 +55,7 @@ Unlock-Badges für besondere Leistungen (z. B. „Explorer: Berlin“ oder „10
 - Navigation components
 
 
-# Backend Functionality with Firebase
+# 📲 Backend Functionality with Firebase
 
 Authentifizierung:
 
@@ -68,7 +68,7 @@ Datenbank:
 Firebase Firestore wird für eine effiziente Datenspeicherung genutzt.
 Informationen zu Basketballplätzen, Matches und anderen nutzerbezogenen Daten werden sicher in Firestore gespeichert und verwaltet.
 
-# Contact/Authors
+# 📩 Contact/Authors
 
 @Jacobmam
 
