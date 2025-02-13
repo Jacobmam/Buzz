@@ -45,3 +45,11 @@ Vergleiche dich mit anderen Spielern in deiner Stadt.
 
 Achievements:
 Unlock-Badges für besondere Leistungen (z. B. „Explorer: Berlin“ oder „100 Spiele“)
+
+
+# IOS Technology Implementation
+
+- MVVM Pattern
+- ViewModel
+- Navigation components
+
