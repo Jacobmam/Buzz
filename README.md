@@ -67,3 +67,8 @@ Datenbank:
 
 Firebase Firestore wird für eine effiziente Datenspeicherung genutzt.
 Informationen zu Basketballplätzen, Matches und anderen nutzerbezogenen Daten werden sicher in Firestore gespeichert und verwaltet.
+
+# Contact/Authors
+
+@Jacobmam
+
