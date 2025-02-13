@@ -55,12 +55,14 @@ Unlock-Badges für besondere Leistungen (z. B. „Explorer: Berlin“ oder „10
 - Navigation components
 
 
-# Backend-Funktionalität mit Firebase
+# Backend Functionality with Firebase
 
 Authentifizierung:
 
 Die Benutzerregistrierung und Anmeldung werden durch Firebase Authentication ermöglicht.
 Sichere und flexible Anmeldemethoden sorgen für eine bequeme Nutzung der App.
+
+
 Datenbank:
 
 Firebase Firestore wird für eine effiziente Datenspeicherung genutzt.
