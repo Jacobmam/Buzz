@@ -49,6 +49,7 @@ Unlock-Badges für besondere Leistungen (z. B. „Explorer: Berlin“ oder „10
 
 # IOS Technology Implementation
 
+- XCode
 - MVVM Pattern
 - ViewModel
 - Navigation components
