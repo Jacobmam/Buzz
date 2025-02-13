@@ -4,6 +4,13 @@ Buzz🏀 ist eine Swift-basierte iOS-App, die Basketballspielern hilft, schnell 
 Die Anwendung wird in Zukunft auf die **Google Maps API** setzen, um eine präzisere Standortsuche und Navigation zu ermöglichen.  
 
 
+# Installation
+
+Clone the Buzz App Code for Xcode using Git.
+
+https://github.com/Jacobmam/Buzz.git
+
+
 # 🚀 Features
 
 1. Find Court
