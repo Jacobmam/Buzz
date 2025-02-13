@@ -54,3 +54,14 @@ Unlock-Badges für besondere Leistungen (z. B. „Explorer: Berlin“ oder „10
 - ViewModel
 - Navigation components
 
+
+# Backend-Funktionalität mit Firebase
+
+Authentifizierung:
+
+Die Benutzerregistrierung und Anmeldung werden durch Firebase Authentication ermöglicht.
+Sichere und flexible Anmeldemethoden sorgen für eine bequeme Nutzung der App.
+Datenbank:
+
+Firebase Firestore wird für eine effiziente Datenspeicherung genutzt.
+Informationen zu Basketballplätzen, Matches und anderen nutzerbezogenen Daten werden sicher in Firestore gespeichert und verwaltet.
