@@ -11,7 +11,7 @@ import SwiftUI
 struct BuzzApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            StartPageView()
         }
     }
 }
