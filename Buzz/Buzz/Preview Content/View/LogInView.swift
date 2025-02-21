@@ -8,20 +8,36 @@
 import SwiftUI
 
 struct LoginView: View {
-    @State private var email: String = ""
-    @State private var password: String = ""
+    @StateObject private var viewModel = LoginViewModel()
     @Environment(\.verticalSizeClass) var verticalSizeClass
+    @State private var navigateToRegister = false
     
     var body: some View {
-        ZStack {
-            Color.black.ignoresSafeArea()
-            
-            if verticalSizeClass == .compact {
-                ScrollView {
+        NavigationStack {
+            ZStack {
+                Color.black.ignoresSafeArea()
+                
+                if verticalSizeClass == .compact {
+                    ScrollView {
+                        loginContent
+                    }
+                } else {
                     loginContent
                 }
-            } else {
-                loginContent
+                
+                if viewModel.isLoading {
+                    Color.black.opacity(0.5).ignoresSafeArea()
+                    ProgressView()
+                }
+            }
+            .alert(isPresented: Binding<Bool>(
+                get: { viewModel.loginError != nil },
+                set: { if !$0 { viewModel.loginError = nil } }
+            )) {
+                Alert(title: Text("Fehler"), message: Text(viewModel.loginError ?? ""), dismissButton: .default(Text("OK")))
+            }
+            .navigationDestination(isPresented: $navigateToRegister) {
+                RegisterView()
             }
         }
     }
@@ -36,13 +52,15 @@ struct LoginView: View {
                 .frame(width: 400, height: 400)
             
             VStack(spacing: 15) {
-                TextField("Email", text: $email)
+                TextField("Email", text: $viewModel.email)
                     .padding()
                     .frame(height: 50)
                     .background(Color.white)
                     .cornerRadius(10)
+                    .autocapitalization(.none)
+                    .keyboardType(.emailAddress)
                 
-                SecureField("Password", text: $password)
+                SecureField("Password", text: $viewModel.password)
                     .padding()
                     .frame(height: 50)
                     .background(Color.white)
@@ -51,9 +69,9 @@ struct LoginView: View {
             .padding(.horizontal, 30)
             
             Button(action: {
-                print("Sign Up pressed")
+                viewModel.loginWithEmail()
             }) {
-                Text("SIGN UP")
+                Text("LOG IN")
                     .font(.title2)
                     .fontWeight(.bold)
                     .foregroundColor(.white)
@@ -65,30 +83,13 @@ struct LoginView: View {
             }
             
             Button(action: {
-                print("Create an account pressed")
+                navigateToRegister = true
             }) {
                 Text("Create an account")
                     .foregroundColor(.white)
                     .fontWeight(.bold)
             }
             .padding(.top, 10)
-            
-            Button(action: {
-                print("Continue with Google pressed")
-            }) {
-                HStack {
-                    Image(systemName: "globe")
-                        .foregroundColor(.black)
-                    Text("CONTINUE WITH GOOGLE")
-                        .foregroundColor(.black)
-                        .fontWeight(.bold)
-                }
-                .frame(maxWidth: .infinity)
-                .frame(height: 50)
-                .background(Color.white)
-                .cornerRadius(10)
-                .padding(.horizontal, 30)
-            }
             
             Spacer()
         }
@@ -98,3 +99,4 @@ struct LoginView: View {
 #Preview {
     LoginView()
 }
+

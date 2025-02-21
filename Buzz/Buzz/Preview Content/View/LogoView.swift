@@ -3,8 +3,8 @@ import SwiftUI
 struct LogoView: View {
     @State private var isAnimating = false
     @State private var showLogin = false
-    @State private var fadeOutLogo = false
-    
+    @State private var hideLogo = false
+
     var body: some View {
         ZStack {
             Color.black.ignoresSafeArea()
@@ -17,14 +17,14 @@ struct LogoView: View {
                     .resizable()
                     .scaledToFit()
                     .frame(width: isAnimating ? 350 : 600, height: isAnimating ? 350 : 600)
-                    .opacity(fadeOutLogo ? 0 : 1)
+                    .opacity(hideLogo ? 0 : 1)
                     .onAppear {
-                        withAnimation(.easeInOut(duration: 1)) {
+                        withAnimation(.easeOut(duration: 1)) {
                             isAnimating = true
                         }
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                            withAnimation(.easeInOut(duration: 1)) {
-                                fadeOutLogo = true
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                            withAnimation(.easeOut(duration: 2)) {
+                                hideLogo = true
                             }
                         }
                         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
@@ -33,11 +33,10 @@ struct LogoView: View {
                     }
             }
         }
-        .animation(.easeInOut(duration: 1), value: showLogin)
+        .animation(.easeInOut(duration: 2), value: showLogin)
     }
 }
 
 #Preview {
     LogoView()
 }
-
