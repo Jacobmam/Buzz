@@ -12,7 +12,6 @@ import FirebaseFirestore
 class RegisterViewModel: ObservableObject {
     @Published var firstName = ""
     @Published var lastName = ""
-    @Published var fullName = ""
     @Published var email = ""
     @Published var birthDate = Date()
     @Published var username = ""
@@ -21,7 +20,7 @@ class RegisterViewModel: ObservableObject {
 
     private let db = Firestore.firestore()
 
-    var isFormValid: Bool {
+    var isFilledOut: Bool {
         !firstName.isEmpty &&
         !lastName.isEmpty &&
         !email.isEmpty &&
@@ -30,12 +29,9 @@ class RegisterViewModel: ObservableObject {
         password.first?.isUppercase == true
     }
 
-    func updateFullName() {
-        fullName = "\(firstName) \(lastName)".trimmingCharacters(in: .whitespaces)
-    }
 
     func register(completion: @escaping (Bool) -> Void) {
-        guard isFormValid else {
+        guard isFilledOut else {
             DispatchQueue.main.async {
                 self.errorMessage = "⚠️ Bitte alle Felder korrekt ausfüllen."
             }
@@ -56,34 +52,29 @@ class RegisterViewModel: ObservableObject {
                     completion(false)
                     return
                 }
-
-                self.saveUserData(userId: userId, completion: completion)
+                
+                Task {
+                    try await self.saveUserData(userId: userId)
+                }
             }
         }
     }
 
-    private func saveUserData(userId: String, completion: @escaping (Bool) -> Void) {
+    private func saveUserData(userId: String) async throws {
+        
         let userRef = db.collection("users").document(userId)
 
-        let userData: [String: Any] = [
-            "firstName": firstName,
-            "lastName": lastName,
-            "fullName": fullName,
-            "email": email,
-            "birthDate": birthDate.timeIntervalSince1970,
-            "username": username
-        ]
-
-        userRef.setData(userData) { error in
-            DispatchQueue.main.async {
-                if let error = error {
-                    self.errorMessage = "❌ Fehler beim Speichern: \(error.localizedDescription)"
-                    completion(false)
-                } else {
-                    print("✅ Nutzer erfolgreich gespeichert")
-                    completion(true)
-                }
-            }
+        
+        let userProfile = UserProfile(id: userId,username: username, ranking: 99)
+        
+        do {
+            try userRef.setData(from: userProfile)
+        } catch {
+            print("Error crreation Profile")
+        
         }
+    
+
+        
     }
 }

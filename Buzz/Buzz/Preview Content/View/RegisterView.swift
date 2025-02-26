@@ -36,13 +36,6 @@ struct RegisterView: View {
                         .padding()
                         .background(Color.white)
                         .cornerRadius(10)
-
-                    TextField("Vollständiger Name", text: $viewModel.fullName)
-                        .padding()
-                        .background(Color.white.opacity(0.6))
-                        .cornerRadius(10)
-                        .disabled(true)
-                    
                  
                     TextField("E-Mail", text: $viewModel.email)
                         .padding()
@@ -80,11 +73,11 @@ struct RegisterView: View {
                         .foregroundColor(.white)
                         .frame(maxWidth: .infinity)
                         .frame(height: 50)
-                        .background(viewModel.isFormValid ? Color.orange : Color.gray)
+                        .background(viewModel.isFilledOut ? Color.orange : Color.gray)
                         .cornerRadius(10)
                         .padding(.horizontal, 30)
                 }
-                .disabled(!viewModel.isFormValid)
+                .disabled(!viewModel.isFilledOut)
                 
                 Spacer()
             }

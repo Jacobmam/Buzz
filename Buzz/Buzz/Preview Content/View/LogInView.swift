@@ -8,23 +8,22 @@
 import SwiftUI
 
 struct LoginView: View {
-    @StateObject private var viewModel = LoginViewModel()
+    @EnvironmentObject var viewModel: LoginViewModel
     @Environment(\.verticalSizeClass) var verticalSizeClass
+    @State private var navigateToHome = false
     @State private var navigateToRegister = false
-    
+
     var body: some View {
         NavigationStack {
             ZStack {
                 Color.black.ignoresSafeArea()
-                
+
                 if verticalSizeClass == .compact {
-                    ScrollView {
-                        loginContent
-                    }
+                    ScrollView { loginContent }
                 } else {
                     loginContent
                 }
-                
+
                 if viewModel.isLoading {
                     Color.black.opacity(0.5).ignoresSafeArea()
                     ProgressView()
@@ -36,12 +35,14 @@ struct LoginView: View {
             )) {
                 Alert(title: Text("Fehler"), message: Text(viewModel.loginError ?? ""), dismissButton: .default(Text("OK")))
             }
+           
             .navigationDestination(isPresented: $navigateToRegister) {
                 RegisterView()
             }
         }
+       
     }
-    
+
     var loginContent: some View {
         VStack(spacing: 20) {
             Spacer()
@@ -50,7 +51,7 @@ struct LoginView: View {
                 .resizable()
                 .scaledToFit()
                 .frame(width: 400, height: 400)
-            
+
             VStack(spacing: 15) {
                 TextField("Email", text: $viewModel.email)
                     .padding()
@@ -59,7 +60,7 @@ struct LoginView: View {
                     .cornerRadius(10)
                     .autocapitalization(.none)
                     .keyboardType(.emailAddress)
-                
+
                 SecureField("Password", text: $viewModel.password)
                     .padding()
                     .frame(height: 50)
@@ -67,7 +68,7 @@ struct LoginView: View {
                     .cornerRadius(10)
             }
             .padding(.horizontal, 30)
-            
+
             Button(action: {
                 viewModel.loginWithEmail()
             }) {
@@ -81,7 +82,7 @@ struct LoginView: View {
                     .cornerRadius(10)
                     .padding(.horizontal, 30)
             }
-            
+
             Button(action: {
                 navigateToRegister = true
             }) {
@@ -90,7 +91,7 @@ struct LoginView: View {
                     .fontWeight(.bold)
             }
             .padding(.top, 10)
-            
+
             Spacer()
         }
     }
@@ -98,5 +99,5 @@ struct LoginView: View {
 
 #Preview {
     LoginView()
+        .environmentObject(LoginViewModel())
 }
-

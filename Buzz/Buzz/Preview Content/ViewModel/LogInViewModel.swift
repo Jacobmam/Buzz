@@ -5,33 +5,50 @@
 //  Created by Jacob Mampuya on 21.02.25.
 //
 
-import SwiftUI
+import Foundation
 import FirebaseAuth
+import FirebaseFirestore
 
+@MainActor
 class LoginViewModel: ObservableObject {
     @Published var email: String = ""
     @Published var password: String = ""
-    @Published var isLoading: Bool = false
     @Published var loginError: String?
+    @Published var isLoading: Bool = false
+    @Published var userProfile: UserProfile?
+    var isLoggedIn: Bool {
+        userProfile != nil
+        
+    }
+    
+    private let database = Firestore.firestore()
+    
     
     func loginWithEmail() {
-        guard !email.isEmpty, !password.isEmpty else {
-            loginError = "Bitte alle Felder ausfüllen."
-            return
-        }
-        
         isLoading = true
-        Auth.auth().signIn(withEmail: email, password: password) { authResult, error in
+        loginError = nil
+        
+        Auth.auth().signIn(withEmail: email, password: password) { result, error in
             DispatchQueue.main.async {
                 self.isLoading = false
                 if let error = error {
-                    self.loginError = "Fehler beim Login: \(error.localizedDescription)"
-                } else {
-                    print("✅ Erfolgreich eingeloggt als \(authResult?.user.email ?? "Unbekannt")")
+                    self.loginError = error.localizedDescription
+                } else if let userId = result?.user.uid {
+                    Task {
+                        try await self.find(by: userId)
+                    }
                 }
             }
         }
     }
     
+    func find(by id: String) async throws {
+        do {
+            let snapshot = try await database.collection("users").document(id).getDocument()
+            self.userProfile = try snapshot.data(as: UserProfile.self)
+        } catch {
+            print("Error finding Profile")
+        }
+    }
 }
 

@@ -4,6 +4,7 @@ struct LogoView: View {
     @State private var isAnimating = false
     @State private var showLogin = false
     @State private var hideLogo = false
+    @EnvironmentObject var viewModel: LoginViewModel
 
     var body: some View {
         ZStack {
@@ -12,6 +13,7 @@ struct LogoView: View {
             if showLogin {
                 LoginView()
                     .transition(.opacity)
+                    .environmentObject(viewModel)
             } else {
                 Image("3")
                     .resizable()
@@ -39,4 +41,5 @@ struct LogoView: View {
 
 #Preview {
     LogoView()
+        .environmentObject(LoginViewModel())
 }

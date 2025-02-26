@@ -10,6 +10,7 @@ import FirebaseCore
 
 @main
 struct BuzzApp: App {
+    @StateObject private var viewModel = LoginViewModel()
     
     init() {
         FirebaseConfiguration.shared.setLoggerLevel(.min)
@@ -17,7 +18,14 @@ struct BuzzApp: App {
     }
     var body: some Scene {
         WindowGroup {
-            LogoView()
+            if viewModel.isLoggedIn {
+                NavigatorView()
+                    .environmentObject(viewModel)
+            }
+            else {
+                LogoView()
+                    .environmentObject(viewModel)
+            }
         }
     }
 }
