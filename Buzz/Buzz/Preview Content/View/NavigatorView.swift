@@ -9,16 +9,17 @@ import SwiftUI
 
 struct NavigatorView: View {
     @EnvironmentObject var viewModel: LoginViewModel
+    
     var body: some View {
         TabView {
-            Tab {
-                HomeView()
-                    .environmentObject(viewModel)
-            }label: {
-                Label("Home", systemImage: "house")
-            }
-        
+            HomeView()
+                .environmentObject(viewModel) 
+                .tabItem {
+                    Label("Home", systemImage: "house")
+                }
+           
         }
+        .tint(.orange)
     }
 }
 
