@@ -8,12 +8,13 @@ struct LogoView: View {
 
     var body: some View {
         ZStack {
-            Color.black.ignoresSafeArea()
+            Color.black.ignoresSafeArea() // Hintergrund bleibt immer schwarz
             
             if showLogin {
                 LoginView()
-                    .transition(.opacity)
                     .environmentObject(viewModel)
+                    .transition(.opacity)
+                    .background(Color.black.ignoresSafeArea()) // Hintergrund für Sicherheit erneut setzen
             } else {
                 Image("3")
                     .resizable()
@@ -29,7 +30,7 @@ struct LogoView: View {
                                 hideLogo = true
                             }
                         }
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) { // Verzögerung für reibungslosen Übergang
                             showLogin = true
                         }
                     }

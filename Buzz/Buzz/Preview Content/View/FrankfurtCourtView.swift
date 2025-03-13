@@ -1,13 +1,13 @@
 //
-//  CityCourtView.swift
+//  FrankfurtCourtView.swift
 //  Buzz
 //
-//  Created by Jacob Mampuya on 04.03.25.
+//  Created by Jacob Mampuya on 07.03.25.
 //
 
 import SwiftUI
 
-struct BerlinCourtView: View {
+struct FrankfurtCourtView: View {
     var city: String
     @Environment(\.presentationMode) var presentationMode
     @State private var courts: [Court] = []
@@ -48,7 +48,7 @@ struct BerlinCourtView: View {
                     ScrollView {
                         VStack {
                             ForEach(courts, id: \.name) { court in
-                                CourtItemView(
+                                CourtItemView6(
                                     name: court.name,
                                     imageUrl: court.imageUrl,
                                     rating: 4.0,
@@ -84,7 +84,7 @@ struct BerlinCourtView: View {
 }
 
 
-struct CourtItemView: View {
+struct CourtItemView6: View {
     var name: String
     var imageUrl: String
     var rating: Double
@@ -129,5 +129,5 @@ struct CourtItemView: View {
 }
 
 #Preview {
-    BerlinCourtView(city: "Berlin")
+    FrankfurtCourtView(city: "Frankfurt")
 }

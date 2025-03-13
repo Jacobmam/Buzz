@@ -47,7 +47,7 @@ struct HomeView: View {
                     .background(RoundedRectangle(cornerRadius: 10).fill(Color.gray.opacity(0.3)))
                     .padding()
 
-                    NavigationLink(destination: CourtCountryView()) {
+                    NavigationLink(destination: DeutschlandCourtView()) {
                         HomeFeatureCard(title: "Court Finder", description: "Entdecke die besten Basketball Courts in Deutschland! 🏀", image: "basketball.court")
                     }
                     HomeFeatureCard(title: "Matches", description: "Ob 1v1, 3v3 oder 5v5, fordere andere heraus und dominiere den Court!", image: "figure.basketball")
@@ -83,15 +83,15 @@ struct HomeFeatureCard: View {
             Image(systemName: image)
                 .resizable()
                 .frame(width: 50, height: 50)
-                .foregroundColor(.orange)
+                .foregroundColor(.white)
         }
         .padding()
-        .background(RoundedRectangle(cornerRadius: 10).fill(Color.orange.opacity(0.7)))
+        .background(RoundedRectangle(cornerRadius: 10).fill(Color.orange.opacity(0.5)))
         .padding(.horizontal)
     }
 }
 
 #Preview {
     HomeView()
-        .environmentObject(LoginViewModel()) 
+        .environmentObject(LoginViewModel())
 }

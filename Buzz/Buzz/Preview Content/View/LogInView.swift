@@ -16,7 +16,7 @@ struct LoginView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                Color.black.ignoresSafeArea()
+                Color.black.ignoresSafeArea() // Hintergrund bleibt schwarz
 
                 if verticalSizeClass == .compact {
                     ScrollView { loginContent }
@@ -35,12 +35,10 @@ struct LoginView: View {
             )) {
                 Alert(title: Text("Fehler"), message: Text(viewModel.loginError ?? ""), dismissButton: .default(Text("OK")))
             }
-           
             .navigationDestination(isPresented: $navigateToRegister) {
                 RegisterView()
             }
         }
-       
     }
 
     var loginContent: some View {
