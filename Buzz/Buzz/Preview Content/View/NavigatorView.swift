@@ -9,17 +9,26 @@ import SwiftUI
 
 struct NavigatorView: View {
     @EnvironmentObject var viewModel: LoginViewModel
-    
+    @State var favoriteModel = FavoriteViewModel()
+
     var body: some View {
         TabView {
             HomeView()
-                .environmentObject(viewModel) 
+                .environment(favoriteModel)
+                .environmentObject(viewModel)
                 .tabItem {
                     Label("Home", systemImage: "house")
                 }
-           
+            
+            FavoritesView()
+                .environment(favoriteModel)
+                .environmentObject(viewModel)
+                .tabItem {
+                    Label("Fav", systemImage: "heart.fill")
+
+                }
         }
-        .tint(.orange)
+        .tint(.orange) 
     }
 }
 

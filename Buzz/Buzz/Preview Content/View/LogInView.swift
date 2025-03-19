@@ -16,7 +16,7 @@ struct LoginView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                Color.black.ignoresSafeArea() // Hintergrund bleibt schwarz
+                Color.black.ignoresSafeArea()
 
                 if verticalSizeClass == .compact {
                     ScrollView { loginContent }

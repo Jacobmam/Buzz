@@ -10,6 +10,7 @@ import SwiftUI
 struct BerlinCourtView: View {
     var city: String
     @Environment(\.presentationMode) var presentationMode
+    @Environment(FavoriteViewModel.self) var favoriteViewModel
     @State private var courts: [Court] = []
     @State private var isLoading = true
     
@@ -48,13 +49,8 @@ struct BerlinCourtView: View {
                     ScrollView {
                         VStack {
                             ForEach(courts, id: \.name) { court in
-                                CourtItemView(
-                                    name: court.name,
-                                    imageUrl: court.imageUrl,
-                                    rating: 4.0,
-                                    reviews: 100,
-                                    address: court.address
-                                )
+                                CourtItemView(court: court)
+                                    .environment(favoriteViewModel)
                             }
                         }
                         .background(Color.black)
@@ -83,23 +79,20 @@ struct BerlinCourtView: View {
     }
 }
 
-
 struct CourtItemView: View {
-    var name: String
-    var imageUrl: String
-    var rating: Double
-    var reviews: Int
-    var address: String
+    @Environment(FavoriteViewModel.self) var favoriteViewModel
+    @State private var showAlert = false
+    var court: Court
 
     var body: some View {
         VStack(alignment: .leading) {
-            Text(name)
+            Text(court.name)
                 .font(.title2)
                 .bold()
                 .foregroundColor(.white)
                 .padding(.vertical, 5)
 
-            AsyncImage(url: URL(string: imageUrl)) { image in
+            AsyncImage(url: URL(string: court.imageUrl)) { image in
                 image.resizable()
                     .aspectRatio(contentMode: .fill)
             } placeholder: {
@@ -110,14 +103,21 @@ struct CourtItemView: View {
             .cornerRadius(10)
 
             HStack {
-                Text("\(rating, specifier: "%.1f") ⭐️")
-                Text("(\(reviews) Rezensionen)")
-                Spacer()
+                Button(action: {
+                    favoriteViewModel.addCourt(court: court)
+                    showAlert = true
+                }) {
+                    Text("Hinzufügen")
+                }
+                .buttonStyle(.bordered)
+                .foregroundColor(.orange)
+                .alert("Erfolgreich Hinzugefügt", isPresented: $showAlert) {
+                    Button("OK", role: .cancel) { }
+                }
             }
-            .foregroundColor(.white.opacity(0.8))
             .padding(.vertical, 5)
 
-            Text(address)
+            Text(court.address)
                 .foregroundColor(.white.opacity(0.6))
                 .padding(.bottom, 10)
 

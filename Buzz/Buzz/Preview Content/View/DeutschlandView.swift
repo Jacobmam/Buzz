@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct DeutschlandCourtView: View {
+    @Environment(FavoriteViewModel.self) var favoriteViewModel
     var body: some View {
         NavigationView {
             VStack {
@@ -22,7 +23,9 @@ struct DeutschlandCourtView: View {
                     .padding(.horizontal)
 
                 VStack(spacing: 20) {
-                    NavigationLink(destination: BerlinCourtView(city: "Berlin").navigationBarHidden(true)) {
+                    NavigationLink(destination: DortmundCourtView(city: "Berlin")
+                        .environment(favoriteViewModel)
+                        .navigationBarHidden(true)) {
                         CourtButton(title: "BERLIN COURTS")
                     }
                     

@@ -9,6 +9,7 @@ import SwiftUI
 
 struct HomeView: View {
     @EnvironmentObject var viewModel: LoginViewModel
+    @Environment(FavoriteViewModel.self) var favoriteViewModel
 
     var body: some View {
         NavigationStack {
@@ -47,7 +48,7 @@ struct HomeView: View {
                     .background(RoundedRectangle(cornerRadius: 10).fill(Color.gray.opacity(0.3)))
                     .padding()
 
-                    NavigationLink(destination: DeutschlandCourtView()) {
+                    NavigationLink(destination: DeutschlandCourtView().environment(favoriteViewModel)) {
                         HomeFeatureCard(title: "Court Finder", description: "Entdecke die besten Basketball Courts in Deutschland! 🏀", image: "basketball.court")
                     }
                     HomeFeatureCard(title: "Matches", description: "Ob 1v1, 3v3 oder 5v5, fordere andere heraus und dominiere den Court!", image: "figure.basketball")
