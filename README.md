@@ -75,5 +75,7 @@ Informationen zu Basketballplätzen, Matches und anderen nutzerbezogenen Daten w
 
 # 📩 Contact/Authors
 
-@Jacobmam
+Email: Jacobmampuya@yahoo.com    
+Tel.: 015221500839
+Instagram: Jacobmampuya
 
