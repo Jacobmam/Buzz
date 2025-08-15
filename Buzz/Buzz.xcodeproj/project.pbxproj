@@ -31,6 +31,7 @@
 		835DA9AB2D687C8300E4026B /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 835DA9AA2D687C8300E4026B /* FirebaseStorage */; };
 		835DA9AD2D687C8300E4026B /* FirebaseStorageCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 835DA9AC2D687C8300E4026B /* FirebaseStorageCombine-Community */; };
 		835DA9AF2D687C8300E4026B /* FirebaseVertexAI in Frameworks */ = {isa = PBXBuildFile; productRef = 835DA9AE2D687C8300E4026B /* FirebaseVertexAI */; };
+		CC80EB2C2E40C87700E2A027 /* JWTDecode in Frameworks */ = {isa = PBXBuildFile; productRef = CC80EB2B2E40C87700E2A027 /* JWTDecode */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -63,6 +64,7 @@
 				835DA98B2D687C8300E4026B /* FirebaseAuth in Frameworks */,
 				835DA9812D687C8300E4026B /* FirebaseAnalytics in Frameworks */,
 				835DA9972D687C8300E4026B /* FirebaseFirestore in Frameworks */,
+				CC80EB2C2E40C87700E2A027 /* JWTDecode in Frameworks */,
 				835DA9A12D687C8300E4026B /* FirebaseInstallations in Frameworks */,
 				835DA99D2D687C8300E4026B /* FirebaseFunctionsCombine-Community in Frameworks */,
 				835DA9892D687C8300E4026B /* FirebaseAppDistribution-Beta in Frameworks */,
@@ -148,6 +150,7 @@
 				835DA9AA2D687C8300E4026B /* FirebaseStorage */,
 				835DA9AC2D687C8300E4026B /* FirebaseStorageCombine-Community */,
 				835DA9AE2D687C8300E4026B /* FirebaseVertexAI */,
+				CC80EB2B2E40C87700E2A027 /* JWTDecode */,
 			);
 			productName = Buzz;
 			productReference = 835DA91E2D5A59E500E4026B /* Buzz.app */;
@@ -179,6 +182,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				835DA97E2D687B8800E4026B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				CC80EB2A2E40C87700E2A027 /* XCRemoteSwiftPackageReference "JWTDecode" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 835DA91F2D5A59E500E4026B /* Products */;
@@ -335,16 +339,21 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Buzz/Buzz.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 1.0.1;
 				DEVELOPMENT_ASSET_PATHS = "\"Buzz/Preview Content\"";
+				DEVELOPMENT_TEAM = 35NGB4BCWY;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = BlvckVenom;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Dark;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -363,16 +372,21 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Buzz/Buzz.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 1.0.1;
 				DEVELOPMENT_ASSET_PATHS = "\"Buzz/Preview Content\"";
+				DEVELOPMENT_TEAM = 35NGB4BCWY;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = BlvckVenom;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Dark;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -416,6 +430,14 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 11.8.1;
+			};
+		};
+		CC80EB2A2E40C87700E2A027 /* XCRemoteSwiftPackageReference "JWTDecode" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/auth0/JWTDecode.swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.3.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -540,6 +562,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 835DA97E2D687B8800E4026B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseVertexAI;
+		};
+		CC80EB2B2E40C87700E2A027 /* JWTDecode */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CC80EB2A2E40C87700E2A027 /* XCRemoteSwiftPackageReference "JWTDecode" */;
+			productName = JWTDecode;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
