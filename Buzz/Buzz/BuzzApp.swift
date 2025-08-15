@@ -6,28 +6,30 @@
 //
 
 import SwiftUI
-import FirebaseCore
 
 @main
 struct BuzzApp: App {
-    @StateObject private var viewModel = LoginViewModel()
     
-    init() {
-        FirebaseConfiguration.shared.setLoggerLevel(.min)
-        FirebaseApp.configure()
-    }
+    @StateObject var userStateViewModel = UserStateViewModel()
+    @StateObject var nav = NavigationManager()
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    
     var body: some Scene {
         WindowGroup {
-            if viewModel.isLoggedIn {
-                NavigatorView()
-                    .environmentObject(viewModel)
-            }
-            else {
-                LogoView()
-                    .environmentObject(viewModel)
-            }
+            SplashView()
+                .environmentObject(userStateViewModel)
+                .environmentObject(nav)
+//            if userStateViewModel.isLoggedIn {
+//                NavigatorView()
+//                    .environmentObject(userStateViewModel)
+//            }
+//            else {
+//                SplashView()
+//                    .environmentObject(userStateViewModel)
+//            }
         }
     }
 }
+
 
 
