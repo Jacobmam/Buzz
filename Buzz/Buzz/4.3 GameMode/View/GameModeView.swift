@@ -123,5 +123,5 @@ struct GameModeView: View {
 }
 
 #Preview {
-    GameModeView(opponentUser: User(id: "1", username: "Test", ranking: 1, gamePoints: 1))
+    GameModeView(opponentUser: User(id: "1", username: "Test", ranking: 1, gamePoints: 1, profilePic: "", firstName: "", lastName: ""))
 }

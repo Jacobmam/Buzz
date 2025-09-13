@@ -15,24 +15,20 @@ struct LoginView: View {
     @Environment(\.verticalSizeClass) var verticalSizeClass
     
     var body: some View {
-        //        NavigationStack {
         ZStack {
             if verticalSizeClass == .compact {
                 ScrollView { loginContent }
             } else {
                 loginContent
             }
-            
             if viewModel.isLoading {
-                Color.black.opacity(0.5).ignoresSafeArea()
-                ProgressView()
+                JBLoadingView()
             }
-        }
-        .alert(isPresented: Binding<Bool>(
-            get: { viewModel.loginError != nil },
-            set: { if !$0 { viewModel.loginError = nil } }
-        )) {
-            Alert(title: Text("Fehler"), message: Text(viewModel.loginError ?? ""), dismissButton: .default(Text("OK")))
+        }.alert(isPresented: $viewModel.showError) {
+            Alert(title: Text(viewModel.errorTitle),
+                  message: Text(viewModel.errorMessage),
+                  dismissButton: .default(Text("OK"))
+            )
         }
         .onChange(of: viewModel.userProfile, { oldValue, newValue in
             if let userProfile = viewModel.userProfile {
@@ -40,29 +36,28 @@ struct LoginView: View {
                     UserLoginCache.save(userProfile)
                     let result = await userStateViewModel.signIn()
                     switch result {
-                    case .success(let success):
+                    case .success(_):
                         nav.reset()
-                    case .failure(let failure):
+                    case .failure(_):
                         break
                     }
                 }
             }
         })
-        //        }
         .tint(.orange)
     }
-
+    
     var loginContent: some View {
         VStack(spacing: 20) {
             Spacer()
             
-            Image("3")
+            Image("applogo")
                 .resizable()
                 .scaledToFit()
                 .frame(width: 400, height: 400)
-
+            
             VStack(spacing: 15) {
-                TextField("Email", text: $viewModel.email)
+                TextField("Email/Username", text: $viewModel.email)
                     .padding()
                     .frame(height: 50)
                     .background(Color.white.opacity(0.2))
@@ -73,7 +68,7 @@ struct LoginView: View {
                         RoundedRectangle(cornerRadius: 10)
                             .stroke(lineWidth: 0.5)
                     }
-
+                
                 SecureField("Password", text: $viewModel.password)
                     .padding()
                     .frame(height: 50)
@@ -85,9 +80,20 @@ struct LoginView: View {
                     .cornerRadius(10)
             }
             .padding(.horizontal, 30)
-
+            HStack {
+                Spacer()
+                Button {
+                    nav.path.append(Route.forgotPasswordView)
+                } label: {
+                    Text("Forgot password")
+                        .foregroundColor(.white)
+                        .fontWeight(.light)
+                }
+                .padding(.horizontal,30)
+                
+            }
             Button(action: {
-                viewModel.loginWithEmail()
+                viewModel.loginValidation()
             }) {
                 Text("LOG IN")
                     .font(.title2)
@@ -99,7 +105,7 @@ struct LoginView: View {
                     .cornerRadius(10)
                     .padding(.horizontal, 30)
             }
-
+            
             Button {
                 nav.path.append(Route.registerView)
             } label: {
@@ -108,7 +114,6 @@ struct LoginView: View {
                     .fontWeight(.bold)
             }
             .padding(.top, 10)
-
             Spacer()
         }
     }
@@ -116,5 +121,5 @@ struct LoginView: View {
 
 #Preview {
     LoginView()
-       
+    
 }

@@ -18,6 +18,10 @@ enum Route: Hashable {
     case gameModeView(opponentUser: User)
     case gameScoreboardView(requestId: String)
     case rankingBoardView
+    case forgotPasswordView
+    case editProfileView
+    case searchUsersView
+    case searchUserProfileView(searchedUser: User)
 }
 
 class NavigationManager: ObservableObject {

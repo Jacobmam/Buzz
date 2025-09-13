@@ -19,6 +19,7 @@ struct BuzzApp: App {
             SplashView()
                 .environmentObject(userStateViewModel)
                 .environmentObject(nav)
+                .environmentObject(appDelegate)
 //            if userStateViewModel.isLoggedIn {
 //                NavigatorView()
 //                    .environmentObject(userStateViewModel)

@@ -26,7 +26,7 @@ class GameScoreboardViewModel: ObservableObject {
     
     // 1
     func fetchGameRequestData(_ requestId: String) {
-        guard let userData = UserLoginCache.get() else { return }
+        guard UserLoginCache.get() != nil else { return }
         db.collection("gameRequests").document(requestId)
             .getDocument { requestDoc, error in
                 if let data = requestDoc?.data() {
@@ -105,13 +105,16 @@ class GameScoreboardViewModel: ObservableObject {
     
     // 4
     func observeGameHistory() {
+        if listener != nil {
+            listener?.remove()
+        }
         listener = db.collection("gameHistory").document(self.gameRequestData?.historyId ?? "").addSnapshotListener { requestDoc, error in
             
             if let data = requestDoc?.data() {
-                print("observeGameHistory: \(data)")
+                print("-- observeGameHistory: \(data)")
                 let gameStartedAt = data["gameStartedAt"] as? String ?? ""
                 let gameEndedAt = data["gameEndedAt"] as? String ?? ""
-                let gameRequestId = data["gameRequestId"] as? String ?? ""
+                _ = data["gameRequestId"] as? String ?? ""
                 let opponentScore = data["opponentScore"] as? String ?? ""
                 let userScore = data["userScore"] as? String ?? ""
                 let userId = data["userId"] as? String ?? ""
@@ -151,7 +154,11 @@ class GameScoreboardViewModel: ObservableObject {
                     self.gameHistoryData?.opponentId = opponentId
                 }
                 
-                print("observed gameHistoryData: \(String(describing: self.gameHistoryData))")
+                if gameCompleted &&
+                    (!userScore.isEmpty && userScore.count > 0) &&
+                    (!opponentScore.isEmpty && opponentScore.count > 0) {
+                    self.updateGamePointsForWinner()
+                }
             }
         }
     }
@@ -272,11 +279,11 @@ class GameScoreboardViewModel: ObservableObject {
                 self.gameRequestData?.requestStatus = status.rawValue
                 
                 switch status {
-                case .accepted, .rejected, .pending: break
+                case .accepted, .rejected, .pending, .completed: break
                 case .cancelled:
                     self.showRequestCancelResponseAlert.toggle()
-                case .completed:
-                    self.updateGamePointsForWinner()
+//                case .completed:
+//                    self.updateGamePointsForWinner()
                 }
             }
         }
@@ -314,7 +321,8 @@ class GameScoreboardViewModel: ObservableObject {
     func updateGamePointsForWinner() {
         guard whatIsMyResult() == "win" else { return }
         guard var userData = UserLoginCache.get() else { return }
-        db.collection("users").document(userData.id)
+        guard let userDataId = userData.id else { return }
+        db.collection("users").document(userDataId)
             .getDocument { requestDoc, error in
                 if let data = requestDoc?.data() {
                     print("updateGamePointsForWinner: \(data)")
@@ -325,11 +333,11 @@ class GameScoreboardViewModel: ObservableObject {
                         "gamePoints": pointToBeAdded
                     ]
                     
-                    self.db.collection("users").document(userData.id).updateData(dataToUpdate) { error in
+                    self.db.collection("users").document(userDataId).updateData(dataToUpdate) { error in
                         if let error = error {
                             print("Error updating document: \(error)")
                         } else {
-                            print("Success - Updated gamePoints in users id: \(userData.id)")
+                            print("Success - Updated gamePoints in users id: \(String(describing: userData.id))")
                             userData.gamePoints = pointToBeAdded
                             UserLoginCache.save(userData)
                         }

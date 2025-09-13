@@ -20,9 +20,9 @@ struct NavigatorView: View {
                     Label("Fav", systemImage: "heart.fill")
 
                 }
-            SettingsView()
+            ProfileView()
                 .tabItem {
-                    Label("Settings", systemImage: "gearshape.fill")
+                    Label("Profile", systemImage: "person.crop.circle.fill")
                 }
         }
         .tint(.orange)

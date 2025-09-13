@@ -20,13 +20,22 @@ class NotificationTokenManager: NSObject {
         guard isNotificationTokenChanged else { return }
         guard let loginData = UserLoginCache.get() else { return }
         
-        if let uid = Auth.auth().currentUser?.uid {
+        if let id = loginData.id {
             do {
                 let db = Firestore.firestore()
-                try await db.collection("users").document(uid).setData(["fcmToken": notificationToken], merge: true)
+                try await db.collection("users").document(id).setData(["fcmToken": notificationToken], merge: true)
             } catch let error {
                 print("error sendNotificationTokenAPICall: \(error.localizedDescription)")
             }
         }
+        
+//        if let uid = Auth.auth().currentUser?.uid {
+//            do {
+//                let db = Firestore.firestore()
+//                try await db.collection("users").document(uid).setData(["fcmToken": notificationToken], merge: true)
+//            } catch let error {
+//                print("error sendNotificationTokenAPICall: \(error.localizedDescription)")
+//            }
+//        }
     }
 }

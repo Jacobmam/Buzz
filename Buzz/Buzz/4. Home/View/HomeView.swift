@@ -9,98 +9,142 @@ import SwiftUI
 
 struct HomeView: View {
     @EnvironmentObject private var nav: NavigationManager
+    @EnvironmentObject private var appDelegate: AppDelegate
     @StateObject private var homeViewModel = HomeViewModel()
-    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     
     var body: some View {
-        ScrollView {
+        ZStack {
             VStack {
-                ZStack {
-                    Text("Buzz")
-                        .font(.largeTitle)
-                        .fontWeight(.bold)
-                        .foregroundColor(.orange)
-                    
-                    HStack {
-                        Spacer()
-                        Button {
-                            nav.path.append(Route.notificationsView)
-                        } label: {
-                            VStack(spacing: 4) {
-                                Image(systemName: "bell.fill")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(height: 26)
-                                    .foregroundColor(.orange)
+                headerView
+                
+                ScrollView {
+                    VStack(spacing: 0) {
+                        VStack {
+                            HStack(spacing: 0) {
+                                // display profile image
+                                if let imageURL = homeViewModel.userProfile?.profilePic, imageURL.count > 0 {
+                                    AsyncImage(url: URL(string: imageURL),
+                                               scale: 1.0,
+                                               transaction: .init(animation: .spring())) { phase in
+                                        switch phase {
+                                        case .empty:
+                                            ProgressView()
+                                                .tint(.orange)
+                                                .scaleEffect(1)
+                                                .transition(.opacity.combined(with: .scale))
+                                                .frame(width: 60, height: 60)
+                                                .padding(.trailing)
+                                            
+                                        case .success(let image):
+                                            image
+                                                .resizable()
+                                                .scaledToFill()
+                                                .transition(.opacity.combined(with: .scale))
+                                                .frame(width: 60, height: 60)
+                                                .clipShape(Circle())
+                                                .padding(.trailing)
+                                                .id(imageURL)
+                                        case .failure(_):
+                                            Image(systemName: "person.circle.fill")
+                                                .resizable()
+                                                .foregroundColor(.orange)
+                                                .tint(.orange)
+                                                .scaledToFill()
+                                                .frame(width: 60, height: 60)
+                                                .padding(.trailing)
+                                        @unknown default:
+                                            Image(systemName: "person.circle.fill")
+                                                .resizable()
+                                                .foregroundColor(.orange)
+                                                .tint(.orange)
+                                                .scaledToFill()
+                                                .frame(width: 60, height: 60)
+                                                .padding(.trailing)
+                                        }
+                                    }
+                                               .scaledToFill()
+                                    
+                                } else {
+                                    Image(systemName: "person.circle.fill")
+                                        .resizable()
+                                        .foregroundColor(.orange)
+                                        .tint(.orange)
+                                        .scaledToFill()
+                                        .frame(width: 50, height: 50)
+                                        .padding(.trailing)
+                                    
+                                }
+                                
+                                //                            Spacer()
+                                VStack(alignment: .leading, spacing: 4) {
+                                    Text("\(homeViewModel.userProfile?.username ?? "User")")
+                                        .font(.system(size: 20, weight: .bold))
+                                    Text("\(homeViewModel.userProfile?.firstName ?? "") \(homeViewModel.userProfile?.lastName ?? "")")
+                                        .font(.system(size: 16, weight: .thin))
+                                }
+                                Spacer()
+                                
                             }
-                            .frame(width: 80)
+                            .padding()
+                            .background(RoundedRectangle(cornerRadius: 10).fill(Color.gray.opacity(0.5)))
+                            
+                            
+                            Divider()
+                                .background(Color.white)
+                                .padding(.vertical,5)
+                            
+                            HStack {
+                                Text("Ranking #\(homeViewModel.userProfile?.ranking ?? 0)")
+                                    .foregroundColor(.white)
+                                    .padding(.vertical,4)
+                                    .padding(.horizontal)
+                                    .background(RoundedRectangle(cornerRadius: 10).fill(Color.gray.opacity(0.5)))
+                                
+                                Spacer()
+                                
+                                Text("\(homeViewModel.userProfile?.gamePoints ?? 0) Hoop Points")
+                                    .foregroundColor(.white)
+                                    .padding(.vertical,4)
+                                    .padding(.horizontal)
+                                    .background(RoundedRectangle(cornerRadius: 10).fill(Color.gray.opacity(0.5)))
+                            }
+                        }
+                        .padding()
+                        
+                        VStack {
+                            Button {
+                                //                            NavigationLink(destination: DeutschlandCourtView()) {
+                                //                        nav.path.append(Route.userSelectionView)
+                            } label: {
+                                HomeFeatureCard(title: "Court Finder", description: "Entdecke die besten Basketball Courts in Deutschland! 🏀", image: "sportscourt")
+                            }
+                            Button {
+                                nav.path.append(Route.userSelectionView)
+                            } label: {
+                                HomeFeatureCard(title: "Matches", description: "Ob 1v1, 3v3 oder 5v5, fordere andere heraus und dominiere den Court!", image: "figure.basketball")
+                            }
+                            Button {
+                                nav.path.append(Route.rankingBoardView)
+                            } label: {
+                                HomeFeatureCard(title: "Ranking", description: "Perfektioniere deine Skills und werde jeden Tag besser.", image: "basketball")
+                            }
                         }
                     }
-                    .padding(.horizontal)
-                }
-                .padding(.top)
-                
-                VStack {
-                    Image(systemName: "person.circle.fill")
-                        .resizable()
-                        .frame(width: 50, height: 50)
-                        .foregroundColor(.orange)
-                        .padding(.leading)
-                    
-                    Text(UserLoginCache.get()?.username ?? "" )
-                        .font(.title)
-                        .bold()
-                        .foregroundColor(.white)
-                    
-                    if let userProfile = homeViewModel.userProfile {
-                        HStack {
-                            Text("Ranking #\(userProfile.ranking)")
-                                .foregroundColor(.white)
-                            Spacer()
-                            Text("\(userProfile.gamePoints) Game Points")
-                                .foregroundColor(.white)
-                        }
-                        .padding(.horizontal)
-                    } else {
-                        HStack {
-                            ProgressView()
-                            Text("Loading...")
-                                .fontWeight(.thin)
-                        }
-                    }
-                    
-                    Divider()
-                        .background(Color.white)
-                }
-                .padding()
-                .background(RoundedRectangle(cornerRadius: 10).fill(Color.gray.opacity(0.3)))
-                .padding()
-                
-                NavigationLink(destination: DeutschlandCourtView()) {
-                    HomeFeatureCard(title: "Court Finder", description: "Entdecke die besten Basketball Courts in Deutschland! 🏀", image: "basketball.court")
-                }
-                
-                Button {
-                    nav.path.append(Route.userSelectionView)
-                } label: {
-                    HomeFeatureCard(title: "Matches", description: "Ob 1v1, 3v3 oder 5v5, fordere andere heraus und dominiere den Court!", image: "figure.basketball")
-                }
-                
-                Button {
-                    nav.path.append(Route.rankingBoardView)
-                } label: {
-                    HomeFeatureCard(title: "Ranking", description: "Perfektioniere deine Skills und werde jeden Tag besser.", image: "basketball")
+                    .padding()
                 }
             }
-            .padding()
+            if homeViewModel.isLoading {
+                JBLoadingView()
+            }
         }
         .onAppear {
             appDelegate.registerForPushNotifications()
-            
+            //            homeViewModel.getUserData()
             Task {
                 if let userData = UserLoginCache.get() {
                     let loginViewModel = LoginViewModel()
-                    homeViewModel.userProfile = try await loginViewModel.find(by: userData.id)
+                    guard let userDataId = userData.id else { return }
+                    homeViewModel.userProfile = try await loginViewModel.find(by: userDataId)
                 }
             }
         }
@@ -108,10 +152,40 @@ struct HomeView: View {
         .onReceive(NotificationCenter.default.publisher(for: .navigateToNotificationsView)) { _ in
             nav.path.append(Route.notificationsView)
         }
-//        .navigate(to: RequestView(),
-//                  when: $homeViewModel.navigateToRequestView)
-//        .navigate(to: UserView(),
-//                  when: $homeViewModel.navigateToUserSelectionView)
+    }
+    
+    var headerView: some View {
+        HStack(spacing: 20) {
+            Text("Buzz")
+                .font(.largeTitle)
+                .fontWeight(.bold)
+                .foregroundColor(.orange)
+            Spacer()
+            Button {
+                nav.path.append(Route.searchUsersView)
+            } label: {
+                VStack(spacing: 4) {
+                    Image(systemName: "magnifyingglass")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(height: 26)
+                        .foregroundColor(.orange)
+                }
+            }
+            Button {
+                nav.path.append(Route.notificationsView)
+            } label: {
+                VStack(spacing: 4) {
+                    Image(systemName: "bell.fill")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(height: 26)
+                        .foregroundColor(.orange)
+                }
+            }
+        }
+        .padding()
+        .padding(.horizontal)
     }
 }
 
@@ -123,23 +197,30 @@ struct HomeFeatureCard: View {
     
     var body: some View {
         HStack {
-            VStack(alignment: .center) {
-                Text(title)
-                    .font(.title2)
-                    .bold()
-                    .foregroundColor(.white)
-                    .frame(maxWidth: .infinity, alignment: .center)
-                
-                Text(description)
-                    .foregroundColor(.white.opacity(0.8))
-                    .padding(.top, 2)
-                    .multilineTextAlignment(.center)
-            }
-            
             Image(systemName: image)
                 .resizable()
-                .frame(width: 50, height: 50)
+                .scaledToFit()
+                .frame(width: 50)
                 .foregroundColor(.white)
+                .padding(.trailing)
+            VStack(alignment: .leading) {
+                Text(title)
+                    .font(.system(size: 25, weight: .bold))
+                    .foregroundColor(.white)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                Text(description)
+                    .foregroundColor(.white.opacity(0.8))
+                    .font(.system(size: 15, weight: .light))
+                    .multilineTextAlignment(.leading)
+                    .lineLimit(nil)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            Spacer()
+            Image(systemName: "hand.tap.fill")
+                .resizable()
+                .frame(width: 20, height: 23)
+                .foregroundColor(.white)
+                .padding(.leading)
         }
         .padding()
         .background(RoundedRectangle(cornerRadius: 10).fill(Color.orange.opacity(0.5)))

@@ -8,7 +8,7 @@
 import Foundation
 
 struct Court: Codable, Identifiable {
-    let id = UUID().uuidString
+    var id = UUID().uuidString
     let name: String
     let address: String
     let city: String

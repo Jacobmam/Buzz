@@ -38,7 +38,8 @@ struct UserView: View {
                 .onAppear {
                     if userViewModel.arrUsers.isEmpty {
                         if let logindata = UserLoginCache.get() {
-                            userViewModel.currentUserId = logindata.id
+                            guard let loginId = logindata.id else { return }
+                            userViewModel.currentUserId = loginId
                             userViewModel.fetchUsers()
                         }
                     }

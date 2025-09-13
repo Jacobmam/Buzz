@@ -11,7 +11,7 @@ struct SplashView: View {
     var body: some View {
         if !isAnimationCompleted {
             ZStack {
-                Image("3")
+                Image("applogo")
                     .resizable()
                     .scaledToFit()
                     .frame(width: isAnimating ? 350 : 600, height: isAnimating ? 350 : 600)
@@ -59,6 +59,18 @@ struct SplashView: View {
                             .navigationBarBackButtonHidden(true)
                     case .rankingBoardView:
                         RankingBoardView()
+                            .navigationBarBackButtonHidden(true)
+                    case .forgotPasswordView:
+                        ForgotPasswordView()
+                            .navigationBarBackButtonHidden(true)
+                    case .editProfileView:
+                        EditProfileView()
+                            .navigationBarBackButtonHidden(true)
+                    case .searchUsersView:
+                        SearchUsersView()
+                            .navigationBarBackButtonHidden(true)
+                    case .searchUserProfileView(let searchedUser):
+                        SearchUserProfileView(searchedUser: searchedUser)
                             .navigationBarBackButtonHidden(true)
                     default: EmptyView()
                     }

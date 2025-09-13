@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.115544927674-44cimseb758ef93e95mbpaaph3glj4vg</string>
+			</array>
+		</dict>
+	</array>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>BlvckVenom requires permission to access photos for profile picture selection.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>BlvckVenom requires permission to access camera for profile picture selection.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>BlvckVenom requires permission to access microphone.</string>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
+</dict>
+</plist>

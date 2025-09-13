@@ -32,8 +32,8 @@ class GameModeViewModel: ObservableObject {
         let db = Firestore.firestore()
         
         let data: [String: Any] = [
-            "userId": userData.id,
-            "userName": userData.username,
+            "userId": userData.id ?? "",
+            "userName": userData.username ?? "",
             "opponentId": opponentUser.id,
             "opponentUserName": opponentUser.username,
             "gameType": selectedMode,

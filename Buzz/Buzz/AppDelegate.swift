@@ -8,6 +8,7 @@
 @_exported import FirebaseCore
 @_exported import FirebaseFirestore
 @_exported import FirebaseMessaging
+@_exported import FirebaseFunctions
 import UIKit
 
 class AppDelegate: NSObject, UIApplicationDelegate, ObservableObject {
@@ -85,6 +86,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate, MessagingDelegate {
     
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         Messaging.messaging().apnsToken = deviceToken
+        Auth.auth().setAPNSToken(deviceToken, type: .sandbox)
     }
     
     // DISPLAY NOTIFICATION WHILE APPLICATION IS IN FOREGROUND
@@ -126,5 +128,16 @@ extension AppDelegate: UNUserNotificationCenterDelegate, MessagingDelegate {
             }
         }
         completionHandler()
+    }
+    
+    func application(_ application: UIApplication,
+                     didReceiveRemoteNotification notification: [AnyHashable : Any],
+                     fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        if Auth.auth().canHandleNotification(notification) {
+            completionHandler(.noData)
+            return
+        }
+        // Handle your own notifications here if needed
+        completionHandler(.newData)
     }
 }

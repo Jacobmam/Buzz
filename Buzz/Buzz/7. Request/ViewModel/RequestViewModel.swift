@@ -114,7 +114,7 @@ class RequestViewModel: ObservableObject {
     func changeRequestStatus(_ request: RequestModel, _ status: GameRequestStatus) {
         let db = Firestore.firestore()
         
-        var data: [String: Any] = [
+        let data: [String: Any] = [
             "requestStatus": status.rawValue,
         ]
         
@@ -182,4 +182,6 @@ class RequestViewModel: ObservableObject {
             }
         }
     }
+    
+   
 }

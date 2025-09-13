@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4B27C7932E57543B00381051 /* PhoneNumberKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4B27C7922E57543B00381051 /* PhoneNumberKit */; };
+		4B27C7972E57543B00381051 /* PhoneNumberKit-Static in Frameworks */ = {isa = PBXBuildFile; productRef = 4B27C7962E57543B00381051 /* PhoneNumberKit-Static */; };
+		4B7F516E2E6EC03B009BADE5 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 4B7F516D2E6EC03B009BADE5 /* Alamofire */; };
+		4BB20DE62E6ED0F800BE8778 /* YPImagePicker in Frameworks */ = {isa = PBXBuildFile; productRef = 4BB20DE52E6ED0F800BE8778 /* YPImagePicker */; };
 		835DA9812D687C8300E4026B /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 835DA9802D687C8300E4026B /* FirebaseAnalytics */; };
 		835DA9832D687C8300E4026B /* FirebaseAnalyticsOnDeviceConversion in Frameworks */ = {isa = PBXBuildFile; productRef = 835DA9822D687C8300E4026B /* FirebaseAnalyticsOnDeviceConversion */; };
 		835DA9852D687C8300E4026B /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */ = {isa = PBXBuildFile; productRef = 835DA9842D687C8300E4026B /* FirebaseAnalyticsWithoutAdIdSupport */; };
@@ -34,13 +38,39 @@
 		CC80EB2C2E40C87700E2A027 /* JWTDecode in Frameworks */ = {isa = PBXBuildFile; productRef = CC80EB2B2E40C87700E2A027 /* JWTDecode */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		4B27C7992E57561600381051 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		835DA91E2D5A59E500E4026B /* Buzz.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Buzz.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		4B783EFB2E55F2DE00DBACE7 /* Exceptions for "Buzz" folder in "Buzz" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 835DA91D2D5A59E500E4026B /* Buzz */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		835DA9202D5A59E500E4026B /* Buzz */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				4B783EFB2E55F2DE00DBACE7 /* Exceptions for "Buzz" folder in "Buzz" target */,
+			);
 			path = Buzz;
 			sourceTree = "<group>";
 		};
@@ -52,14 +82,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				835DA9A32D687C8300E4026B /* FirebaseMessaging in Frameworks */,
+				4B7F516E2E6EC03B009BADE5 /* Alamofire in Frameworks */,
+				4B27C7972E57543B00381051 /* PhoneNumberKit-Static in Frameworks */,
 				835DA9AF2D687C8300E4026B /* FirebaseVertexAI in Frameworks */,
 				835DA9992D687C8300E4026B /* FirebaseFirestoreCombine-Community in Frameworks */,
 				835DA9A72D687C8300E4026B /* FirebasePerformance in Frameworks */,
 				835DA9AD2D687C8300E4026B /* FirebaseStorageCombine-Community in Frameworks */,
+				4BB20DE62E6ED0F800BE8778 /* YPImagePicker in Frameworks */,
 				835DA9A92D687C8300E4026B /* FirebaseRemoteConfig in Frameworks */,
 				835DA99B2D687C8300E4026B /* FirebaseFunctions in Frameworks */,
 				835DA9932D687C8300E4026B /* FirebaseDatabase in Frameworks */,
 				835DA9952D687C8300E4026B /* FirebaseDynamicLinks in Frameworks */,
+				4B27C7932E57543B00381051 /* PhoneNumberKit in Frameworks */,
 				835DA9872D687C8300E4026B /* FirebaseAppCheck in Frameworks */,
 				835DA98B2D687C8300E4026B /* FirebaseAuth in Frameworks */,
 				835DA9812D687C8300E4026B /* FirebaseAnalytics in Frameworks */,
@@ -116,6 +150,7 @@
 				835DA91A2D5A59E500E4026B /* Sources */,
 				835DA91B2D5A59E500E4026B /* Frameworks */,
 				835DA91C2D5A59E500E4026B /* Resources */,
+				4B27C7992E57561600381051 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -151,6 +186,10 @@
 				835DA9AC2D687C8300E4026B /* FirebaseStorageCombine-Community */,
 				835DA9AE2D687C8300E4026B /* FirebaseVertexAI */,
 				CC80EB2B2E40C87700E2A027 /* JWTDecode */,
+				4B27C7922E57543B00381051 /* PhoneNumberKit */,
+				4B27C7962E57543B00381051 /* PhoneNumberKit-Static */,
+				4B7F516D2E6EC03B009BADE5 /* Alamofire */,
+				4BB20DE52E6ED0F800BE8778 /* YPImagePicker */,
 			);
 			productName = Buzz;
 			productReference = 835DA91E2D5A59E500E4026B /* Buzz.app */;
@@ -183,6 +222,9 @@
 			packageReferences = (
 				835DA97E2D687B8800E4026B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				CC80EB2A2E40C87700E2A027 /* XCRemoteSwiftPackageReference "JWTDecode" */,
+				4B27C7912E57543B00381051 /* XCRemoteSwiftPackageReference "PhoneNumberKit" */,
+				4B7F516C2E6EC03B009BADE5 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				4BB20DE42E6ED0F800BE8778 /* XCRemoteSwiftPackageReference "YPImagePicker" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 835DA91F2D5A59E500E4026B /* Products */;
@@ -341,11 +383,12 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Buzz/Buzz.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.0.1;
+				CURRENT_PROJECT_VERSION = 1.0.9;
 				DEVELOPMENT_ASSET_PATHS = "\"Buzz/Preview Content\"";
 				DEVELOPMENT_TEAM = 35NGB4BCWY;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Buzz/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = BlvckVenom;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -374,11 +417,12 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Buzz/Buzz.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.0.1;
+				CURRENT_PROJECT_VERSION = 1.0.9;
 				DEVELOPMENT_ASSET_PATHS = "\"Buzz/Preview Content\"";
 				DEVELOPMENT_TEAM = 35NGB4BCWY;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Buzz/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = BlvckVenom;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -424,6 +468,30 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		4B27C7912E57543B00381051 /* XCRemoteSwiftPackageReference "PhoneNumberKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/marmelroy/PhoneNumberKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.1.4;
+			};
+		};
+		4B7F516C2E6EC03B009BADE5 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.10.2;
+			};
+		};
+		4BB20DE42E6ED0F800BE8778 /* XCRemoteSwiftPackageReference "YPImagePicker" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Yummypets/YPImagePicker.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.3.0;
+			};
+		};
 		835DA97E2D687B8800E4026B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
@@ -443,6 +511,26 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		4B27C7922E57543B00381051 /* PhoneNumberKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4B27C7912E57543B00381051 /* XCRemoteSwiftPackageReference "PhoneNumberKit" */;
+			productName = PhoneNumberKit;
+		};
+		4B27C7962E57543B00381051 /* PhoneNumberKit-Static */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4B27C7912E57543B00381051 /* XCRemoteSwiftPackageReference "PhoneNumberKit" */;
+			productName = "PhoneNumberKit-Static";
+		};
+		4B7F516D2E6EC03B009BADE5 /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4B7F516C2E6EC03B009BADE5 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+		4BB20DE52E6ED0F800BE8778 /* YPImagePicker */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4BB20DE42E6ED0F800BE8778 /* XCRemoteSwiftPackageReference "YPImagePicker" */;
+			productName = YPImagePicker;
+		};
 		835DA9802D687C8300E4026B /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 835DA97E2D687B8800E4026B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;

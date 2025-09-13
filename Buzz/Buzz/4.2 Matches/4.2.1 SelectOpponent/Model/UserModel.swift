@@ -12,5 +12,9 @@ struct User: Identifiable, Decodable, Hashable {
     var username: String
     var ranking: Int
     var gamePoints: Int
+    var profilePic: String?
+    var firstName: String
+    var lastName: String
+    var basketballPosition: String?
 }
 
