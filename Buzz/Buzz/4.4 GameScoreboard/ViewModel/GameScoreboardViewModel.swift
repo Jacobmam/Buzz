@@ -88,7 +88,8 @@ class GameScoreboardViewModel: ObservableObject {
                     let userId = data["userId"] as? String ?? ""
                     let opponentId = data["opponentId"] as? String ?? ""
                     let gameCompleted = data["gameCompleted"] as? Bool ?? false
-                    
+                    let gameType = data["gameType"] as? String ?? ""
+
                     self.gameHistoryData = nil
                     self.gameHistoryData = GameHistoryModel(gameStartedAt: gameStartedAt,
                                                             gameEndedAt: gameEndedAt,
@@ -97,7 +98,8 @@ class GameScoreboardViewModel: ObservableObject {
                                                             userScore: userScore,
                                                             userId: userId,
                                                             opponentId: opponentId,
-                                                            gameCompleted: gameCompleted)
+                                                            gameCompleted: gameCompleted,
+                                                            gameType: gameType)
                     self.observeGameHistory()
                 }
             }
@@ -252,6 +254,9 @@ class GameScoreboardViewModel: ObservableObject {
             "opponentScore": (userData.id == gameRequestData?.userId) ? txtOpponentScore : txtMyScore,
             "userId": gameRequestData?.userId ?? "",
             "opponentId": gameRequestData?.opponentId ?? "",
+            "opponentName": gameRequestData?.opponentName ?? "",
+            "userName": gameRequestData?.userName ?? "",
+            "gameType": gameRequestData?.gameType ?? ""
         ]
         
         db.collection("gameHistory").document(self.gameRequestData?.historyId ?? "").updateData(updateData) { error in

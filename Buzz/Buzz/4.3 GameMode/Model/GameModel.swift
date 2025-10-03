@@ -21,7 +21,9 @@ struct GameModel: Codable, Equatable {
     var historyId: String
 }
 
-struct GameHistoryModel: Codable {
+struct GameHistoryModel: Decodable, Hashable {
+    var opponent: User?
+    var user: User?
     var gameStartedAt: String
     var gameEndedAt: String
     var gameRequestId: String
@@ -30,4 +32,6 @@ struct GameHistoryModel: Codable {
     var userId: String
     var opponentId: String
     var gameCompleted: Bool
+    var gameType: String
+
 }

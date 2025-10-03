@@ -3,6 +3,7 @@ import SwiftUI
 struct SplashView: View {
     @EnvironmentObject private var nav: NavigationManager
     @EnvironmentObject var userStateViewModel: UserStateViewModel
+    @EnvironmentObject private var firebaseMessagesHelper: FirebaseMessagesHelper
     
     @State private var isAnimating = false
     @State private var isAnimationCompleted = false
@@ -72,12 +73,38 @@ struct SplashView: View {
                     case .searchUserProfileView(let searchedUser):
                         SearchUserProfileView(searchedUser: searchedUser)
                             .navigationBarBackButtonHidden(true)
+                    case .messageChatRoomView:
+                        MessageChatRoomsView()
+                            .navigationBarBackButtonHidden(true)
+                    case .messageConversationView(let chatRoom):
+                        MessageConversationView(chatRoom: chatRoom)
+                            .navigationBarBackButtonHidden(true)
+                    case .gameHistoryView:
+                        GameHistoryView()
+                            .navigationBarBackButtonHidden(true)
                     default: EmptyView()
                     }
                 }
             }
             .onChange(of: userStateViewModel.isLoggedIn) {
                 nav.reset()
+                
+                // Handle messaging when login state changes
+                if userStateViewModel.isLoggedIn == true {
+                    // User logged in - start observing chat rooms
+                    if let userId = UserLoginCache.get()?.id {
+                        firebaseMessagesHelper.observeChatRooms(for: userId)
+                    }
+                } else {
+                    // User logged out - clear messaging data
+                    firebaseMessagesHelper.clearUserData()
+                }
+            }
+            .onAppear {
+                // Initial setup when app launches
+                if let userId = UserLoginCache.get()?.id {
+                    firebaseMessagesHelper.observeChatRooms(for: userId)
+                }
             }
         }
     }

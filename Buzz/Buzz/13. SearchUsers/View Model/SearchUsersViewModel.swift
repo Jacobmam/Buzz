@@ -49,7 +49,7 @@ class SearchUsersViewModel: ObservableObject  {
             query = query
                 .order(by: "username")
                 .start(at: [searchText])
-                .end(at: [searchText])
+                .end(at: [searchText + "\u{f8ff}"])
         }
         
         query = query
@@ -89,7 +89,7 @@ class SearchUsersViewModel: ObservableObject  {
             query = query
                 .order(by: "username")
                 .start(at: [searchText])
-                .end(at: [searchText])
+                .end(at: [searchText + "\u{f8ff}"])
         }
 
         query = query

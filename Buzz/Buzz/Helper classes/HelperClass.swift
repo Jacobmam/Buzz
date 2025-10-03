@@ -58,9 +58,58 @@ class HelperClass {
         }
     }
     
+    func formattedDate(date: Date) -> String {
+        _ = Calendar.current
+        let formatter = DateFormatter()
+        let now = Date()
+        
+        let secondsAgo = Int(now.timeIntervalSince(date))
+        
+        if secondsAgo < 60 {
+            return "Just now"
+        } else  {
+            formatter.dateFormat = "hh:mm a"
+            return formatter.string(from: date)
+        }
+    }
+    
+    func getDateForMessageConversation(_ utcDateString: String) -> String {
+        // 1️⃣ Parse input UTC date string
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSS Z"
+        formatter.timeZone = TimeZone(secondsFromGMT: 0) // UTC
+        
+        guard let date = formatter.date(from: utcDateString) else {
+            return "Invalid Date"
+        }
+        
+        // 2️⃣ Convert date to local timezone (optional, if you want local comparison)
+        let localDate = date
+        
+        let calendar = Calendar.current
+        
+        // 3️⃣ Check if date is "Today"
+        if calendar.isDateInToday(localDate) {
+            return "Today"
+        }
+        
+        // 4️⃣ Check if date is in the current week
+        if calendar.isDate(localDate, equalTo: Date(), toGranularity: .weekOfYear) {
+            let weekdayFormatter = DateFormatter()
+            weekdayFormatter.dateFormat = "EEEE" // e.g. Monday, Tuesday
+            return weekdayFormatter.string(from: localDate)
+        }
+        
+        // 5️⃣ Otherwise, return formatted as "Mon, 1 Sep 2025"
+        let fullFormatter = DateFormatter()
+        fullFormatter.dateFormat = "EEE, d MMM yyyy"
+        return fullFormatter.string(from: localDate)
+    }
+
+    
     func convertUTCStringToDate(_ strDate: String) -> Date? {
         let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z" // Adjust if your format is different
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSS Z" // Adjust if your format is different
         formatter.timeZone = TimeZone(secondsFromGMT: 0) // UTC
         // Convert string to Date
         guard let utcDate = formatter.date(from: strDate) else {
@@ -74,7 +123,7 @@ class HelperClass {
         let now = Date()
         let dateFormatter = DateFormatter()
         dateFormatter.timeZone = TimeZone(secondsFromGMT: 0) // UTC
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSS Z"
         return dateFormatter.string(from: now)
     }
     
@@ -84,7 +133,7 @@ class HelperClass {
         
         let dateFormatter = DateFormatter()
         dateFormatter.timeZone = TimeZone(secondsFromGMT: 0) // UTC
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSS Z"
         
         return dateFormatter.string(from: futureDate)
     }
@@ -92,7 +141,7 @@ class HelperClass {
     func secondsSince(startDateString: String) -> Int? {
         let dateFormatter = DateFormatter()
         dateFormatter.timeZone = TimeZone(secondsFromGMT: 0) // UTC
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSS Z"
         
         guard let startDate = dateFormatter.date(from: startDateString) else {
             print("❌ Error: Invalid date string format")
@@ -156,6 +205,7 @@ class HelperClass {
       return (true, "")
         
     }
+    
 }
 
 
@@ -193,4 +243,3 @@ struct TextFieldClearButton: ViewModifier {
             }
     }
 }
-

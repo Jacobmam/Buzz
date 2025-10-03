@@ -10,6 +10,7 @@ import SwiftUI
 struct HomeView: View {
     @EnvironmentObject private var nav: NavigationManager
     @EnvironmentObject private var appDelegate: AppDelegate
+    @EnvironmentObject private var firebaseMessagesHelper: FirebaseMessagesHelper
     @StateObject private var homeViewModel = HomeViewModel()
     
     var body: some View {
@@ -77,7 +78,7 @@ struct HomeView: View {
                                 
                                 //                            Spacer()
                                 VStack(alignment: .leading, spacing: 4) {
-                                    Text("\(homeViewModel.userProfile?.username ?? "User")")
+                                    Text("\(homeViewModel.userProfile?.username ?? "")")
                                         .font(.system(size: 20, weight: .bold))
                                     Text("\(homeViewModel.userProfile?.firstName ?? "") \(homeViewModel.userProfile?.lastName ?? "")")
                                         .font(.system(size: 16, weight: .thin))
@@ -177,6 +178,17 @@ struct HomeView: View {
             } label: {
                 VStack(spacing: 4) {
                     Image(systemName: "bell.fill")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(height: 26)
+                        .foregroundColor(.orange)
+                }
+            }
+            Button {
+                nav.path.append(Route.messageChatRoomView)
+            } label: {
+                VStack(spacing: 4) {
+                    Image(systemName: "message.fill")
                         .resizable()
                         .scaledToFit()
                         .frame(height: 26)

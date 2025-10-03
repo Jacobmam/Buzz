@@ -12,6 +12,7 @@ struct BuzzApp: App {
     
     @StateObject var userStateViewModel = UserStateViewModel()
     @StateObject var nav = NavigationManager()
+    @StateObject var firebaseMessagesHelper = FirebaseMessagesHelper()
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     
     var body: some Scene {
@@ -19,6 +20,7 @@ struct BuzzApp: App {
             SplashView()
                 .environmentObject(userStateViewModel)
                 .environmentObject(nav)
+                .environmentObject(firebaseMessagesHelper)
                 .environmentObject(appDelegate)
 //            if userStateViewModel.isLoggedIn {
 //                NavigatorView()

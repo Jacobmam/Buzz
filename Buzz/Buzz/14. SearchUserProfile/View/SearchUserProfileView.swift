@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct SearchUserProfileView: View {
+    @EnvironmentObject private var nav: NavigationManager
+    @EnvironmentObject private var firebaseMessagesHelper: FirebaseMessagesHelper
     @StateObject private var searchUserProfileViewModel = SearchUserProfileViewModel()
     @Environment(\.dismiss) var dismiss
     var searchedUser : User?
@@ -18,16 +20,22 @@ struct SearchUserProfileView: View {
                 headerView
                 profileHeader
                 profileDetailsView
-                gameData
+                Divider()
+                    .background(Color.white)
+                    .padding( )
+                //                historyView
+                hview
                 Spacer()
             }
         }
         .onAppear {
-            searchUserProfileViewModel.id = searchedUser?.id ?? ""
-            if searchUserProfileViewModel.id != "" {
-                searchUserProfileViewModel.getGamePlayedCount()
+            searchUserProfileViewModel.userData = UserLoginCache.get()
+            if let searchedUserId = searchedUser?.id, let userId = searchUserProfileViewModel.userData?.id {
+                searchUserProfileViewModel.getGamePlayedCount(searchedUserId: searchedUserId)
+                searchUserProfileViewModel.getGameWinCount(searchedUserId: searchedUserId)
+                searchUserProfileViewModel.fetchGameHistoryWithSearchedUser(userID: userId, searchedUserId: searchedUserId)
             }
-            searchUserProfileViewModel.getGameWinCount()
+            
         }
     }
     var headerView: some View {
@@ -50,12 +58,19 @@ struct SearchUserProfileView: View {
                 .font(.system(size: 20))
             
             Spacer()
-            
-            Image(systemName: "message.fill")
-                .resizable()
-                .scaledToFit()
-                .frame(height: 26)
-                .foregroundColor(.orange)
+            Button {
+                if let searchedUserId = searchedUser?.id, let myId = UserLoginCache.get()?.id {
+                    firebaseMessagesHelper.fetchOrCreateDirectChat(with: searchedUserId, currentUserId: myId) { room in
+                        if let room { nav.path.append(Route.messageConversationView(chatRoom: room)) }
+                    }
+                }
+            } label: {
+                Image(systemName: "message.fill")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(height: 26)
+                    .foregroundColor(.orange)
+            }
             
         }
         .padding(.leading, 10)
@@ -124,7 +139,7 @@ struct SearchUserProfileView: View {
                         .padding(.vertical, 5)
                         .background(.orange)
                         .clipShape(RoundedRectangle(cornerRadius: 25))
-                        
+                    
                 }
                 
             }
@@ -216,14 +231,298 @@ struct SearchUserProfileView: View {
             Spacer()
         }
     }
-    
-    var gameData: some View {
-        VStack {
-            Spacer()
-            Text("Game data will be shown here.")
-            Spacer()
+    var hview: some View {
+        ScrollView {
+            if let userData = UserLoginCache.get() {
+                ForEach($searchUserProfileViewModel.allGameHistory, id: \.self) { $gameHistory in
+                    ZStack {
+                        VStack {
+                            HStack {
+                                VStack(spacing: 0) {
+                                    HStack {
+                                        if let imgURL = URL(string: gameHistory.user?.profilePic ?? "") {
+                                            JBAsyncImage(url: imgURL, placeholder: {
+                                                ProgressView()
+                                                    .tint(.orange)
+                                            }, image: {
+                                                Image(uiImage: $0).resizable()
+                                            })
+                                            .scaledToFill()
+                                        } else {
+                                            Image(systemName: "person.circle.fill")
+                                                .resizable()
+                                                .foregroundColor(.orange)
+                                                .tint(.orange)
+                                                .scaledToFill()
+                                        }
+                                    }
+                                    .clipShape(Circle())
+                                    .frame(width: 60, height: 60)
+                                    Text(gameHistory.user?.username ?? "")
+                                        .font(.system(size: 16).bold())
+                                        .lineLimit(1) 
+                                        .truncationMode(.tail)
+                                    
+                                }
+                                Spacer()
+                                VStack {
+                                    Text(gameHistory.gameType)
+                                        .font(.system(size: 25).bold())
+                                        .layoutPriority(1)
+                                    Text(searchUserProfileViewModel.timeBetween(gameHistory.gameStartedAt, gameHistory.gameEndedAt) ?? "")
+                                        .font(.system(size: 12).weight(.regular))
+                                        .layoutPriority(1)
+                                    
+                                }
+                                Spacer()
+                                VStack(spacing: 0) {
+                                    HStack {
+                                        if let imgURL = URL(string: gameHistory.opponent?.profilePic ?? "") {
+                                            JBAsyncImage(url: imgURL, placeholder: {
+                                                ProgressView()
+                                                    .tint(.orange)
+                                            }, image: {
+                                                Image(uiImage: $0).resizable()
+                                            })
+                                            .scaledToFill()
+                                        } else {
+                                            Image(systemName: "person.circle.fill")
+                                                .resizable()
+                                                .foregroundColor(.orange)
+                                                .tint(.orange)
+                                                .scaledToFill()
+                                        }
+                                    }
+                                    .clipShape(Circle())
+                                    .frame(width: 60, height: 60)
+                                    Text(gameHistory.opponent?.username ?? "")
+                                        .font(.system(size: 16).bold())
+                                        .lineLimit(1)
+                                        .truncationMode(.tail)
+                                }
+                            }
+                            
+                           
+                        }
+                        .padding(30)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke(
+                                    LinearGradient(
+                                        gradient: Gradient(colors: [
+                                            Color.orange.opacity(0.8),
+                                            Color.orange.opacity(0.5),
+                                            Color.orange.opacity(0.2),
+                                            Color.orange.opacity(0.05)
+                                        ]),
+                                        startPoint: .top,
+                                        endPoint: .bottom
+                                    ),
+                                    lineWidth: 1.5
+                                )
+                        )
+                        .padding(20)
+                        .background(.orange.opacity(0.2))
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                        .padding()
+                        Text(searchUserProfileViewModel.formatGameStartedAtDate(gameHistory.gameStartedAt) ?? "")
+                            .font(.system(size: 16).weight(.semibold))
+                            .padding(5)
+                            .background(Color(UIColor(red: 0.20, green: 0.11, blue: 0.04, alpha: 1.0)))
+                            .padding(.horizontal)
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                            .offset(x: 0, y:-70)
+//                            .layoutPriority(1)
+                        HStack(spacing: 0) {
+                            Spacer()
+                            Text("Score")
+                                .font(Font.system(size: 16).weight(.light))
+                              
+                                .padding(.horizontal, 5)
+                                .background(Color(UIColor(red: 0.20, green: 0.11, blue: 0.04, alpha: 1.0)))
+                            
+                                .layoutPriority(1)
+                            Spacer()
+                        }
+
+                        .padding(.horizontal)
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                        .offset(x: 0, y:70)
+                        HStack(spacing: 30) {
+                            
+                            Text(gameHistory.userScore)
+                                .font(Font.system(size: 16).weight(.bold))
+                                .foregroundColor(.orange)
+                                .padding(.horizontal, 5)
+                                .background(Color(UIColor(red: 0.20, green: 0.11, blue: 0.04, alpha: 1.0)))
+                                .padding(.horizontal, 40)
+                                .layoutPriority(1)
+                           
+                            Spacer()
+                            Text(gameHistory.opponentScore)
+                                .font(Font.system(size: 16).weight(.bold))
+                                .foregroundColor(.orange)
+                                .padding(.horizontal, 5)
+                                .background(Color(UIColor(red: 0.20, green: 0.11, blue: 0.04, alpha: 1.0)))
+                                .padding(.horizontal, 40)
+                                .layoutPriority(1)
+                                
+                        }
+                        .padding(.horizontal)
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                        .offset(x: 0, y:70)
+                    }
+                }
+            }
         }
     }
+//    var historyView: some View {
+//        ScrollView {
+//            if let userData = UserLoginCache.get() {
+//                ForEach($searchUserProfileViewModel.allGameHistory, id: \.self) { $gameHistory in
+//                    VStack(alignment: .leading) {
+//                        HStack {
+//                            VStack {
+//                                ZStack {
+//                                    if  gameHistory.userScore > gameHistory.opponentScore {
+//                                        RippleGlowAnimation()
+//                                            .frame(width: 50, height: 50)
+//                                    }
+//                                    HStack {
+//                                        if let imgURL = URL(string: gameHistory.user?.profilePic ?? "") {
+//                                            JBAsyncImage(url: imgURL, placeholder: {
+//                                                ProgressView()
+//                                                    .tint(.orange)
+//                                            }, image: {
+//                                                Image(uiImage: $0).resizable()
+//                                            })
+//                                            .scaledToFill()
+//                                        } else {
+//                                            Image(systemName: "person.circle.fill")
+//                                                .resizable()
+//                                                .foregroundColor(.orange)
+//                                                .tint(.orange)
+//                                                .scaledToFill()
+//                                        }
+//                                    }
+//                                    .clipShape(Circle())
+//                                    .frame(width: 50, height: 50)
+//                                    
+//                                    if gameHistory.userScore > gameHistory.opponentScore {
+//                                        Image("winner_crown")
+//                                            .resizable()
+//                                            .frame(width:20, height: 20)
+//                                            .scaledToFill()
+//                                            .offset(x: 20, y: -20)
+//                                    }
+//                                }
+//                                Text(gameHistory.user?.username ?? "")
+//                                    .font(Font.system(size: 16).bold())
+//                            }
+//                            Spacer()
+//                            VStack {
+//                                Text(gameHistory.gameType)
+//                                    .font(Font.system(size: 20).bold())
+//                            }
+//                            Spacer()
+//                            VStack {
+//                                ZStack {
+//                                    if  gameHistory.userScore < gameHistory.opponentScore {
+//                                        RippleGlowAnimation()
+//                                            .frame(width: 50, height: 50)
+//                                    }
+//                                    HStack {
+//                                        if let imgURL = URL(string: gameHistory.opponent?.profilePic ?? "") {
+//                                            JBAsyncImage(url: imgURL, placeholder: {
+//                                                ProgressView()
+//                                                    .tint(.orange)
+//                                            }, image: {
+//                                                Image(uiImage: $0).resizable()
+//                                            })
+//                                            .scaledToFill()
+//                                        } else {
+//                                            Image(systemName: "person.circle.fill")
+//                                                .resizable()
+//                                                .foregroundColor(.orange)
+//                                                .tint(.orange)
+//                                                .scaledToFill()
+//                                        }
+//                                    }
+//                                    .clipShape(Circle())
+//                                    .frame(width: 50, height: 50)
+//                                    if gameHistory.userScore < gameHistory.opponentScore {
+//                                        Image("winner_crown")
+//                                            .resizable()
+//                                            .frame(width:20, height: 20)
+//                                            .scaledToFill()
+//                                            .offset(x: 20, y: -20)
+//                                    }
+//                                }
+//                                Text(gameHistory.opponent?.username ?? "")
+//                                    .font(Font.system(size: 16).bold())
+//                            }
+//                        }
+//                        .padding(10)
+//                        HStack(spacing: 0) {
+//                            Text(gameHistory.userScore)
+//                                .font(Font.system(size: 16).bold())
+//                                .padding(.horizontal)
+//                                .padding(.vertical, 5)
+//                                .layoutPriority(1)
+//                            VStack {
+//                                Divider()
+//                                    .frame(height: 1)
+//                                    .background(.white)
+//                                    .foregroundColor(.white)
+//                            }
+//                            Text("Score")
+//                                .font(Font.system(size: 18).bold())
+//                                .padding(.horizontal, 5)
+//                            
+//                                .layoutPriority(1)
+//                            VStack {
+//                                Divider()
+//                                    .frame(height: 1)
+//                                    .background(.white)
+//                                    .foregroundColor(.white)
+//                            }
+//                            //                            Spacer()
+//                            Text(gameHistory.opponentScore)
+//                                .font(Font.system(size: 16).bold())
+//                                .padding(.horizontal)
+//                                .padding(.vertical, 5)
+//                                .layoutPriority(1)
+//                        }
+//                        .padding(.horizontal)
+//                        .background(.orange.opacity(0.5))
+//                        .clipShape(RoundedRectangle(cornerRadius: 10))
+//                        
+//                        //                        VStack(alignment: .leading) {
+//                        //                            let winnerId = gameHistoryViewModel.getwinnerId(userScore: gameHistory.userScore, opponentScore: gameHistory.opponentScore, userId: gameHistory.userId, opponentId: gameHistory.opponentId)
+//                        //
+//                        //                            if winnerId == userData.id {
+//                        //                                Text("\(gameHistoryViewModel.getPointsToBeDisplay(gameType: gameHistory.gameType)) hoop points earned")
+//                        //                                    .font(Font.system(size: 14).weight(.bold))
+//                        //                                    .foregroundColor(.green)
+//                        //                            }
+//                        //
+//                        //                            Text("Played on \(gameHistoryViewModel.formatGameStartedAtDate(gameHistory.gameStartedAt) ?? "")")
+//                        //                                .font(Font.system(size: 14).weight(.regular))
+//                        //
+//                        //                        }
+//                        //                        .padding(.leading)
+//                        //                        .padding(.top,10)
+//                    }
+//                    .padding()
+//                    .background(.orange.opacity(0.2))
+//                    .clipShape(RoundedRectangle(cornerRadius: 10))
+//                    .padding(.horizontal)
+//                    .padding(.vertical, 5)
+//                }
+//            }
+//        }
+//    }
+//    
 }
 
 #Preview {

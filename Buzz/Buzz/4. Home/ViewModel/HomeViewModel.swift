@@ -20,15 +20,4 @@ class HomeViewModel: ObservableObject {
     
     init(){}
     
-//    func getUserData(){
-//        isLoading = true
-//        guard let userData = UserLoginCache.get() else {return}
-//        username = userData.username ?? ""
-//        firstName = userData.firstName ?? ""
-//        lastName = userData.lastName ?? ""
-//        ranking = userData.ranking ?? 0
-//        gamePoints = userData.gamePoints ?? 0
-//        profilePic = userData.profilePic ?? ""
-//        isLoading = false
-//    }
 }

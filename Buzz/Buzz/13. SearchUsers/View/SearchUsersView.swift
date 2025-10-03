@@ -33,6 +33,14 @@ struct SearchUsersView: View {
                 Spacer()
             }
         }
+        .onAppear {
+            if searchUsersViewModel.arrUsers.isEmpty {
+                if let logindata = UserLoginCache.get() {
+                    guard let loginId = logindata.id else { return }
+                    searchUsersViewModel.currentUserId = loginId
+                }
+            }
+        }
     }
     var headerView: some View {
         HStack {

@@ -11,6 +11,7 @@ struct ProfileView: View {
     @EnvironmentObject var userStateViewModel: UserStateViewModel
     @StateObject private var profileViewModel = ProfileViewModel()
     @EnvironmentObject private var nav: NavigationManager
+    @EnvironmentObject private var firebaseMessagesHelper: FirebaseMessagesHelper
     @State private var showPhotoPicker = false
     @Environment(\.dismiss) private var dismiss
     
@@ -87,6 +88,9 @@ struct ProfileView: View {
         .onChange(of: profileViewModel.fcmTokenRemoved) {
             if profileViewModel.fcmTokenRemoved {
                 Task {
+                    // Clear messaging data before sign out
+                    firebaseMessagesHelper.clearUserData()
+                    
                     let result = await userStateViewModel.signOut()
                     switch result {
                     case .success(_):
@@ -100,6 +104,9 @@ struct ProfileView: View {
         .onChange(of: profileViewModel.accountDeleted) {
             if profileViewModel.accountDeleted {
                 Task {
+                    // Clear messaging data before account deletion
+                    firebaseMessagesHelper.clearUserData()
+                    
                     let result = await userStateViewModel.signOut()
                     switch result {
                     case .success(_):
@@ -116,7 +123,7 @@ struct ProfileView: View {
             profileViewModel.getAgeFromBirthdate()
         }
         .fullScreenCover(isPresented: $showPhotoPicker) {
-            PhotoPicker(selectedImage: $profileViewModel.image)
+            ImagePicker(selectedImage: $profileViewModel.image)
         }
         .onChange(of: profileViewModel.image) {
             if let image = profileViewModel.compressImage(profileViewModel.image) {
@@ -148,6 +155,25 @@ struct ProfileView: View {
             ZStack(alignment: .bottom) {
                 // display uploaded profile image
                 if let userData = UserLoginCache.get() {
+//                    HStack {
+//                        if let imgURL = URL(string: userData.profilePic ?? "") {
+//                            JBAsyncImage(url: imgURL, placeholder: {
+//                                ProgressView()
+//                                    .tint(.orange)
+//                            }, image: {
+//                                Image(uiImage: $0).resizable()
+//                            })
+//                            .scaledToFill()
+//                        } else {
+//                            Image(systemName: "person.circle.fill")
+//                                .resizable()
+//                                .foregroundColor(.orange)
+//                                .tint(.orange)
+//                                .scaledToFill()
+//                        }
+//                    }.scaledToFill()
+//                        .padding(.bottom, 80)
+                    
                     if let imageURL = userData.profilePic, imageURL.count > 0 {
                         AsyncImage(url: URL(string: imageURL),
                                    scale: 1.0,
@@ -297,7 +323,7 @@ struct ProfileView: View {
     var extraOptionsView: some View {
         VStack {
             Button {
-                
+                nav.path.append(Route.gameHistoryView)
             } label: {
                 HStack(spacing: 16) {
                     Image(systemName: "clock")

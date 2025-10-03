@@ -22,6 +22,9 @@ enum Route: Hashable {
     case editProfileView
     case searchUsersView
     case searchUserProfileView(searchedUser: User)
+    case messageChatRoomView
+    case messageConversationView(chatRoom: ChatRoomModel)
+    case gameHistoryView
 }
 
 class NavigationManager: ObservableObject {

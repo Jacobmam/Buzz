@@ -27,7 +27,7 @@ class ProfileViewModel: ObservableObject {
     @Published var errorMessage: String = ""
     @Published var showError: Bool = false
     init() {}
-
+    
     func removeUserToken() {
         guard let userId = userData?.id else { return }
         isLoading = true
@@ -38,14 +38,14 @@ class ProfileViewModel: ObservableObject {
         ]
         
         db.collection("users").document(userId).updateData(data) { error in
-                self.isLoading = false
-                if let error = error {
-                    print("Error updating document: \(error)")
-                } else {
-                    print("Success - Updated fcmToken in users")
-                    self.fcmTokenRemoved = true
-                }
+            self.isLoading = false
+            if let error = error {
+                print("Error updating document: \(error)")
+            } else {
+                print("Success - Updated fcmToken in users")
+                self.fcmTokenRemoved = true
             }
+        }
         
     }
     func checkPassword() {
@@ -111,7 +111,7 @@ class ProfileViewModel: ObservableObject {
                 guard let asUserPlayed = snapshot1?.documents else { return }
                 allPlayedGames.append(contentsOf: asUserPlayed)
             }
-                
+            
         }
         opponentIdQuery.getDocuments() { snapshot2 ,error in
             self.isLoading = false
@@ -126,35 +126,24 @@ class ProfileViewModel: ObservableObject {
             self.gamePlayed = count
             print("Completed games count: \(count)")
         }
-//            .getDocuments() { snapshot,error in
-//                self.isLoading = false
-//                if let error = error {
-//                       print("Error getting documents: \(error)")
-//                    return
-//                   } else {
-//                       let count = snapshot?.documents.count ?? 0
-//                       self.gamePlayed = count
-//                       print("Completed games count: \(count)")
-//                   }
-//            }
-        }
+    }
     func getAgeFromBirthdate() {
         guard let dateString = UserLoginCache.get()?.birthDate else {return}
-           let dateFormatter = DateFormatter()
-           dateFormatter.dateFormat = "dd/MM/yyyy"
-           dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd/MM/yyyy"
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
         
-           guard let birthDate = dateFormatter.date(from: dateString) else {
-               age = 0
-               return
-           }
-           
-           let calendar = Calendar.current
-           let now = Date()
-           
-           let ageComponents = calendar.dateComponents([.year], from: birthDate, to: now)
-           age = max(ageComponents.year ?? 0, 0)  // ensures no negative values
-       }
+        guard let birthDate = dateFormatter.date(from: dateString) else {
+            age = 0
+            return
+        }
+        
+        let calendar = Calendar.current
+        let now = Date()
+        
+        let ageComponents = calendar.dateComponents([.year], from: birthDate, to: now)
+        age = max(ageComponents.year ?? 0, 0)  // ensures no negative values
+    }
     
     func editProfileData() {
         guard let userId = userData?.id else { return }
@@ -168,7 +157,7 @@ class ProfileViewModel: ObservableObject {
                 print("Error updating document: \(error)")
             } else {
                 print("Success - Updated profile pic in users")
-//
+                //
                 if var userData = UserLoginCache.get() {
                     userData.profilePic = self.profilePic
                     UserLoginCache.save(userData)
@@ -214,5 +203,5 @@ class ProfileViewModel: ObservableObject {
         return image
     }
     
-    
-    }
+   
+}

@@ -10,7 +10,6 @@
 		4B27C7932E57543B00381051 /* PhoneNumberKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4B27C7922E57543B00381051 /* PhoneNumberKit */; };
 		4B27C7972E57543B00381051 /* PhoneNumberKit-Static in Frameworks */ = {isa = PBXBuildFile; productRef = 4B27C7962E57543B00381051 /* PhoneNumberKit-Static */; };
 		4B7F516E2E6EC03B009BADE5 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 4B7F516D2E6EC03B009BADE5 /* Alamofire */; };
-		4BB20DE62E6ED0F800BE8778 /* YPImagePicker in Frameworks */ = {isa = PBXBuildFile; productRef = 4BB20DE52E6ED0F800BE8778 /* YPImagePicker */; };
 		835DA9812D687C8300E4026B /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 835DA9802D687C8300E4026B /* FirebaseAnalytics */; };
 		835DA9832D687C8300E4026B /* FirebaseAnalyticsOnDeviceConversion in Frameworks */ = {isa = PBXBuildFile; productRef = 835DA9822D687C8300E4026B /* FirebaseAnalyticsOnDeviceConversion */; };
 		835DA9852D687C8300E4026B /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */ = {isa = PBXBuildFile; productRef = 835DA9842D687C8300E4026B /* FirebaseAnalyticsWithoutAdIdSupport */; };
@@ -88,7 +87,6 @@
 				835DA9992D687C8300E4026B /* FirebaseFirestoreCombine-Community in Frameworks */,
 				835DA9A72D687C8300E4026B /* FirebasePerformance in Frameworks */,
 				835DA9AD2D687C8300E4026B /* FirebaseStorageCombine-Community in Frameworks */,
-				4BB20DE62E6ED0F800BE8778 /* YPImagePicker in Frameworks */,
 				835DA9A92D687C8300E4026B /* FirebaseRemoteConfig in Frameworks */,
 				835DA99B2D687C8300E4026B /* FirebaseFunctions in Frameworks */,
 				835DA9932D687C8300E4026B /* FirebaseDatabase in Frameworks */,
@@ -189,7 +187,6 @@
 				4B27C7922E57543B00381051 /* PhoneNumberKit */,
 				4B27C7962E57543B00381051 /* PhoneNumberKit-Static */,
 				4B7F516D2E6EC03B009BADE5 /* Alamofire */,
-				4BB20DE52E6ED0F800BE8778 /* YPImagePicker */,
 			);
 			productName = Buzz;
 			productReference = 835DA91E2D5A59E500E4026B /* Buzz.app */;
@@ -224,7 +221,6 @@
 				CC80EB2A2E40C87700E2A027 /* XCRemoteSwiftPackageReference "JWTDecode" */,
 				4B27C7912E57543B00381051 /* XCRemoteSwiftPackageReference "PhoneNumberKit" */,
 				4B7F516C2E6EC03B009BADE5 /* XCRemoteSwiftPackageReference "Alamofire" */,
-				4BB20DE42E6ED0F800BE8778 /* XCRemoteSwiftPackageReference "YPImagePicker" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 835DA91F2D5A59E500E4026B /* Products */;
@@ -385,7 +381,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1.0.9;
 				DEVELOPMENT_ASSET_PATHS = "\"Buzz/Preview Content\"";
-				DEVELOPMENT_TEAM = 35NGB4BCWY;
+				DEVELOPMENT_TEAM = 74GX6UBNQK;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Buzz/Info.plist;
@@ -419,7 +415,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1.0.9;
 				DEVELOPMENT_ASSET_PATHS = "\"Buzz/Preview Content\"";
-				DEVELOPMENT_TEAM = 35NGB4BCWY;
+				DEVELOPMENT_TEAM = 74GX6UBNQK;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Buzz/Info.plist;
@@ -484,14 +480,6 @@
 				minimumVersion = 5.10.2;
 			};
 		};
-		4BB20DE42E6ED0F800BE8778 /* XCRemoteSwiftPackageReference "YPImagePicker" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Yummypets/YPImagePicker.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 5.3.0;
-			};
-		};
 		835DA97E2D687B8800E4026B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
@@ -525,11 +513,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4B7F516C2E6EC03B009BADE5 /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
-		};
-		4BB20DE52E6ED0F800BE8778 /* YPImagePicker */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 4BB20DE42E6ED0F800BE8778 /* XCRemoteSwiftPackageReference "YPImagePicker" */;
-			productName = YPImagePicker;
 		};
 		835DA9802D687C8300E4026B /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
