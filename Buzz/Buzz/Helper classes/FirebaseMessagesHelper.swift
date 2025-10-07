@@ -27,7 +27,7 @@ class FirebaseMessagesHelper: ObservableObject {
     private var chatRoomPagination: [String: QueryDocumentSnapshot] = [:]
     
     // Track which chat rooms are currently marked as read by the user
-    private var readChatRooms: Set<String> = []
+//    private var readChatRooms: Set<String> = []
     
     // Track message counts to detect new messages
     private var chatRoomMessageCounts: [String: Int] = [:]
@@ -62,7 +62,7 @@ class FirebaseMessagesHelper: ObservableObject {
         currentUserId = nil
         lastChatRoomDocument = nil
         chatRoomPagination.removeAll()
-        readChatRooms.removeAll()
+//        readChatRooms.removeAll()
         chatRoomMessageCounts.removeAll()
         activeConversationId = nil
     }
@@ -90,7 +90,7 @@ class FirebaseMessagesHelper: ObservableObject {
                 let payload: [String: Any] = [
                     "participants": participants1,
                     "type": "direct",
-                    "lastUpdatedAt": ISO8601DateFormatter().string(from: Date())
+                    "lastUpdatedAt": HelperClass.shared.currentUTCDateString()
                 ]
                 self.db.collection("chats").addDocument(data: payload) { err in
                     if let err = err { print("create chat error: \(err)"); completion(nil); return }
@@ -118,20 +118,20 @@ class FirebaseMessagesHelper: ObservableObject {
             totalUnreadCount = 0
             hasMoreChatRooms = true
             lastChatRoomDocument = nil
-            readChatRooms.removeAll()
+//            readChatRooms.removeAll()
             chatRoomMessageCounts.removeAll()
             activeConversationId = nil
         }
         
-        isLoading = true
+//        isLoading = true
         currentUserId = userId
 
         chatRoomsListener = db.collection("chats")
             .whereField("participants", arrayContains: userId)
             .addSnapshotListener { [weak self] snapshot, error in
                 guard let self = self else { return }
-                if let error = error { print("observeChatRooms error: \(error)"); self.isLoading = false; return }
-                guard let docs = snapshot?.documents else { self.isLoading = false; return }
+                if let error = error { print("observeChatRooms error: \(error)"); /*self.isLoading = false;*/ return }
+                guard let docs = snapshot?.documents else { /*self.isLoading = false;*/ return }
 
                 var rooms: [ChatRoomModel] = []
                 for doc in docs {
@@ -162,7 +162,13 @@ class FirebaseMessagesHelper: ObservableObject {
 
                 // Sort by lastUpdatedAt desc
                 rooms.sort { ($0.lastUpdatedAt ?? "") > ($1.lastUpdatedAt ?? "") }
-                DispatchQueue.main.async { self.chatRooms = rooms; self.isLoading = false }
+                DispatchQueue.main.async {
+                    for room in rooms {
+                        if !self.chatRooms.contains(room) {
+                            self.chatRooms.append(room)
+                        }
+                    }
+                }
             }
     }
     
@@ -237,6 +243,7 @@ class FirebaseMessagesHelper: ObservableObject {
 
     // MARK: - Observe messages in a room and compute unread
     func observeMessages(for chatRoomId: String) {
+//        isLoading = true
         if let existing = messageListeners[chatRoomId] { existing.remove() }
 
         let listener = db.collection("chats").document(chatRoomId).collection("messages")
@@ -257,6 +264,7 @@ class FirebaseMessagesHelper: ObservableObject {
                         createdAt: data["createdAt"] as? String ?? "",
                         status: MessageStatus(rawValue: data["status"] as? String ?? MessageStatus.sent.rawValue) ?? .sent
                     )
+                    
                 }
 
                 DispatchQueue.main.async {
@@ -270,17 +278,19 @@ class FirebaseMessagesHelper: ObservableObject {
                         
                         // If new messages arrived and this chat was marked as read, unmark it
                         // but only if the new message is not from the current user AND this is not the active conversation
-                        if hasNewMessages && self.readChatRooms.contains(chatRoomId) {
-                            let latestMessage = messages.first
-                            let isFromCurrentUser = latestMessage?.senderId == self.currentUserId
-                            let isActiveConversation = self.activeConversationId == chatRoomId
-
-                            if !isFromCurrentUser && !isActiveConversation {
-                                print("🔄 New message from another user detected (not in active conversation), unmarking chat as read")
-                                self.readChatRooms.remove(chatRoomId)
-                            }
-                            // Do not auto-mark as read for active conversation here; the view will decide
-                        }
+//                        if hasNewMessages && self.readChatRooms.contains(chatRoomId) {
+//                            let latestMessage = messages.first
+//                            let isFromCurrentUser = latestMessage?.senderId == self.currentUserId
+//                            let isActiveConversation = self.activeConversationId == chatRoomId
+//
+//                            if !isFromCurrentUser && !isActiveConversation {
+//                                print("isActiveConversation: New message from another user detected (not in active conversation), unmarking chat as read")
+//                                self.readChatRooms.remove(chatRoomId)
+//                            } else {
+//                                print("isActiveConversation: user is in active conversation")
+//                            }
+//                            // Do not auto-mark as read for active conversation here; the view will decide
+//                        }
                         
                         self.chatRooms[idx].messages = messages
                         self.chatRooms[idx].lastUpdatedAt = messages.first?.createdAt
@@ -290,23 +300,25 @@ class FirebaseMessagesHelper: ObservableObject {
                         if let me = self.currentUserId {
                             let unread = messages.filter { $0.receiverId == me && $0.status != .read }.count
                             let currentUnread = self.chatRooms[idx].unreadCount ?? 0
-                            let isMarkedAsRead = self.readChatRooms.contains(chatRoomId)
+//                            let isMarkedAsRead = self.readChatRooms.contains(chatRoomId)
                             
                             print("📊 observeMessages - chatRoom: \(chatRoomId)")
                             print("📊 Calculated unread from Firebase: \(unread)")
                             print("📊 Current local unread count: \(currentUnread)")
-                            print("📊 Is marked as read locally: \(isMarkedAsRead)")
+//                            print("📊 Is marked as read locally: \(isMarkedAsRead)")
                             print("📊 Has new messages: \(hasNewMessages)")
                             
                             // If the chat room is marked as read locally, keep unread count at 0
                             // Otherwise, update with the calculated unread count
-                            if isMarkedAsRead {
-                                self.chatRooms[idx].unreadCount = 0
-                                print("📊 Keeping unread count at 0 (chat marked as read)")
-                            } else {
+//                            if isMarkedAsRead {
+//                                self.chatRooms[idx].unreadCount = 0
+//                                print("📊 Keeping unread count at 0 (chat marked as read)")
+//                            } else {
+                            if self.activeConversationId != self.chatRooms[idx].chatRoomId {
                                 self.chatRooms[idx].unreadCount = unread
                                 print("📊 Updated unread count to: \(unread)")
                             }
+//                            }
                         }
                         // Resort rooms by latest message
                         self.chatRooms.sort { ($0.lastUpdatedAt ?? "") > ($1.lastUpdatedAt ?? "") }
@@ -317,6 +329,7 @@ class FirebaseMessagesHelper: ObservableObject {
             }
 
         messageListeners[chatRoomId] = listener
+//        isLoading = false
     }
     
     // MARK: - Load more messages for pagination
@@ -381,12 +394,12 @@ class FirebaseMessagesHelper: ObservableObject {
     // MARK: - Send message
     func sendMessage(_ text: String, in chatRoomId: String, senderId: String, receiverId: String?) {
         let messageId = UUID().uuidString
-        let createdAt = ISO8601DateFormatter().string(from: Date())
+        let createdAt = HelperClass.shared.currentUTCDateString()
         let payload: [String: Any] = [
             "messageId": messageId,
             "message": text,
             "senderId": senderId,
-            "receiverId": receiverId as Any,
+            "receiverId": receiverId ?? "",
             "createdAt": createdAt,
             "status": MessageStatus.sent.rawValue
         ]
@@ -405,7 +418,7 @@ class FirebaseMessagesHelper: ObservableObject {
     
     // MARK: - Unmark chat room as read (when new messages arrive)
     func unmarkChatRoomAsRead(chatRoomId: String) {
-        readChatRooms.remove(chatRoomId)
+//        readChatRooms.remove(chatRoomId)
         print("🔄 Removed chatRoom from read set: \(chatRoomId)")
     }
     
@@ -441,7 +454,7 @@ class FirebaseMessagesHelper: ObservableObject {
                     self.chatRooms[idx].unreadCount = 0
                     
                     // Mark this chat room as read locally
-                    self.readChatRooms.insert(chatRoomId)
+//                    self.readChatRooms.insert(chatRoomId)
                     
                     // Recalculate total unread count
                     self.totalUnreadCount = self.chatRooms.reduce(0) { $0 + ($1.unreadCount ?? 0) }
@@ -461,9 +474,8 @@ class FirebaseMessagesHelper: ObservableObject {
         let messagesRef = db.collection("chats").document(chatRoomId).collection("messages")
         messagesRef
             .whereField("receiverId", isEqualTo: userId)
-            .whereField("status", isNotEqualTo: MessageStatus.read.rawValue)
-            .getDocuments { [weak self] snap, _ in
-                guard let self = self else { return }
+            .whereField("status", isEqualTo: MessageStatus.sent.rawValue)
+            .getDocuments { snap, _ in
                 guard let docs = snap?.documents else { return }
                 
                 // Mark messages as read in Firebase

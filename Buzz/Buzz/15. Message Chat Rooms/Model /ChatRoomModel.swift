@@ -18,7 +18,6 @@ struct ChatRoomModel: Identifiable, Hashable {
     var unreadCount: Int?
     var user: User?
     var hasMoreMessages: Bool = true
-    var unreadMessagesCount: Int = 0
     
     static func == (lhs: ChatRoomModel, rhs: ChatRoomModel) -> Bool {
         return lhs.chatRoomId == rhs.chatRoomId

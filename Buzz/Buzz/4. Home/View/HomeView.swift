@@ -184,15 +184,27 @@ struct HomeView: View {
                         .foregroundColor(.orange)
                 }
             }
+            
             Button {
                 nav.path.append(Route.messageChatRoomView)
             } label: {
-                VStack(spacing: 4) {
+                ZStack(alignment: .topTrailing) {
                     Image(systemName: "message.fill")
                         .resizable()
                         .scaledToFit()
                         .frame(height: 26)
                         .foregroundColor(.orange)
+                    
+                    let chatRooms = firebaseMessagesHelper.chatRooms.filter({ ($0.unreadCount ?? 0) > 0 })
+                    if chatRooms.count > 0 {
+                        Text("\(chatRooms.count)")
+                            .font(.system(size: 14))
+                            .foregroundStyle(.orange)
+                            .padding(6)
+                            .background(.white)
+                            .clipShape(Circle())
+                            .offset(y: -10)
+                    }
                 }
             }
         }

@@ -8,9 +8,9 @@
 import Foundation
 
 enum MessageStatus: String, Codable, Hashable {
-    case sent
-    case delivered
-    case read
+    case sent = "sent"
+    case delivered = "delivered"
+    case read = "read"
 }
 
 struct MessageModel: Identifiable, Codable, Hashable {

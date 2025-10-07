@@ -23,6 +23,47 @@ extension Notification.Name {
 class HelperClass {
     static let shared = HelperClass()
     
+    func formatDateForMessageConversation(_ dateString: String) -> String {
+        guard let date = convertUTCStringToDate(dateString) else { return "-" }
+        
+        let displayFormatter = DateFormatter()
+        displayFormatter.dateFormat = "hh:mm a"
+        return displayFormatter.string(from: date)
+    }
+    
+    func formattedDateForChatRoom(_ dateString: String) -> String {
+
+        // 1️⃣ Convert incoming string to Date
+        guard let date = convertUTCStringToDate(dateString),
+              let now = convertUTCStringToDate(currentUTCDateString()) else { return "-" }
+        
+        let calendar = Calendar.current
+
+        // 2️⃣ Check if it's today
+        if calendar.isDateInToday(date) {
+            let timeFormatter = DateFormatter()
+            timeFormatter.dateFormat = "hh:mm a"
+            timeFormatter.timeZone = TimeZone.current
+            return timeFormatter.string(from: date)
+        }
+
+        // 3️⃣ Check if it's in the same week as current date
+        if calendar.isDate(date, equalTo: now, toGranularity: .weekOfYear) &&
+           calendar.isDate(date, equalTo: now, toGranularity: .year) {
+            let weekdayFormatter = DateFormatter()
+            weekdayFormatter.dateFormat = "EEEE" // full weekday name
+            weekdayFormatter.timeZone = TimeZone.current
+            return weekdayFormatter.string(from: date)
+        }
+
+        // 4️⃣ Past weeks - return full date
+        let pastFormatter = DateFormatter()
+        pastFormatter.dateFormat = "dd/MM/yyyy"
+        pastFormatter.timeZone = TimeZone.current
+        return pastFormatter.string(from: date)
+    }
+
+    
     func timeAgoString(from date: String) -> String {
         guard let fromDate = convertUTCStringToDate(date),
               let nowDate = convertUTCStringToDate(currentUTCDateString()) else { return "-" }

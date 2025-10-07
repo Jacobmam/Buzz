@@ -17,7 +17,7 @@ struct MessageConversationView: View {
     }
 
     private var otherUserName: String {
-        liveRoom?.user?.username ?? chatRoom.user?.username ?? "Chat"
+        liveRoom?.user?.username ?? chatRoom.user?.username ?? ""
     }
 
     var body: some View {
@@ -29,25 +29,33 @@ struct MessageConversationView: View {
                             HStack {
                                 if msg.senderId == myUserId {
                                     Spacer()
+                                    
                                     VStack(alignment: .trailing) {
                                         Text(msg.message)
-                                            .padding(8)
-                                            .background(Color.orange.opacity(0.3))
-                                            .clipShape(RoundedRectangle(cornerRadius: 8))
-                                        Text(formatDate(msg.createdAt))
-                                            .font(.caption2)
+                                        
+                                        Text(HelperClass.shared.formatDateForMessageConversation(msg.createdAt))
+                                            .font(.system(size: 10, weight: .regular))
                                             .foregroundColor(.gray)
                                     }
+                                    .padding(.vertical, 4)
+                                    .padding(.horizontal, 10)
+                                    .foregroundColor(.white)
+                                    .background(.orange.opacity(0.3))
+                                    .clipShape(RoundedRectangle(cornerRadius: 8))
                                 } else {
                                     VStack(alignment: .leading) {
                                         Text(msg.message)
-                                            .padding(8)
-                                            .background(Color.gray.opacity(0.3))
-                                            .clipShape(RoundedRectangle(cornerRadius: 8))
-                                        Text(formatDate(msg.createdAt))
-                                            .font(.caption2)
+                                        
+                                        Text(HelperClass.shared.formatDateForMessageConversation(msg.createdAt))
+                                            .font(.system(size: 10, weight: .regular))
                                             .foregroundColor(.gray)
                                     }
+                                    .padding(.vertical, 4)
+                                    .padding(.horizontal, 10)
+                                    .foregroundColor(.white)
+                                    .background(.gray.opacity(0.3))
+                                    .clipShape(RoundedRectangle(cornerRadius: 8))
+                                    
                                     Spacer()
                                 }
                             }
@@ -55,6 +63,7 @@ struct MessageConversationView: View {
                             .listRowSeparator(.hidden)
                             .listRowInsets(EdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5))
                             .rotationEffect(.degrees(180))
+                            .padding(.horizontal, 10)
                             .onAppear {
                                 // Update date badge based on visible message
                                 updateDateBadge(for: msg.createdAt)
@@ -75,18 +84,52 @@ struct MessageConversationView: View {
                     .scrollDismissesKeyboard(.interactively)
                     .rotationEffect(.degrees(180))
                 }
-                HStack {
-                    TextField("Message", text: $text)
-                        .textFieldStyle(.roundedBorder)
-                    Button("Send") {
-                        guard let senderId = UserLoginCache.get()?.id else { return }
-                        let receiverId = liveRoom?.participant.first(where: { $0 != senderId })
-                        firebaseMessagesHelper.sendMessage(text.trimmingCharacters(in: .whitespacesAndNewlines), in: chatRoom.chatRoomId, senderId: senderId, receiverId: receiverId)
-                        text = ""
+                
+                ZStack {
+                    HStack {
+                        TextField("Type message...", text: $text)
+                            .font(.system(size: 16, weight: .regular))
+                            .textFieldStyle(.plain)
+                        
+                        Button {
+                            guard let senderId = UserLoginCache.get()?.id else { return }
+                            let receiverId = liveRoom?.participant.first(where: { $0 != senderId })
+                            firebaseMessagesHelper.sendMessage(text.trimmingCharacters(in: .whitespacesAndNewlines), in: chatRoom.chatRoomId, senderId: senderId, receiverId: receiverId)
+                            text = ""
+                        } label: {
+                            Image(systemName: "arrow.up.circle")
+                                .resizable()
+                                .scaledToFit()
+                                .tint(.white)
+                                .frame(width: 22, height: 22)
+                        }
+//                        .padding()
+                        .frame(width: 40, height: 40)
+                        .background(.orange)
+                        .clipShape(Circle())
+                        
                     }
-                    .disabled(text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                    .padding(.leading, 10)
+                    .padding(.trailing, 5)
+                    .frame(height: 50)
                 }
-                .padding()
+                .background(.white.opacity(0.1))
+                .clipShape(RoundedRectangle(cornerRadius: 25))
+                .padding(.horizontal, 10)
+                .padding(.bottom)
+                
+//                HStack {
+//                    TextField("Message", text: $text)
+//                        .textFieldStyle(.roundedBorder)
+//                    Button("Send") {
+//                        guard let senderId = UserLoginCache.get()?.id else { return }
+//                        let receiverId = liveRoom?.participant.first(where: { $0 != senderId })
+//                        firebaseMessagesHelper.sendMessage(text.trimmingCharacters(in: .whitespacesAndNewlines), in: chatRoom.chatRoomId, senderId: senderId, receiverId: receiverId)
+//                        text = ""
+//                    }
+//                    .disabled(text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+//                }
+//                .padding()
             }
 
          
@@ -106,6 +149,10 @@ struct MessageConversationView: View {
                 }
                 .padding(.top, 10)
             }
+            
+            if firebaseMessagesHelper.isLoading == true {
+                JBLoadingView()
+            }
         }
         .navigationTitle(otherUserName)
         .toolbar { ToolbarItem(placement: .topBarLeading) { Button(action: { dismiss() }) { Image(systemName: "chevron.left") } } }
@@ -123,16 +170,6 @@ struct MessageConversationView: View {
             // Clear active conversation when leaving
             firebaseMessagesHelper.setActiveConversation(nil)
         }
-    }
-
-    
-    private func formatDate(_ dateString: String) -> String {
-        let formatter = ISO8601DateFormatter()
-        guard let date = formatter.date(from: dateString) else { return "" }
-        
-        let displayFormatter = DateFormatter()
-        displayFormatter.dateFormat = "HH:mm"
-        return displayFormatter.string(from: date)
     }
     
     private func updateDateBadge(for dateString: String) {
