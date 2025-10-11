@@ -19,13 +19,9 @@ class SearchUserProfileViewModel: ObservableObject {
     private var isFetching = false
     var canLoadMore = true
     init() {}
-    
-    
+
     private var db = Firestore.firestore()
     private var listener: ListenerRegistration?
-    
-    
-    
     
     func getGamePlayedCount(searchedUserId: String) {
         guard UserLoginCache.get() != nil else { return}
@@ -134,9 +130,6 @@ class SearchUserProfileViewModel: ObservableObject {
             }
     }
     
-//    
-//    class GameHistoryViewModel: ObservableObject {
-//        @Published var allGameHistory: [GameHistoryModel] = []
         
         func fetchGameHistoryWithSearchedUser(userID: String, searchedUserId: String) {
             let db = Firestore.firestore()
@@ -226,7 +219,9 @@ class SearchUserProfileViewModel: ObservableObject {
                 completion(games)
             }
         }
-//    }
+    
+    
+    
     func formatGameStartedAtDate(_ input: String) -> String? {
         // Input formatter
         let inputFormatter = DateFormatter()

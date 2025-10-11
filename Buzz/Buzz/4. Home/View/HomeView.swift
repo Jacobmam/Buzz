@@ -153,6 +153,15 @@ struct HomeView: View {
         .onReceive(NotificationCenter.default.publisher(for: .navigateToNotificationsView)) { _ in
             nav.path.append(Route.notificationsView)
         }
+        .onReceive(NotificationCenter.default.publisher(for: .navigateToMessageView)) { notification in
+            if let chatId = notification.userInfo?["chatRoomId"] as? String {
+                print("chatRoomId is \(chatId)")
+                if let chatroom = firebaseMessagesHelper.chatRooms.first(where: { $0.id == chatId }) {
+                    nav.path.append(Route.messageConversationView(chatRoom: chatroom))
+                }
+            }
+//            nav.path.append(Route.messageChatRoomView)
+        }
     }
     
     var headerView: some View {

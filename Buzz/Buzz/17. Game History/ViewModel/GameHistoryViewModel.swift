@@ -10,6 +10,10 @@ import Foundation
 class GameHistoryViewModel: ObservableObject {
     @Published var allGameHistory: [GameHistoryModel] = []
     @Published var isLoading: Bool = false
+    private let pageSize = 2
+    private var lastDocument: QueryDocumentSnapshot?
+
+    
     
     func fetchGameHistoryWithAllUsers() {
         self.isLoading = true
@@ -17,19 +21,21 @@ class GameHistoryViewModel: ObservableObject {
         guard let userDataId = UserLoginCache.get()?.id else { return }
         let db = Firestore.firestore()
         
-        db.collection("gameHistory")
+        let query: Query = db.collection("gameHistory")
             .whereField("gameCompleted", isEqualTo: true)
             .whereFilter(Filter.orFilter([
                 Filter.whereField("userId", isEqualTo: userDataId),
                 Filter.whereField("opponentId", isEqualTo: userDataId)
             ]))
-            .getDocuments { snapshot, error in
+//            .order(by: "timestamp", descending: true) // Make sure you have a field to order by
+            .limit(to: pageSize)
+        query.getDocuments {snapshot, error in
                 
                 guard let docs = snapshot?.documents else { return }
                 
                 var enrichedGames: [GameHistoryModel] = []
                 let outerGroup = DispatchGroup()
-                
+                self.lastDocument = docs.last
                 for doc in docs {
                     if var game = try? doc.data(as: GameHistoryModel.self) {
                         outerGroup.enter()
@@ -68,7 +74,68 @@ class GameHistoryViewModel: ObservableObject {
                 }
             }
     }
+    func loadMoreGameHistoryWithAllUsers() {
+        self.isLoading = true
     
+        guard let userDataId = UserLoginCache.get()?.id, let lastDoc = lastDocument else {
+            self.isLoading = false; return }
+        let db = Firestore.firestore()
+        
+        let query: Query = db.collection("gameHistory")
+            .whereField("gameCompleted", isEqualTo: true)
+            .whereFilter(Filter.orFilter([
+                Filter.whereField("userId", isEqualTo: userDataId),
+                Filter.whereField("opponentId", isEqualTo: userDataId)
+            ]))
+//            .order(by: "timestamp", descending: true) // Make sure you have a field to order by
+            .limit(to: pageSize)
+            .start(afterDocument: lastDoc)
+        query.getDocuments {snapshot, error in
+                
+                guard let docs = snapshot?.documents else { return }
+                
+                var enrichedGames: [GameHistoryModel] = []
+                let outerGroup = DispatchGroup()
+                self.lastDocument = docs.last
+                for doc in docs {
+                    if var game = try? doc.data(as: GameHistoryModel.self) {
+                        outerGroup.enter()
+                        
+                        let innerGroup = DispatchGroup()
+                        
+                        // fetch user
+                        innerGroup.enter()
+                        db.collection("users").document(game.userId).getDocument { snap, _ in
+                            if let snap, snap.exists {
+                                game.user = try? snap.data(as: User.self)
+                            }
+                            innerGroup.leave()
+                        }
+                        
+                        // fetch opponent
+                        innerGroup.enter()
+                        db.collection("users").document(game.opponentId).getDocument { snap, _ in
+                            if let snap, snap.exists {
+                                game.opponent = try? snap.data(as: User.self)
+                            }
+                            innerGroup.leave()
+                        }
+                        
+                        // after both user & opponent are fetched
+                        innerGroup.notify(queue: .main) {
+                            enrichedGames.append(game)
+                            outerGroup.leave()
+                        }
+                    }
+                }
+                
+                outerGroup.notify(queue: .main) {
+                    self.isLoading = false
+                    self.allGameHistory.append(contentsOf: enrichedGames)                 
+                }
+            }
+    }
+
     
     func formatGameStartedAtDate(_ input: String) -> String? {
         // Input formatter

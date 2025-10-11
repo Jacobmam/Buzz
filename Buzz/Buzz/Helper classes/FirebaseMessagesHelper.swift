@@ -10,15 +10,16 @@ import FirebaseFirestore
 
 class FirebaseMessagesHelper: ObservableObject {
     private let db = Firestore.firestore()
-    private let messagePageSize = 10
+    private let messagePageSize = 15
     private let chatRoomPageSize = 10
     private let messageThreshold = 3 // Load more when 3rd message from top appears
-
+    
     @Published var isLoading: Bool = false
     @Published var isLoadingMoreMessages: Bool = false
     @Published var chatRooms: [ChatRoomModel] = []
     @Published var totalUnreadCount: Int = 0
     @Published var hasMoreChatRooms: Bool = true
+    @Published var isStartANewChatSheetShowing: Bool = false
     private var currentUserId: String?
     private var lastChatRoomDocument: QueryDocumentSnapshot?
 
@@ -69,6 +70,7 @@ class FirebaseMessagesHelper: ObservableObject {
 
     // MARK: - Chat room discovery (or creation)
     func fetchOrCreateDirectChat(with otherUserId: String, currentUserId: String, completion: @escaping (ChatRoomModel?) -> Void) {
+        isLoading = true
         let participants1 = [currentUserId, otherUserId]
         let participants2 = [otherUserId, currentUserId]
 
@@ -76,9 +78,13 @@ class FirebaseMessagesHelper: ObservableObject {
             .whereField("participants", in: [participants1, participants2])
             .limit(to: 1)
             .getDocuments { [weak self] snapshot, error in
-                guard let self = self else { return }
+                
+                guard let self = self else {
+                    return
+                }
                 if let error = error { print("fetchOrCreateDirectChat error: \(error)"); completion(nil); return }
                 if let doc = snapshot?.documents.first {
+                    self.isLoading = false
                     let chatRoomId = doc.documentID
                     let participants = doc.get("participants") as? [String] ?? []
                     let room = ChatRoomModel(chatRoomId: chatRoomId, participant: participants, messages: [], lastDocument: nil, lastUpdatedAt: doc.get("lastUpdatedAt") as? String, unreadCount: 0, user: nil)
@@ -100,6 +106,7 @@ class FirebaseMessagesHelper: ObservableObject {
                         .limit(to: 1)
                         .getDocuments { snap, _ in
                             if let created = snap?.documents.first {
+                                self.isLoading = false
                                 let room = ChatRoomModel(chatRoomId: created.documentID, participant: participants1, messages: [], lastDocument: nil, lastUpdatedAt: created.get("lastUpdatedAt") as? String, unreadCount: 0, user: nil)
                                 completion(room)
                             } else { completion(nil) }
@@ -329,7 +336,10 @@ class FirebaseMessagesHelper: ObservableObject {
             }
 
         messageListeners[chatRoomId] = listener
-//        isLoading = false
+        
+        let unreadChatRooms = chatRooms.filter({ ($0.unreadCount ?? 0) > 0 })
+        UNUserNotificationCenter.current().setBadgeCount(unreadChatRooms.count)
+        //        isLoading = false
     }
     
     // MARK: - Load more messages for pagination

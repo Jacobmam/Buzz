@@ -66,10 +66,13 @@ extension AppDelegate: UNUserNotificationCenterDelegate, MessagingDelegate {
         UNUserNotificationCenter.current().delegate = self
         
         let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
-        UNUserNotificationCenter.current().requestAuthorization(
-            options: authOptions,
-            completionHandler: { _, _ in }
-        )
+        UNUserNotificationCenter.current().requestAuthorization(options: authOptions) { success, error in
+            if let error {
+                print("error registering push notifications: \(error.localizedDescription)")
+                return
+            }
+            print("registering push notifications status: \(success)")
+        }
         
         UIApplication.shared.registerForRemoteNotifications()
     }
@@ -94,6 +97,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate, MessagingDelegate {
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 willPresent notification: UNNotification,
                                 withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        print("willPresent notification")
         let userInfo = notification.request.content.userInfo
         // Print full message.
         print(userInfo)
@@ -104,7 +108,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate, MessagingDelegate {
         }
         
         // Change this to your preferred presentation option
-        completionHandler([[.badge, .banner, .list, .sound]])
+        completionHandler([.badge, .banner, .list, .sound])
         
     }
 
@@ -112,6 +116,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate, MessagingDelegate {
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 didReceive response: UNNotificationResponse,
                                 withCompletionHandler completionHandler: @escaping () -> Void) {
+        print("didReceive response")
         let userInfo = response.notification.request.content.userInfo
         print(userInfo)
         
@@ -124,6 +129,10 @@ extension AppDelegate: UNUserNotificationCenterDelegate, MessagingDelegate {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                     NotificationCenter.default.post(name: .navigateToNotificationsView , object: nil)
                 }
+            case "new_message":
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    NotificationCenter.default.post(name: .navigateToMessageView , object: nil, userInfo: userInfo)
+                }
             default: break
             }
         }
@@ -134,6 +143,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate, MessagingDelegate {
                      didReceiveRemoteNotification notification: [AnyHashable : Any],
                      fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         if Auth.auth().canHandleNotification(notification) {
+            print("didReceiveRemoteNotification")
             completionHandler(.noData)
             return
         }

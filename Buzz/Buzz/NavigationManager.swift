@@ -25,6 +25,7 @@ enum Route: Hashable {
     case messageChatRoomView
     case messageConversationView(chatRoom: ChatRoomModel)
     case gameHistoryView
+//    case startANewChatView
 }
 
 class NavigationManager: ObservableObject {

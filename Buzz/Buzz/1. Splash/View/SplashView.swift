@@ -82,6 +82,9 @@ struct SplashView: View {
                     case .gameHistoryView:
                         GameHistoryView()
                             .navigationBarBackButtonHidden(true)
+//                    case .startANewChatView:
+//                        StartANewChatView()
+//                            .navigationBarBackButtonHidden(true)
                     default: EmptyView()
                     }
                 }

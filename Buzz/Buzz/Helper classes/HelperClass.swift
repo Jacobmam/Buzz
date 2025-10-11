@@ -18,6 +18,7 @@ enum GameRequestStatus: Int {
 
 extension Notification.Name {
     static let navigateToNotificationsView = Notification.Name("navigateToNotificationsView")
+    static let navigateToMessageView = Notification.Name("navigateToMessageView")
 }
 
 class HelperClass {
