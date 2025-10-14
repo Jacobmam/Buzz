@@ -10,9 +10,11 @@ struct MessageChatRoomsView: View {
             VStack {
                 headerView
                 VStack {
-                    if firebaseMessagesHelper.chatRooms.isEmpty {
+                    if (firebaseMessagesHelper.chatRooms.isEmpty  || !firebaseMessagesHelper.chatRooms.contains(where: { !$0.messages.isEmpty })) && !firebaseMessagesHelper.isLoading {
+                        Spacer()
                         Text("No chats yet")
                             .foregroundColor(.white)
+                        Spacer()
                     } else {
                         List {
                             ForEach(firebaseMessagesHelper.chatRooms, id: \.chatRoomId) { room in
@@ -87,7 +89,6 @@ struct MessageChatRoomsView: View {
                             
                         }
                         .listStyle(.plain)
-                        .background(Color.black)
                     }
                 }
                 .background(Color.black.edgesIgnoringSafeArea(.all))

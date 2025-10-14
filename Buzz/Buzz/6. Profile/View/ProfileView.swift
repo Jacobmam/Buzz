@@ -155,57 +155,58 @@ struct ProfileView: View {
             ZStack(alignment: .bottom) {
                 // display uploaded profile image
                 if let userData = UserLoginCache.get() {
-//                    HStack {
-//                        if let imgURL = URL(string: userData.profilePic ?? "") {
-//                            JBAsyncImage(url: imgURL, placeholder: {
-//                                ProgressView()
-//                                    .tint(.orange)
-//                            }, image: {
-//                                Image(uiImage: $0).resizable()
-//                            })
-//                            .scaledToFill()
-//                        } else {
-//                            Image(systemName: "person.circle.fill")
-//                                .resizable()
-//                                .foregroundColor(.orange)
-//                                .tint(.orange)
-//                                .scaledToFill()
-//                        }
-//                    }.scaledToFill()
-//                        .padding(.bottom, 80)
-                    
-                    if let imageURL = userData.profilePic, imageURL.count > 0 {
-                        AsyncImage(url: URL(string: imageURL),
-                                   scale: 1.0,
-                                   transaction: .init(animation: .spring())) { phase in
-                            switch phase {
-                            case .empty:
+                    HStack {
+                        if let imgURL = URL(string: userData.profilePic ?? "") {
+                            JBAsyncImage(url: imgURL, placeholder: {
                                 ProgressView()
-                                    .tint(.red)
-                                    .scaleEffect(1)
-                                    .transition(.opacity.combined(with: .scale))
-                                    .frame(height: 300)
-                                
-                            case .success(let image):
-                                image
-                                    .resizable()
-                                    .scaledToFill()
-                                    .transition(.opacity.combined(with: .scale))
-                                    .id(imageURL)
-                            case .failure(_):
-                                Color.white.opacity(0.1)
-                            @unknown default:
-                                Color.white.opacity(0.2)
-                            }
-                        }
-                                   .scaledToFill()
-                                   .padding(.bottom, 80)
-                    } else {
-                        Image("profile-pic")
-                            .resizable()
+                                    .tint(.orange)
+                            }, image: {
+                                Image(uiImage: $0).resizable()
+                            })
+                            .id(imgURL)
                             .scaledToFill()
-                            .padding(.bottom, 80)
+                        } else {
+                            Image(systemName: "person.circle.fill")
+                                .resizable()
+                                .foregroundColor(.orange)
+                                .tint(.orange)
+                                .scaledToFill()
+                        }
                     }
+                        .padding(.bottom, 80)
+                    
+//                    if let imageURL = userData.profilePic, imageURL.count > 0 {
+//                        AsyncImage(url: URL(string: imageURL),
+//                                   scale: 1.0,
+//                                   transaction: .init(animation: .spring())) { phase in
+//                            switch phase {
+//                            case .empty:
+//                                ProgressView()
+//                                    .tint(.red)
+//                                    .scaleEffect(1)
+//                                    .transition(.opacity.combined(with: .scale))
+//                                    .frame(height: 300)
+//                                
+//                            case .success(let image):
+//                                image
+//                                    .resizable()
+//                                    .scaledToFill()
+//                                    .transition(.opacity.combined(with: .scale))
+//                                    .id(imageURL)
+//                            case .failure(_):
+//                                Color.white.opacity(0.1)
+//                            @unknown default:
+//                                Color.white.opacity(0.2)
+//                            }
+//                        }
+//                                   .scaledToFill()
+//                                   .padding(.bottom, 80)
+//                    } else {
+//                        Image("profile-pic")
+//                            .resizable()
+//                            .scaledToFill()
+//                            .padding(.bottom, 80)
+//                    }
                 } else {
                     Image("profile-pic")
                         .resizable()

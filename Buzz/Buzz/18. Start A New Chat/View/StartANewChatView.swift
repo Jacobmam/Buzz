@@ -50,7 +50,7 @@ struct StartANewChatView: View {
             Button {
                 dismiss()
             } label: {
-                Image(systemName: "chevron.left")
+                Image(systemName: "multiply")
                     .resizable()
                     .scaledToFit()
                     .tint(.orange)
@@ -88,60 +88,34 @@ struct StartANewChatView: View {
     @ViewBuilder
     var userList: some View {
         if startANewChatViewModel.arrUsers.count > 0 {
-            ScrollView {
-                LazyVStack(spacing: 20) {
+                List {
                     ForEach(startANewChatViewModel.arrUsers, id: \.self) { user in
                         Button {
                             onTapNewUser?(user)
                             dismiss()
-//                            startANewChatViewModel.selectedUser = user
-//                            if let searchedUser = startANewChatViewModel.selectedUser {
-//                                let searchedUserId = searchedUser.id
-//                                if let myId = UserLoginCache.get()?.id {
-//                                    firebaseMessagesHelper.fetchOrCreateDirectChat(with: searchedUserId, currentUserId: myId) { room in
-//                                        if let room { nav.path.append(Route.messageConversationView(chatRoom: room)) }
-//                                    }
-//                                }
-//                            }
                         } label: {
                             HStack {
-                                // display profile image
-                                if let imageURL = user.profilePic, imageURL.count > 0 {
-                                    AsyncImage(url: URL(string: imageURL),
-                                               scale: 1.0,
-                                               transaction: .init(animation: .spring())) { phase in
-                                        switch phase {
-                                        case .empty:
+                          
+                                HStack {
+                                    if let imgURL = URL(string: user.profilePic ?? "") {
+                                        JBAsyncImage(url: imgURL, placeholder: {
                                             ProgressView()
                                                 .tint(.orange)
-                                                .scaleEffect(1)
-                                                .transition(.opacity.combined(with: .scale))
-                                                .frame(width: 50, height: 50)
-                                            
-                                        case .success(let image):
-                                            image
-                                                .resizable()
-                                                .scaledToFill()
-                                                .transition(.opacity.combined(with: .scale))
-                                                .frame(width: 50, height: 50)
-                                                .clipShape(Circle())
-                                                .id(imageURL)
-                                        case .failure(_):
-                                            Color.white.opacity(0.1)
-                                        @unknown default:
-                                            Color.white.opacity(0.2)
-                                        }
-                                    }
-                                               .scaledToFill()
-                                } else {
-                                    Image(systemName: "person.circle.fill")
-                                        .resizable()
-                                        .foregroundColor(.orange)
-                                        .tint(.orange)
+                                        }, image: {
+                                            Image(uiImage: $0).resizable()
+                                        })
                                         .scaledToFill()
-                                        .frame(width: 50, height: 50)
+                                    } else {
+                                        Image(systemName: "person.circle.fill")
+                                            .resizable()
+                                            .foregroundColor(.orange)
+                                            .tint(.orange)
+                                            .scaledToFill()
+                                    }
                                 }
-                                
+                                .clipShape(Circle())
+                                .frame(width: 40, height: 40)
+                               
                                 VStack(alignment: .leading, spacing: 0) {
                                     HStack(alignment: .center, spacing: 5) {
                                         Text(user.username)
@@ -149,32 +123,38 @@ struct StartANewChatView: View {
                                             .padding(.leading, 10)
                                             .fontWeight(.semibold)
                                         
-                                        if let basketballPosition = user.basketballPosition {
-                                            Text(basketballPosition)
-                                                .foregroundColor(.orange)
-                                                .fontWeight(.bold)
-                                        }
+                                       
                                         
                                         Spacer()
+                                        if let basketballPosition = user.basketballPosition {
+                                            Text(basketballPosition)
+                                                .font(.system(size: 12))
+                                                .bold()
+                                                .foregroundColor(.white)
+                                                .padding(.horizontal, 8)
+                                                .padding(.vertical, 5)
+                                                .background(.orange)
+                                                .clipShape(RoundedRectangle(cornerRadius: 25))
+                                                .padding(.trailing, 5)
+                                        }
+                                        Divider()
+                                        Text("#\(user.ranking)")
+                                            .foregroundColor(.white)
+                                            .padding(.leading, 5)
+                                            .fontWeight(.medium)
                                     }
-                                    Text("\(user.firstName) \(user.lastName)")
-                                        .foregroundColor(.white)
-                                        .padding(.leading, 10)
-                                        .fontWeight(.light)
-                                  
+                                   
+                                    
                                 }
                                 
                                 Spacer()
-                                Text("#\(user.ranking)")
-                                    .foregroundColor(.white)
-                                    .padding(.leading, 10)
-                                    .fontWeight(.medium)
+//
                             }
-                            .padding()
                             .background(.clear)
                             .cornerRadius(10)
                         }
                         .padding(.horizontal, 30)
+                       
                         .onAppear {
                             if user == startANewChatViewModel.arrUsers.last {
                                 startANewChatViewModel.loadMoreUsers()
@@ -187,8 +167,8 @@ struct StartANewChatView: View {
                             .padding()
                     }
                 }
+                .listStyle(.plain)
                 .padding(.top)
-            }
         } else {
             VStack {
                 Spacer()

@@ -10,7 +10,7 @@ import Foundation
 class GameHistoryViewModel: ObservableObject {
     @Published var allGameHistory: [GameHistoryModel] = []
     @Published var isLoading: Bool = false
-    private let pageSize = 2
+    private let pageSize = 10
     private var lastDocument: QueryDocumentSnapshot?
 
     

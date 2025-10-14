@@ -23,60 +23,83 @@ struct HomeView: View {
                         VStack {
                             HStack(spacing: 0) {
                                 // display profile image
-                                if let imageURL = homeViewModel.userProfile?.profilePic, imageURL.count > 0 {
-                                    AsyncImage(url: URL(string: imageURL),
-                                               scale: 1.0,
-                                               transaction: .init(animation: .spring())) { phase in
-                                        switch phase {
-                                        case .empty:
+                                //                                if let imageURL = homeViewModel.userProfile?.profilePic, imageURL.count > 0 {
+                                //                                    AsyncImage(url: URL(string: imageURL),
+                                //                                               scale: 1.0,
+                                //                                               transaction: .init(animation: .spring())) { phase in
+                                //                                        switch phase {
+                                //                                        case .empty:
+                                //                                            ProgressView()
+                                //                                                .tint(.orange)
+                                //                                                .scaleEffect(1)
+                                //                                                .transition(.opacity.combined(with: .scale))
+                                //                                                .frame(width: 60, height: 60)
+                                //                                                .padding(.trailing)
+                                //
+                                //                                        case .success(let image):
+                                //                                            image
+                                //                                                .resizable()
+                                //                                                .scaledToFill()
+                                //                                                .transition(.opacity.combined(with: .scale))
+                                //                                                .frame(width: 60, height: 60)
+                                //                                                .clipShape(Circle())
+                                //                                                .padding(.trailing)
+                                //                                                .id(imageURL)
+                                //                                        case .failure(_):
+                                //                                            Image(systemName: "person.circle.fill")
+                                //                                                .resizable()
+                                //                                                .foregroundColor(.orange)
+                                //                                                .tint(.orange)
+                                //                                                .scaledToFill()
+                                //                                                .frame(width: 60, height: 60)
+                                //                                                .padding(.trailing)
+                                //                                        @unknown default:
+                                //                                            Image(systemName: "person.circle.fill")
+                                //                                                .resizable()
+                                //                                                .foregroundColor(.orange)
+                                //                                                .tint(.orange)
+                                //                                                .scaledToFill()
+                                //                                                .frame(width: 60, height: 60)
+                                //                                                .padding(.trailing)
+                                //                                        }
+                                //                                    }
+                                //                                               .scaledToFill()
+                                //
+                                //                                } else {
+                                //                                    Image(systemName: "person.circle.fill")
+                                //                                        .resizable()
+                                //                                        .foregroundColor(.orange)
+                                //                                        .tint(.orange)
+                                //                                        .scaledToFill()
+                                //                                        .frame(width: 50, height: 50)
+                                //                                        .padding(.trailing)
+                                //
+                                //                                }
+                                //
+                                //                                //                            Spacer()
+                                HStack {
+                                    if let imgURL = URL(string: homeViewModel.userProfile?.profilePic ?? "") {
+                                        JBAsyncImage(url: imgURL, placeholder: {
                                             ProgressView()
                                                 .tint(.orange)
-                                                .scaleEffect(1)
-                                                .transition(.opacity.combined(with: .scale))
-                                                .frame(width: 60, height: 60)
-                                                .padding(.trailing)
-                                            
-                                        case .success(let image):
-                                            image
-                                                .resizable()
-                                                .scaledToFill()
-                                                .transition(.opacity.combined(with: .scale))
-                                                .frame(width: 60, height: 60)
-                                                .clipShape(Circle())
-                                                .padding(.trailing)
-                                                .id(imageURL)
-                                        case .failure(_):
-                                            Image(systemName: "person.circle.fill")
-                                                .resizable()
-                                                .foregroundColor(.orange)
-                                                .tint(.orange)
-                                                .scaledToFill()
-                                                .frame(width: 60, height: 60)
-                                                .padding(.trailing)
-                                        @unknown default:
-                                            Image(systemName: "person.circle.fill")
-                                                .resizable()
-                                                .foregroundColor(.orange)
-                                                .tint(.orange)
-                                                .scaledToFill()
-                                                .frame(width: 60, height: 60)
-                                                .padding(.trailing)
-                                        }
-                                    }
-                                               .scaledToFill()
-                                    
-                                } else {
-                                    Image(systemName: "person.circle.fill")
-                                        .resizable()
-                                        .foregroundColor(.orange)
-                                        .tint(.orange)
+                                        }, image: {
+                                            Image(uiImage: $0).resizable()
+                                        })
+                                        .id(imgURL)
                                         .scaledToFill()
-                                        .frame(width: 50, height: 50)
-                                        .padding(.trailing)
-                                    
-                                }
+                                    } else {
+                                        Image(systemName: "person.circle.fill")
+                                            .resizable()
+                                            .foregroundColor(.orange)
+                                            .tint(.orange)
+                                            .scaledToFill()
+                                    }
+                                }.frame(width: 60, height: 60)
+                                    .clipShape(Circle())
+                                    .padding(.trailing)
                                 
-                                //                            Spacer()
+                                
+                                
                                 VStack(alignment: .leading, spacing: 4) {
                                     Text("\(homeViewModel.userProfile?.username ?? "")")
                                         .font(.system(size: 20, weight: .bold))
@@ -160,7 +183,7 @@ struct HomeView: View {
                     nav.path.append(Route.messageConversationView(chatRoom: chatroom))
                 }
             }
-//            nav.path.append(Route.messageChatRoomView)
+            //            nav.path.append(Route.messageChatRoomView)
         }
     }
     

@@ -86,7 +86,7 @@ struct SearchUsersView: View {
     var userList: some View {
         if searchUsersViewModel.arrUsers.count > 0 {
             ScrollView {
-                LazyVStack(spacing: 20) {
+                LazyVStack(spacing: 0) {
                     ForEach(searchUsersViewModel.arrUsers, id: \.self) { user in
                         Button {
                             searchUsersViewModel.selectedUser = user
@@ -96,41 +96,60 @@ struct SearchUsersView: View {
                         } label: {
                             HStack {
                                 // display profile image
-                                if let imageURL = user.profilePic, imageURL.count > 0 {
-                                    AsyncImage(url: URL(string: imageURL),
-                                               scale: 1.0,
-                                               transaction: .init(animation: .spring())) { phase in
-                                        switch phase {
-                                        case .empty:
+//                                if let imageURL = user.profilePic, imageURL.count > 0 {
+//                                    AsyncImage(url: URL(string: imageURL),
+//                                               scale: 1.0,
+//                                               transaction: .init(animation: .spring())) { phase in
+//                                        switch phase {
+//                                        case .empty:
+//                                            ProgressView()
+//                                                .tint(.orange)
+//                                                .scaleEffect(1)
+//                                                .transition(.opacity.combined(with: .scale))
+//                                                .frame(width: 50, height: 50)
+//                                            
+//                                        case .success(let image):
+//                                            image
+//                                                .resizable()
+//                                                .scaledToFill()
+//                                                .transition(.opacity.combined(with: .scale))
+//                                                .frame(width: 50, height: 50)
+//                                                .clipShape(Circle())
+//                                                .id(imageURL)
+//                                        case .failure(_):
+//                                            Color.white.opacity(0.1)
+//                                        @unknown default:
+//                                            Color.white.opacity(0.2)
+//                                        }
+//                                    }
+//                                               .scaledToFill()
+//                                } else {
+//                                    Image(systemName: "person.circle.fill")
+//                                        .resizable()
+//                                        .foregroundColor(.orange)
+//                                        .tint(.orange)
+//                                        .scaledToFill()
+//                                        .frame(width: 50, height: 50)
+//                                }
+                                HStack {
+                                    if let imgURL = URL(string: user.profilePic ?? "") {
+                                        JBAsyncImage(url: imgURL, placeholder: {
                                             ProgressView()
                                                 .tint(.orange)
-                                                .scaleEffect(1)
-                                                .transition(.opacity.combined(with: .scale))
-                                                .frame(width: 50, height: 50)
-                                            
-                                        case .success(let image):
-                                            image
-                                                .resizable()
-                                                .scaledToFill()
-                                                .transition(.opacity.combined(with: .scale))
-                                                .frame(width: 50, height: 50)
-                                                .clipShape(Circle())
-                                                .id(imageURL)
-                                        case .failure(_):
-                                            Color.white.opacity(0.1)
-                                        @unknown default:
-                                            Color.white.opacity(0.2)
-                                        }
-                                    }
-                                               .scaledToFill()
-                                } else {
-                                    Image(systemName: "person.circle.fill")
-                                        .resizable()
-                                        .foregroundColor(.orange)
-                                        .tint(.orange)
+                                        }, image: {
+                                            Image(uiImage: $0).resizable()
+                                        })
                                         .scaledToFill()
-                                        .frame(width: 50, height: 50)
+                                    } else {
+                                        Image(systemName: "person.circle.fill")
+                                            .resizable()
+                                            .foregroundColor(.orange)
+                                            .tint(.orange)
+                                            .scaledToFill()
+                                    }
                                 }
+                                .clipShape(Circle())
+                                .frame(width: 50, height: 50)
                                 
                                 VStack(alignment: .leading, spacing: 0) {
                                     HStack(alignment: .center, spacing: 5) {

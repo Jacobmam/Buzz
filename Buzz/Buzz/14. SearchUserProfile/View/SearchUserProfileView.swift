@@ -23,8 +23,7 @@ struct SearchUserProfileView: View {
                 Divider()
                     .background(Color.white)
                     .padding( )
-                //                historyView
-                hview
+                historyView
                 Spacer()
             }
             if firebaseMessagesHelper.isLoading {
@@ -84,46 +83,66 @@ struct SearchUserProfileView: View {
         VStack {
             HStack(spacing: 0) {
                 // display profile image
-                if let imageURL = searchedUser?.profilePic, imageURL.count > 0 {
-                    AsyncImage(url: URL(string: imageURL),
-                               scale: 1.0,
-                               transaction: .init(animation: .spring())) { phase in
-                        switch phase {
-                        case .empty:
+                //                if let imageURL = searchedUser?.profilePic, imageURL.count > 0 {
+                //                    AsyncImage(url: URL(string: imageURL),
+                //                               scale: 1.0,
+                //                               transaction: .init(animation: .spring())) { phase in
+                //                        switch phase {
+                //                        case .empty:
+                //                            ProgressView()
+                //                                .tint(.orange)
+                //                                .scaleEffect(1)
+                //                                .transition(.opacity.combined(with: .scale))
+                //                                .frame(width: 60, height: 60)
+                //                                .padding(.trailing)
+                //
+                //                        case .success(let image):
+                //                            image
+                //                                .resizable()
+                //                                .scaledToFill()
+                //                                .transition(.opacity.combined(with: .scale))
+                //                                .frame(width: 60, height: 60)
+                //                                .clipShape(Circle())
+                //                                .padding(.trailing)
+                //                                .id(imageURL)
+                //                        case .failure(_):
+                //                            Color.white.opacity(0.1)
+                //                        @unknown default:
+                //                            Color.white.opacity(0.2)
+                //                        }
+                //                    }
+                //                               .scaledToFill()
+                //
+                //                } else {
+                //                    Image(systemName: "person.circle.fill")
+                //                        .resizable()
+                //                        .foregroundColor(.orange)
+                //                        .tint(.orange)
+                //                        .scaledToFill()
+                //                        .frame(width: 60, height: 60)
+                //                        .padding(.trailing)
+                //
+                //                }
+                HStack {
+                    if let imgURL = URL(string: searchedUser?.profilePic ?? "") {
+                        JBAsyncImage(url: imgURL, placeholder: {
                             ProgressView()
                                 .tint(.orange)
-                                .scaleEffect(1)
-                                .transition(.opacity.combined(with: .scale))
-                                .frame(width: 60, height: 60)
-                                .padding(.trailing)
-                            
-                        case .success(let image):
-                            image
-                                .resizable()
-                                .scaledToFill()
-                                .transition(.opacity.combined(with: .scale))
-                                .frame(width: 60, height: 60)
-                                .clipShape(Circle())
-                                .padding(.trailing)
-                                .id(imageURL)
-                        case .failure(_):
-                            Color.white.opacity(0.1)
-                        @unknown default:
-                            Color.white.opacity(0.2)
-                        }
-                    }
-                               .scaledToFill()
-                    
-                } else {
-                    Image(systemName: "person.circle.fill")
-                        .resizable()
-                        .foregroundColor(.orange)
-                        .tint(.orange)
+                        }, image: {
+                            Image(uiImage: $0).resizable()
+                        })
                         .scaledToFill()
-                        .frame(width: 60, height: 60)
-                        .padding(.trailing)
-                    
+                    } else {
+                        Image(systemName: "person.circle.fill")
+                            .resizable()
+                            .foregroundColor(.orange)
+                            .tint(.orange)
+                            .scaledToFill()
+                    }
                 }
+                .clipShape(Circle())
+                .frame(width: 60, height: 60)
+                .padding(.trailing)
                 
                 //                            Spacer()
                 VStack(alignment: .leading, spacing: 4) {
@@ -234,238 +253,208 @@ struct SearchUserProfileView: View {
             Spacer()
         }
     }
-    var hview: some View {
-        ScrollView {
+    var historyView: some View {
+        VStack {
             if let userData = UserLoginCache.get() {
-                ForEach($searchUserProfileViewModel.allGameHistory, id: \.self) { $gameHistory in
-                    ZStack {
-                        let winnerId = searchUserProfileViewModel.getwinnerId(userScore: gameHistory.userScore, opponentScore: gameHistory.opponentScore, userId: gameHistory.userId, opponentId: gameHistory.opponentId)
-                        VStack {
-                            VStack {
-                                HStack {
-                                    VStack(spacing: 0) {
-//                                        HStack {
-//                                            if let imgURL = URL(string: gameHistory.user?.profilePic ?? "") {
-//                                                JBAsyncImage(url: imgURL, placeholder: {
-//                                                    ProgressView()
-//                                                        .tint(.orange)
-//                                                }, image: {
-//                                                    Image(uiImage: $0).resizable()
-//                                                })
-//                                                .scaledToFill()
-//                                            } else {
-//                                                Image(systemName: "person.circle.fill")
-//                                                    .resizable()
-//                                                    .foregroundColor(.orange)
-//                                                    .tint(.orange)
-//                                                    .scaledToFill()
-//                                            }
-//                                        }
-//                                        .clipShape(Circle())
-//                                        .frame(width: 60, height: 60)
-                                        ZStack {
-                                            if  gameHistory.userScore > gameHistory.opponentScore {
-                                                RippleGlowAnimation()
-                                                    .frame(width: 50, height: 50)
-                                            }
-                                            HStack {
-                                                if let imgURL = URL(string: gameHistory.user?.profilePic ?? "") {
-                                                    JBAsyncImage(url: imgURL, placeholder: {
-                                                        ProgressView()
-                                                            .tint(.orange)
-                                                    }, image: {
-                                                        Image(uiImage: $0).resizable()
-                                                    })
-                                                    .scaledToFill()
-                                                } else {
-                                                    Image(systemName: "person.circle.fill")
-                                                        .resizable()
-                                                        .foregroundColor(.orange)
-                                                        .tint(.orange)
-                                                        .scaledToFill()
-                                                }
-                                            }
-                                            .clipShape(Circle())
-                                            .frame(width: 50, height: 50)
-                                            
-                                            if gameHistory.userScore > gameHistory.opponentScore {
-                                                Image("winner_crown")
-                                                    .resizable()
-                                                    .frame(width:20, height: 20)
-                                                    .scaledToFill()
-                                                    .offset(x: 20, y: -20)
-                                            }
-                                        }
-                                       
-                                        
-                                        Text(gameHistory.user?.username ?? "")
-                                            .font(.system(size: 16).bold())
-                                            .lineLimit(1)
-                                            .truncationMode(.tail)
-                                        
-                                    }
-                                    Spacer()
+                if searchUserProfileViewModel.allGameHistory.count == 0 && !searchUserProfileViewModel.isLoading {
+                    VStack {
+                        Spacer()
+                        Text("No game played with this player yet.")
+                        Spacer()
+                    }
+                } else {
+                    ScrollView {
+                        ForEach(searchUserProfileViewModel.allGameHistory, id: \.self) { gameHistory in
+                            ZStack {
+                                let winnerId = searchUserProfileViewModel.getwinnerId(userScore: gameHistory.userScore, opponentScore: gameHistory.opponentScore, userId: gameHistory.userId, opponentId: gameHistory.opponentId)
+                                VStack {
                                     VStack {
-                                        Text(gameHistory.gameType)
-                                            .font(.system(size: 25).bold())
-                                            .layoutPriority(1)
-                                        Text(searchUserProfileViewModel.timeBetween(gameHistory.gameStartedAt, gameHistory.gameEndedAt) ?? "")
-                                            .font(.system(size: 12).weight(.regular))
-                                            .layoutPriority(1)
-                                        
-                                    }
-                                    Spacer()
-                                    VStack(spacing: 0) {
-//                                        HStack {
-//                                            if let imgURL = URL(string: gameHistory.opponent?.profilePic ?? "") {
-//                                                JBAsyncImage(url: imgURL, placeholder: {
-//                                                    ProgressView()
-//                                                        .tint(.orange)
-//                                                }, image: {
-//                                                    Image(uiImage: $0).resizable()
-//                                                })
-//                                                .scaledToFill()
-//                                            } else {
-//                                                Image(systemName: "person.circle.fill")
-//                                                    .resizable()
-//                                                    .foregroundColor(.orange)
-//                                                    .tint(.orange)
-//                                                    .scaledToFill()
-//                                            }
-//                                        }
-//                                        .clipShape(Circle())
-//                                        .frame(width: 60, height: 60)
-                                        ZStack {
-                                            if  gameHistory.userScore < gameHistory.opponentScore {
-                                                RippleGlowAnimation()
+                                        HStack {
+                                            VStack(spacing: 0) {
+                                                ZStack {
+                                                    if  gameHistory.userScore > gameHistory.opponentScore {
+                                                        RippleGlowAnimation()
+                                                            .frame(width: 50, height: 50)
+                                                    }
+                                                    HStack {
+                                                        if let imgURL = URL(string: gameHistory.user?.profilePic ?? "") {
+                                                            JBAsyncImage(url: imgURL, placeholder: {
+                                                                ProgressView()
+                                                                    .tint(.orange)
+                                                            }, image: {
+                                                                Image(uiImage: $0).resizable()
+                                                            })
+                                                            .scaledToFill()
+                                                        } else {
+                                                            Image(systemName: "person.circle.fill")
+                                                                .resizable()
+                                                                .foregroundColor(.orange)
+                                                                .tint(.orange)
+                                                                .scaledToFill()
+                                                        }
+                                                    }
+                                                    .clipShape(Circle())
                                                     .frame(width: 50, height: 50)
-                                            }
-                                            HStack {
-                                                if let imgURL = URL(string: gameHistory.opponent?.profilePic ?? "") {
-                                                    JBAsyncImage(url: imgURL, placeholder: {
-                                                        ProgressView()
-                                                            .tint(.orange)
-                                                    }, image: {
-                                                        Image(uiImage: $0).resizable()
-                                                    })
-                                                    .scaledToFill()
-                                                } else {
-                                                    Image(systemName: "person.circle.fill")
-                                                        .resizable()
-                                                        .foregroundColor(.orange)
-                                                        .tint(.orange)
-                                                        .scaledToFill()
+                                                    
+                                                    if gameHistory.userScore > gameHistory.opponentScore {
+                                                        Image("winner_crown")
+                                                            .resizable()
+                                                            .frame(width:20, height: 20)
+                                                            .scaledToFill()
+                                                            .offset(x: 20, y: -20)
+                                                    }
                                                 }
+                                                
+                                                
+                                                Text(gameHistory.user?.username ?? "")
+                                                    .font(.system(size: 16).bold())
+                                                    .lineLimit(1)
+                                                    .truncationMode(.tail)
+                                                
                                             }
-                                            .clipShape(Circle())
-                                            .frame(width: 50, height: 50)
-                                            if gameHistory.userScore < gameHistory.opponentScore {
-                                                Image("winner_crown")
-                                                    .resizable()
-                                                    .frame(width:20, height: 20)
-                                                    .scaledToFill()
-                                                    .offset(x: 20, y: -20)
+                                            Spacer()
+                                            VStack {
+                                                Text(gameHistory.gameType)
+                                                    .font(.system(size: 25).bold())
+                                                    .layoutPriority(1)
+                                                Text(searchUserProfileViewModel.timeBetween(gameHistory.gameStartedAt, gameHistory.gameEndedAt) ?? "")
+                                                    .font(.system(size: 12).weight(.regular))
+                                                    .layoutPriority(1)
+                                                
+                                            }
+                                            Spacer()
+                                            VStack(spacing: 0) {
+                                                ZStack {
+                                                    if  gameHistory.userScore < gameHistory.opponentScore {
+                                                        RippleGlowAnimation()
+                                                            .frame(width: 50, height: 50)
+                                                    }
+                                                    HStack {
+                                                        if let imgURL = URL(string: gameHistory.opponent?.profilePic ?? "") {
+                                                            JBAsyncImage(url: imgURL, placeholder: {
+                                                                ProgressView()
+                                                                    .tint(.orange)
+                                                            }, image: {
+                                                                Image(uiImage: $0).resizable()
+                                                            })
+                                                            .scaledToFill()
+                                                        } else {
+                                                            Image(systemName: "person.circle.fill")
+                                                                .resizable()
+                                                                .foregroundColor(.orange)
+                                                                .tint(.orange)
+                                                                .scaledToFill()
+                                                        }
+                                                    }
+                                                    .clipShape(Circle())
+                                                    .frame(width: 50, height: 50)
+                                                    if gameHistory.userScore < gameHistory.opponentScore {
+                                                        Image("winner_crown")
+                                                            .resizable()
+                                                            .frame(width:20, height: 20)
+                                                            .scaledToFill()
+                                                            .offset(x: 20, y: -20)
+                                                    }
+                                                }
+                                                Text(gameHistory.opponent?.username ?? "")
+                                                    .font(.system(size: 16).bold())
+                                                    .lineLimit(1)
+                                                    .truncationMode(.tail)
                                             }
                                         }
-                                        
-                                        Text(gameHistory.opponent?.username ?? "")
-                                            .font(.system(size: 16).bold())
-                                            .lineLimit(1)
-                                            .truncationMode(.tail)
                                     }
-                                }
-                                //
-                            }
-                            .padding(30)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 10)
-                                    .stroke(
-                                        LinearGradient(
-                                            gradient: Gradient(colors: [
-                                                Color.orange.opacity(0.8),
-                                                Color.orange.opacity(0.5),
-                                                Color.orange.opacity(0.2),
-                                                Color.orange.opacity(0.05)
-                                            ]),
-                                            startPoint: .top,
-                                            endPoint: .bottom
-                                        ),
-                                        lineWidth: 1.5
+                                    .padding(30)
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 10)
+                                            .stroke(
+                                                LinearGradient(
+                                                    gradient: Gradient(colors: [
+                                                        Color.orange.opacity(0.8),
+                                                        Color.orange.opacity(0.5),
+                                                        Color.orange.opacity(0.2),
+                                                        Color.orange.opacity(0.05)
+                                                    ]),
+                                                    startPoint: .top,
+                                                    endPoint: .bottom
+                                                ),
+                                                lineWidth: 1.5
+                                            )
                                     )
-                            )
-                           
-                            VStack(alignment: .leading) {
-                              
-                                HStack {
-                                    if winnerId == userData.id {
-                                        Text("\(searchUserProfileViewModel.getPointsToBeDisplay(gameType: gameHistory.gameType)) hoop points earned")
-                                            .font(Font.system(size: 14).weight(.bold))
-                                            .foregroundColor(.green.opacity(0.7))
+                                    
+                                    VStack(alignment: .leading) {
+                                        
+                                        HStack {
+                                            if winnerId == userData.id {
+                                                Text("\(searchUserProfileViewModel.getPointsToBeDisplay(gameType: gameHistory.gameType)) hoop points earned")
+                                                    .font(Font.system(size: 14).weight(.bold))
+                                                    .foregroundColor(.green.opacity(0.7))
+                                            }
+                                            Spacer()
+                                        }
                                     }
+                                    .padding(.leading)
+                                    .padding(.top,10)
+                                    
+                                } .padding(20)
+                                    .background(.orange.opacity(0.2))
+                                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                                    .padding()
+                                
+                                
+                                Text(searchUserProfileViewModel.formatGameStartedAtDate(gameHistory.gameStartedAt) ?? "")
+                                    .font(.system(size: 16).weight(.semibold))
+                                    .padding(5)
+                                    .background(Color(UIColor(red: 0.20, green: 0.11, blue: 0.04, alpha: 1.0)))
+                                    .padding(.horizontal)
+                                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                                    .offset(x: 0, y:winnerId == userData.id ? -84 : -73)
+                                //                            .layoutPriority(1)
+                                HStack(spacing: 0) {
+                                    Spacer()
+                                    Text("Score")
+                                        .font(Font.system(size: 16).weight(.light))
+                                    
+                                        .padding(.horizontal, 5)
+                                        .background(Color(UIColor(red: 0.20, green: 0.11, blue: 0.04, alpha: 1.0)))
+                                    
+                                        .layoutPriority(1)
                                     Spacer()
                                 }
+                                
+                                .padding(.horizontal)
+                                .clipShape(RoundedRectangle(cornerRadius: 10))
+                                .offset(x: 0, y:winnerId == userData.id ? 50 : 58)
+                                HStack(spacing: 30) {
+                                    
+                                    Text(gameHistory.userScore)
+                                        .font(Font.system(size: 16).weight(.bold))
+                                        .foregroundColor(.orange)
+                                        .padding(.horizontal, 5)
+                                        .background(Color(UIColor(red: 0.20, green: 0.11, blue: 0.04, alpha: 1.0)))
+                                        .padding(.horizontal, 40)
+                                        .layoutPriority(1)
+                                    
+                                    Spacer()
+                                    Text(gameHistory.opponentScore)
+                                        .font(Font.system(size: 16).weight(.bold))
+                                        .foregroundColor(.orange)
+                                        .padding(.horizontal, 5)
+                                        .background(Color(UIColor(red: 0.20, green: 0.11, blue: 0.04, alpha: 1.0)))
+                                        .padding(.horizontal, 40)
+                                        .layoutPriority(1)
+                                    
+                                }
+                                .padding(.horizontal)
+                                .clipShape(RoundedRectangle(cornerRadius: 10))
+                                .offset(x: 0, y: winnerId == userData.id ? 50 : 58)
                             }
-                            .padding(.leading)
-                            .padding(.top,10)
-                            
-                        } .padding(20)
-                            .background(.orange.opacity(0.2))
-                            .clipShape(RoundedRectangle(cornerRadius: 10))
-                            .padding()
-                        
-                        
-                        Text(searchUserProfileViewModel.formatGameStartedAtDate(gameHistory.gameStartedAt) ?? "")
-                            .font(.system(size: 16).weight(.semibold))
-                            .padding(5)
-                            .background(Color(UIColor(red: 0.20, green: 0.11, blue: 0.04, alpha: 1.0)))
-                            .padding(.horizontal)
-                            .clipShape(RoundedRectangle(cornerRadius: 10))
-                            .offset(x: 0, y:winnerId == userData.id ? -84 : -73)
-                        //                            .layoutPriority(1)
-                        HStack(spacing: 0) {
-                            Spacer()
-                            Text("Score")
-                                .font(Font.system(size: 16).weight(.light))
-                            
-                                .padding(.horizontal, 5)
-                                .background(Color(UIColor(red: 0.20, green: 0.11, blue: 0.04, alpha: 1.0)))
-                            
-                                .layoutPriority(1)
-                            Spacer()
                         }
-                        
-                        .padding(.horizontal)
-                        .clipShape(RoundedRectangle(cornerRadius: 10))
-                        .offset(x: 0, y:winnerId == userData.id ? 50 : 58)
-                        HStack(spacing: 30) {
-                            
-                            Text(gameHistory.userScore)
-                                .font(Font.system(size: 16).weight(.bold))
-                                .foregroundColor(.orange)
-                                .padding(.horizontal, 5)
-                                .background(Color(UIColor(red: 0.20, green: 0.11, blue: 0.04, alpha: 1.0)))
-                                .padding(.horizontal, 40)
-                                .layoutPriority(1)
-                            
-                            Spacer()
-                            Text(gameHistory.opponentScore)
-                                .font(Font.system(size: 16).weight(.bold))
-                                .foregroundColor(.orange)
-                                .padding(.horizontal, 5)
-                                .background(Color(UIColor(red: 0.20, green: 0.11, blue: 0.04, alpha: 1.0)))
-                                .padding(.horizontal, 40)
-                                .layoutPriority(1)
-                            
-                        }
-                        .padding(.horizontal)
-                        .clipShape(RoundedRectangle(cornerRadius: 10))
-                        .offset(x: 0, y: winnerId == userData.id ? 50 : 58)
                     }
                 }
             }
         }
     }
-
+    
 }
 
 #Preview {

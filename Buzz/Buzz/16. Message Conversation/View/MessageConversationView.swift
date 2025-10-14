@@ -26,65 +26,76 @@ struct MessageConversationView: View {
             ZStack(alignment: .top) {
                 VStack {
                     if let myUserId = UserLoginCache.get()?.id {
-                        List {
-                            ForEach((liveRoom?.messages ?? []), id: \.messageId) { msg in
-                                HStack {
-                                    if msg.senderId == myUserId {
-                                        Spacer()
-                                        
-                                        VStack(alignment: .trailing) {
-                                            Text(msg.message)
-                                            
-                                            Text(HelperClass.shared.formatDateForMessageConversation(msg.createdAt))
-                                                .font(.system(size: 10, weight: .regular))
-                                                .foregroundColor(.gray)
-                                        }
-                                        .padding(.vertical, 4)
-                                        .padding(.horizontal, 10)
-                                        .foregroundColor(.white)
-                                        .background(.orange.opacity(0.3))
-                                        .clipShape(RoundedRectangle(cornerRadius: 8))
-                                    } else {
-                                        VStack(alignment: .leading) {
-                                            Text(msg.message)
-                                            
-                                            Text(HelperClass.shared.formatDateForMessageConversation(msg.createdAt))
-                                                .font(.system(size: 10, weight: .regular))
-                                                .foregroundColor(.gray)
-                                        }
-                                        .padding(.vertical, 4)
-                                        .padding(.horizontal, 10)
-                                        .foregroundColor(.white)
-                                        .background(.gray.opacity(0.3))
-                                        .clipShape(RoundedRectangle(cornerRadius: 8))
-                                        
-                                        Spacer()
-                                    }
-                                }
-                                .id(msg.messageId)
-                                .listRowSeparator(.hidden)
-                                .listRowInsets(EdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5))
-                                .rotationEffect(.degrees(180))
-                                .padding(.horizontal, 10)
-                                .onAppear {
-                                    // Update date badge based on visible message
-                                    updateDateBadge(for: msg.createdAt)
-                                    
-                                    // Load older messages when reaching near the top of the inverted list
-                                    if let arr = liveRoom?.messages,
-                                       let idx = arr.firstIndex(where: { $0.messageId == msg.messageId }),
-                                       idx >= (arr.count - 3),
-                                       let room = liveRoom,
-                                       room.hasMoreMessages && !firebaseMessagesHelper.isLoadingMoreMessages {
-                                        firebaseMessagesHelper.loadMoreMessages(for: chatRoom.chatRoomId)
-                                    }
+                        if let messages = liveRoom?.messages {
+                            if messages.isEmpty && !firebaseMessagesHelper.isLoading {
+                                VStack {
+                                    Spacer()
+                                    Text("No messages yet!")
+                                    Spacer()
                                 }
                             }
+                            else {
+                                List {
+                                    ForEach((liveRoom?.messages ?? []), id: \.messageId) { msg in
+                                        HStack {
+                                            if msg.senderId == myUserId {
+                                                Spacer()
+                                                
+                                                VStack(alignment: .trailing) {
+                                                    Text(msg.message)
+                                                    
+                                                    Text(HelperClass.shared.formatDateForMessageConversation(msg.createdAt))
+                                                        .font(.system(size: 10, weight: .regular))
+                                                        .foregroundColor(.gray)
+                                                }
+                                                .padding(.vertical, 4)
+                                                .padding(.horizontal, 10)
+                                                .foregroundColor(.white)
+                                                .background(.orange.opacity(0.3))
+                                                .clipShape(RoundedRectangle(cornerRadius: 8))
+                                            } else {
+                                                VStack(alignment: .leading) {
+                                                    Text(msg.message)
+                                                    
+                                                    Text(HelperClass.shared.formatDateForMessageConversation(msg.createdAt))
+                                                        .font(.system(size: 10, weight: .regular))
+                                                        .foregroundColor(.gray)
+                                                }
+                                                .padding(.vertical, 4)
+                                                .padding(.horizontal, 10)
+                                                .foregroundColor(.white)
+                                                .background(.gray.opacity(0.3))
+                                                .clipShape(RoundedRectangle(cornerRadius: 8))
+                                                
+                                                Spacer()
+                                            }
+                                        }
+                                        .id(msg.messageId)
+                                        .listRowSeparator(.hidden)
+                                        .listRowInsets(EdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5))
+                                        .rotationEffect(.degrees(180))
+                                        .padding(.horizontal, 10)
+                                        .onAppear {
+                                            // Update date badge based on visible message
+                                            updateDateBadge(for: msg.createdAt)
+                                            
+                                            // Load older messages when reaching near the top of the inverted list
+                                            if let arr = liveRoom?.messages,
+                                               let idx = arr.firstIndex(where: { $0.messageId == msg.messageId }),
+                                               idx >= (arr.count - 3),
+                                               let room = liveRoom,
+                                               room.hasMoreMessages && !firebaseMessagesHelper.isLoadingMoreMessages {
+                                                firebaseMessagesHelper.loadMoreMessages(for: chatRoom.chatRoomId)
+                                            }
+                                        }
+                                    }
+                                }
+                                .listStyle(.plain)
+                                .scrollIndicators(.hidden)
+                                .scrollDismissesKeyboard(.interactively)
+                                .rotationEffect(.degrees(180))
+                            }
                         }
-                        .listStyle(.plain)
-                        .scrollIndicators(.hidden)
-                        .scrollDismissesKeyboard(.interactively)
-                        .rotationEffect(.degrees(180))
                     }
                     
                     ZStack {

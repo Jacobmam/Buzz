@@ -120,7 +120,7 @@ struct RequestView: View {
             Text("Game Request")
                 .fontWeight(.bold)
                 .foregroundColor(.orange)
-                .font(.system(size: 30))
+                .font(.system(size: 20))
             Spacer()
         }
         .padding(.leading, 7)
