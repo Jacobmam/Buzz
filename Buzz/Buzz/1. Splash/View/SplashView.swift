@@ -82,9 +82,12 @@ struct SplashView: View {
                     case .gameHistoryView:
                         GameHistoryView()
                             .navigationBarBackButtonHidden(true)
-//                    case .startANewChatView:
-//                        StartANewChatView()
-//                            .navigationBarBackButtonHidden(true)
+                    case .courtFinderView:
+                        CourtFinderView()
+                            .navigationBarBackButtonHidden(true)
+                    case .webView(let WebviewName):
+                        WebPageView(webviewName: WebviewName)
+                            .navigationBarBackButtonHidden(true)
                     default: EmptyView()
                     }
                 }

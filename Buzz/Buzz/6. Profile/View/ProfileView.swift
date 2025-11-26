@@ -6,7 +6,12 @@
 //
 
 import SwiftUI
-
+import MessageUI
+import FirebaseCoreInternal
+enum WebviewName: String {
+    case aboutUsView = "buzz-about-us"
+    case privacyTermsView = "privacy-policy"
+}
 struct ProfileView: View {
     @EnvironmentObject var userStateViewModel: UserStateViewModel
     @StateObject private var profileViewModel = ProfileViewModel()
@@ -62,7 +67,7 @@ struct ProfileView: View {
         
         .alert("Comfirmation", isPresented: $profileViewModel.isConfirmationForPassword) {
             SecureField("Your Password", text: $profileViewModel.confirmationPassword)
-                
+            
             Button("Confirm", role: .destructive) {
                 profileViewModel.checkPassword()
             }
@@ -166,47 +171,12 @@ struct ProfileView: View {
                             .id(imgURL)
                             .scaledToFill()
                         } else {
-                            Image(systemName: "person.circle.fill")
+                            Image("logo.png")
                                 .resizable()
-                                .foregroundColor(.orange)
-                                .tint(.orange)
                                 .scaledToFill()
                         }
                     }
-                        .padding(.bottom, 80)
-                    
-//                    if let imageURL = userData.profilePic, imageURL.count > 0 {
-//                        AsyncImage(url: URL(string: imageURL),
-//                                   scale: 1.0,
-//                                   transaction: .init(animation: .spring())) { phase in
-//                            switch phase {
-//                            case .empty:
-//                                ProgressView()
-//                                    .tint(.red)
-//                                    .scaleEffect(1)
-//                                    .transition(.opacity.combined(with: .scale))
-//                                    .frame(height: 300)
-//                                
-//                            case .success(let image):
-//                                image
-//                                    .resizable()
-//                                    .scaledToFill()
-//                                    .transition(.opacity.combined(with: .scale))
-//                                    .id(imageURL)
-//                            case .failure(_):
-//                                Color.white.opacity(0.1)
-//                            @unknown default:
-//                                Color.white.opacity(0.2)
-//                            }
-//                        }
-//                                   .scaledToFill()
-//                                   .padding(.bottom, 80)
-//                    } else {
-//                        Image("profile-pic")
-//                            .resizable()
-//                            .scaledToFill()
-//                            .padding(.bottom, 80)
-//                    }
+                    .padding(.bottom, 80)
                 } else {
                     Image("profile-pic")
                         .resizable()
@@ -238,7 +208,6 @@ struct ProfileView: View {
                             .clipShape(RoundedRectangle(cornerRadius: 30))
                     }
                     .padding()
-                    
                     Spacer()
                 }
                 
@@ -250,7 +219,7 @@ struct ProfileView: View {
                             .padding()
                             .background(.white)
                             .clipShape(RoundedRectangle(cornerRadius: 25))
-                            
+                        
                     }
                     VStack(alignment: .leading) {
                         Text("\(profileViewModel.userData?.username ?? "")")
@@ -344,7 +313,7 @@ struct ProfileView: View {
             .padding(.horizontal, 30)
             
             Button {
-                
+                nav.path.append(Route.webView(webviewName: .aboutUsView))
             } label: {
                 HStack(spacing: 16) {
                     Image(systemName: "link")
@@ -364,7 +333,7 @@ struct ProfileView: View {
             .padding(.horizontal, 30)
             
             Button {
-                
+                nav.path.append(Route.webView(webviewName: .privacyTermsView))
             } label: {
                 HStack(spacing: 16) {
                     Image(systemName: "lock.shield")
@@ -382,9 +351,12 @@ struct ProfileView: View {
             }
             .padding(.vertical)
             .padding(.horizontal, 30)
-            
             Button {
-                
+                if MFMailComposeViewController.canSendMail() {
+                    profileViewModel.isShowingMailComposer = true
+                } else {
+                    profileViewModel.showMailError = true
+                }
             } label: {
                 HStack(spacing: 16) {
                     Image(systemName: "message")
@@ -402,10 +374,19 @@ struct ProfileView: View {
             }
             .padding(.vertical)
             .padding(.horizontal, 30)
+            .sheet(isPresented: $profileViewModel.isShowingMailComposer) {
+                MailComposer(isShowing: $profileViewModel.isShowingMailComposer,
+                             recipients: ["buzzofficial.app@gmail.com"],
+                             subject: "Buzz App FeedBack",
+                             body: "")
+            }
+            .alert("Mail Error", isPresented: $profileViewModel.showMailError) {
+                Button("OK", role: .cancel) { }
+            } message: {
+                Text("Please configure a mail account in the Mail app.")
+            }
             
-            Button {
-                
-            } label: {
+            ShareLink(item: URL(string: Constants.APPSTORE_ID)!) {
                 HStack(spacing: 16) {
                     Image(systemName: "square.and.arrow.up")
                         .resizable()
@@ -419,12 +400,12 @@ struct ProfileView: View {
                     
                     Spacer()
                 }
+                .padding(.vertical)
+                .padding(.horizontal, 30)
             }
-            .padding(.vertical)
-            .padding(.horizontal, 30)
+            
         }
     }
-    
     var logoutAndDeleteAccountButtonView: some View {
         VStack(spacing: 16) {
             Text("App Version 1.0")

@@ -15,11 +15,11 @@ struct NavigatorView: View {
                     Label("Home", systemImage: "house")
                 }
             
-            FavoritesView()
-                .tabItem {
-                    Label("Fav", systemImage: "heart.fill")
-
-                }
+//            FavoritesView()
+//                .tabItem {
+//                    Label("Fav", systemImage: "heart.fill")
+//
+//                }
             ProfileView()
                 .tabItem {
                     Label("Profile", systemImage: "person.crop.circle.fill")

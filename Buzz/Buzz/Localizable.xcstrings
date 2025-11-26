@@ -1,0 +1,540 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "" : {
+
+    },
+    " vs " : {
+
+    },
+    "(%lld Rezensionen)" : {
+
+    },
+    "# %lld" : {
+
+    },
+    "#%lld" : {
+
+    },
+    "%.1f ⭐️" : {
+
+    },
+    "%@" : {
+
+    },
+    "%@  %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@  %2$@"
+          }
+        }
+      }
+    },
+    "%@ / 8 Steps" : {
+
+    },
+    "%@ %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ %2$@"
+          }
+        }
+      }
+    },
+    "%@ Courts" : {
+
+    },
+    "%@ vs You" : {
+
+    },
+    "%@, what's your birthdate?" : {
+
+    },
+    "%lld" : {
+
+    },
+    "%lld Hoop Points" : {
+
+    },
+    "%lld hoop points earned" : {
+
+    },
+    "%lld years" : {
+
+    },
+    "~%@" : {
+
+    },
+    "❌ Username can only contain lowercase letters, numbers, '.', and '_' with no spaces or emojis." : {
+
+    },
+    "1v1" : {
+
+    },
+    "1vs1" : {
+
+    },
+    "About Us" : {
+
+    },
+    "Accept" : {
+
+    },
+    "App Version 1.0" : {
+
+    },
+    "Are you sure you want to delete?" : {
+
+    },
+    "Available" : {
+
+    },
+    "Back To Home" : {
+
+    },
+    "Birth Date" : {
+
+    },
+    "Buzz" : {
+
+    },
+    "Cancel" : {
+
+    },
+    "Cancel Request" : {
+
+    },
+    "Checking" : {
+
+    },
+    "Choose a new password" : {
+
+    },
+    "Choose game with %@" : {
+
+    },
+    "Choose New Password" : {
+
+    },
+    "Choose Password" : {
+
+    },
+    "Choose your gender %@!" : {
+
+    },
+    "Choose your secure password" : {
+
+    },
+    "Comfirmation" : {
+
+    },
+    "Confirm" : {
+
+    },
+    "Confirm Password" : {
+
+    },
+    "Congratulations 🎊🎉" : {
+
+    },
+    "Court Finder" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gerichtsfinder"
+          }
+        },
+        "gu-IN" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "કોર્ટ ફાઇન્ડર"
+          }
+        }
+      }
+    },
+    "Create an account" : {
+
+    },
+    "Delete" : {
+
+    },
+    "Delete Account" : {
+
+    },
+    "DEUTSCHLAND 🇩🇪" : {
+
+    },
+    "Do you really want to logout?" : {
+
+    },
+    "Done" : {
+
+    },
+    "Edit Profile" : {
+
+    },
+    "Email Address" : {
+
+    },
+    "Email/Username" : {
+
+    },
+    "END GAME" : {
+
+    },
+    "End game to enter score." : {
+
+    },
+    "Erfolgreich Hinzugefügt" : {
+
+    },
+    "Error" : {
+
+    },
+    "Favoriten" : {
+
+    },
+    "Feedback" : {
+
+    },
+    "Female" : {
+
+    },
+    "First Name" : {
+
+    },
+    "Forgot password" : {
+
+    },
+    "Forgot Password" : {
+
+    },
+    "Game History" : {
+
+    },
+    "Game Played: " : {
+
+    },
+    "Game Points" : {
+
+    },
+    "Game Request" : {
+
+    },
+    "Game Wins: " : {
+
+    },
+    "Games Played" : {
+
+    },
+    "Gender" : {
+
+    },
+    "Hey, What's your email ?" : {
+
+    },
+    "Hey, what's your name?" : {
+
+    },
+    "Hey, What's your registered email ?" : {
+
+    },
+    "Hinzufügen" : {
+
+    },
+    "Home" : {
+
+    },
+    "Hoop Points" : {
+
+    },
+    "It's time choose your username." : {
+
+    },
+    "Jay vs Mansi" : {
+
+    },
+    "Just now" : {
+
+    },
+    "Key" : {
+      "extractionState" : "manual"
+    },
+    "Lade Courts..." : {
+
+    },
+    "Last Name" : {
+
+    },
+    "LET'S GO" : {
+
+    },
+    "Let's pick your position!" : {
+
+    },
+    "Let's verify your phone number!" : {
+
+    },
+    "Loading more..." : {
+
+    },
+    "Loading..." : {
+
+    },
+    "LOG IN" : {
+
+    },
+    "Logout" : {
+
+    },
+    "Löschen" : {
+
+    },
+    "Mail Error" : {
+
+    },
+    "Male" : {
+
+    },
+    "Matches" : {
+
+    },
+    "me" : {
+
+    },
+    "Messages" : {
+
+    },
+    "NEXT" : {
+
+    },
+    "No" : {
+
+    },
+    "No chats yet" : {
+
+    },
+    "No data found." : {
+
+    },
+    "No Game History!" : {
+
+    },
+    "No game played with this player yet." : {
+
+    },
+    "No messages yet!" : {
+
+    },
+    "No request found" : {
+
+    },
+    "No user found" : {
+
+    },
+    "Not available!" : {
+
+    },
+    "Ok" : {
+
+    },
+    "OK" : {
+
+    },
+    "OTP" : {
+
+    },
+    "Password" : {
+
+    },
+    "Password should be atleast 8 characters long!" : {
+
+    },
+    "Phone Number" : {
+
+    },
+    "Player Profile" : {
+
+    },
+    "Please configure a mail account in the Mail app." : {
+
+    },
+    "Please confirm your password" : {
+
+    },
+    "Please wait..." : {
+
+    },
+    "Points: " : {
+
+    },
+    "Privacy & Terms" : {
+
+    },
+    "Profile" : {
+
+    },
+    "Ranking" : {
+
+    },
+    "Ranking #%lld" : {
+
+    },
+    "Ranking Board" : {
+
+    },
+    "Ranking: " : {
+
+    },
+    "Received" : {
+
+    },
+    "Register" : {
+
+    },
+    "Reject" : {
+
+    },
+    "Request Type" : {
+
+    },
+    "Resend" : {
+
+    },
+    "Resend in %lld seconds" : {
+
+    },
+    "Save" : {
+
+    },
+    "SAVE SCORE" : {
+
+    },
+    "Score" : {
+
+    },
+    "Search for a country" : {
+
+    },
+    "Search Opponent..." : {
+
+    },
+    "Search Users" : {
+
+    },
+    "Search users..." : {
+
+    },
+    "Select Date" : {
+
+    },
+    "Select Mode" : {
+
+    },
+    "Select Opponent" : {
+
+    },
+    "Select your country!" : {
+
+    },
+    "SEND" : {
+
+    },
+    "SEND OTP" : {
+
+    },
+    "Sent" : {
+
+    },
+    "Share App" : {
+
+    },
+    "Something went wrong !" : {
+
+    },
+    "START" : {
+
+    },
+    "STOP" : {
+
+    },
+    "Success" : {
+
+    },
+    "Sucess" : {
+
+    },
+    "This is tie !" : {
+
+    },
+    "Timer" : {
+
+    },
+    "Type message..." : {
+
+    },
+    "username" : {
+
+    },
+    "Username" : {
+
+    },
+    "Username should be atleast 4 characters long!" : {
+
+    },
+    "Verified" : {
+
+    },
+    "Verify" : {
+
+    },
+    "VERIFY" : {
+
+    },
+    "VS" : {
+
+    },
+    "Waiting for %@ to accept the request" : {
+
+    },
+    "XXX" : {
+
+    },
+    "Yes" : {
+
+    },
+    "you" : {
+
+    },
+    "You can resend code in %lld seconds." : {
+
+    },
+    "You have cancelled the request." : {
+
+    },
+    "You have earned" : {
+
+    },
+    "You have exceeded the maximum number of attempts to resend the OTP. Please try again later." : {
+
+    },
+    "You lose this game !" : {
+
+    },
+    "You won this game !" : {
+
+    },
+    "Your Password" : {
+
+    },
+    "Your Rank" : {
+
+    }
+  },
+  "version" : "1.1"
+}

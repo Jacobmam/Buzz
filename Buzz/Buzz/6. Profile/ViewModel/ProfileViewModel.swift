@@ -26,6 +26,8 @@ class ProfileViewModel: ObservableObject {
     @Published var errorTitle: String = ""
     @Published var errorMessage: String = ""
     @Published var showError: Bool = false
+    @Published var isShowingMailComposer: Bool = false
+    @Published var showMailError: Bool = false
     init() {}
     
     func removeUserToken() {

@@ -12,7 +12,6 @@ struct HomeView: View {
     @EnvironmentObject private var appDelegate: AppDelegate
     @EnvironmentObject private var firebaseMessagesHelper: FirebaseMessagesHelper
     @StateObject private var homeViewModel = HomeViewModel()
-    
     var body: some View {
         ZStack {
             VStack {
@@ -22,61 +21,6 @@ struct HomeView: View {
                     VStack(spacing: 0) {
                         VStack {
                             HStack(spacing: 0) {
-                                // display profile image
-                                //                                if let imageURL = homeViewModel.userProfile?.profilePic, imageURL.count > 0 {
-                                //                                    AsyncImage(url: URL(string: imageURL),
-                                //                                               scale: 1.0,
-                                //                                               transaction: .init(animation: .spring())) { phase in
-                                //                                        switch phase {
-                                //                                        case .empty:
-                                //                                            ProgressView()
-                                //                                                .tint(.orange)
-                                //                                                .scaleEffect(1)
-                                //                                                .transition(.opacity.combined(with: .scale))
-                                //                                                .frame(width: 60, height: 60)
-                                //                                                .padding(.trailing)
-                                //
-                                //                                        case .success(let image):
-                                //                                            image
-                                //                                                .resizable()
-                                //                                                .scaledToFill()
-                                //                                                .transition(.opacity.combined(with: .scale))
-                                //                                                .frame(width: 60, height: 60)
-                                //                                                .clipShape(Circle())
-                                //                                                .padding(.trailing)
-                                //                                                .id(imageURL)
-                                //                                        case .failure(_):
-                                //                                            Image(systemName: "person.circle.fill")
-                                //                                                .resizable()
-                                //                                                .foregroundColor(.orange)
-                                //                                                .tint(.orange)
-                                //                                                .scaledToFill()
-                                //                                                .frame(width: 60, height: 60)
-                                //                                                .padding(.trailing)
-                                //                                        @unknown default:
-                                //                                            Image(systemName: "person.circle.fill")
-                                //                                                .resizable()
-                                //                                                .foregroundColor(.orange)
-                                //                                                .tint(.orange)
-                                //                                                .scaledToFill()
-                                //                                                .frame(width: 60, height: 60)
-                                //                                                .padding(.trailing)
-                                //                                        }
-                                //                                    }
-                                //                                               .scaledToFill()
-                                //
-                                //                                } else {
-                                //                                    Image(systemName: "person.circle.fill")
-                                //                                        .resizable()
-                                //                                        .foregroundColor(.orange)
-                                //                                        .tint(.orange)
-                                //                                        .scaledToFill()
-                                //                                        .frame(width: 50, height: 50)
-                                //                                        .padding(.trailing)
-                                //
-                                //                                }
-                                //
-                                //                                //                            Spacer()
                                 HStack {
                                     if let imgURL = URL(string: homeViewModel.userProfile?.profilePic ?? "") {
                                         JBAsyncImage(url: imgURL, placeholder: {
@@ -137,10 +81,9 @@ struct HomeView: View {
                         
                         VStack {
                             Button {
-                                //                            NavigationLink(destination: DeutschlandCourtView()) {
-                                //                        nav.path.append(Route.userSelectionView)
+                                nav.path.append(Route.courtFinderView)
                             } label: {
-                                HomeFeatureCard(title: "Court Finder", description: "Entdecke die besten Basketball Courts in Deutschland! 🏀", image: "sportscourt")
+                                HomeFeatureCard(title: LocalizedStringKey("Court Finder"), description: "Entdecke die besten Basketball Courts in Deutschland! 🏀", image: "sportscourt")
                             }
                             Button {
                                 nav.path.append(Route.userSelectionView)
@@ -247,7 +190,7 @@ struct HomeView: View {
 
 
 struct HomeFeatureCard: View {
-    var title: String
+    var title: LocalizedStringKey
     var description: String
     var image: String
     

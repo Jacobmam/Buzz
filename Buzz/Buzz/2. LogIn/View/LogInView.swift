@@ -19,7 +19,7 @@ struct LoginView: View {
             if verticalSizeClass == .compact {
                 ScrollView { loginContent }
             } else {
-                loginContent
+                ScrollView { loginContent }
             }
             if viewModel.isLoading {
                 JBLoadingView()
