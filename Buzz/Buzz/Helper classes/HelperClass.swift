@@ -24,6 +24,22 @@ extension Notification.Name {
 class HelperClass {
     static let shared = HelperClass()
     
+    
+    func greetingMessage() -> String {
+        let hour = Calendar.current.component(.hour, from: Date())
+
+        switch hour {
+        case 5..<12:
+            return "Good Morning"
+        case 12..<17:
+            return "Good Afternoon"
+        case 17..<24:
+            return "Good Evening"
+        default:
+            return "Good Night"   // covers 0..<5
+        }
+    }
+
     func formatDateForMessageConversation(_ dateString: String) -> String {
         guard let date = convertUTCStringToDate(dateString) else { return "-" }
         

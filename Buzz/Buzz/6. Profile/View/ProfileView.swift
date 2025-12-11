@@ -386,6 +386,26 @@ struct ProfileView: View {
                 Text("Please configure a mail account in the Mail app.")
             }
             
+            Button {
+                nav.path.append(Route.selectLanguageView)
+            } label: {
+                HStack(spacing: 16) {
+                    Image(systemName: "globe")
+                        .resizable()
+                        .scaledToFit()
+                        .foregroundStyle(.orange)
+                        .frame(width: 22, height: 24)
+                    
+                    Text("Change Language")
+                        .font(.system(size: 20, weight: .regular))
+                        .foregroundStyle(.white)
+                    
+                    Spacer()
+                }
+            }
+            .padding(.vertical)
+            .padding(.horizontal, 30)
+            
             ShareLink(item: URL(string: Constants.APPSTORE_ID)!) {
                 HStack(spacing: 16) {
                     Image(systemName: "square.and.arrow.up")

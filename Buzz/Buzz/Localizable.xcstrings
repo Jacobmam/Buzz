@@ -57,14 +57,18 @@
     "%lld" : {
 
     },
-    "%lld Hoop Points" : {
-
-    },
     "%lld hoop points earned" : {
 
     },
     "%lld years" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld Jahre"
+          }
+        }
+      }
     },
     "~%@" : {
 
@@ -79,7 +83,14 @@
 
     },
     "About Us" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Über uns"
+          }
+        }
+      }
     },
     "Accept" : {
 
@@ -99,14 +110,21 @@
     "Birth Date" : {
 
     },
-    "Buzz" : {
-
-    },
     "Cancel" : {
 
     },
     "Cancel Request" : {
 
+    },
+    "Change Language" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sprache ändern"
+          }
+        }
+      }
     },
     "Checking" : {
 
@@ -161,10 +179,24 @@
 
     },
     "Delete" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Löschen"
+          }
+        }
+      }
     },
     "Delete Account" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Konto löschen"
+          }
+        }
+      }
     },
     "DEUTSCHLAND 🇩🇪" : {
 
@@ -200,61 +232,198 @@
 
     },
     "Feedback" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rückmeldung"
+          }
+        }
+      }
     },
     "Female" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Weiblich"
+          }
+        }
+      }
     },
     "First Name" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vorname"
+          }
+        }
+      }
     },
     "Forgot password" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Passwort vergessen"
+          }
+        }
+      }
     },
     "Forgot Password" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Passwort Vergessen"
+          }
+        }
+      }
     },
     "Game History" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spielverlauf"
+          }
+        }
+      }
     },
     "Game Played: " : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gespieltes Spiel: "
+          }
+        }
+      }
     },
     "Game Points" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spielpunkte"
+          }
+        }
+      }
     },
     "Game Request" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spielanfrage"
+          }
+        }
+      }
     },
     "Game Wins: " : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spielgewinne: "
+          }
+        }
+      }
     },
     "Games Played" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gespielte Spiele"
+          }
+        }
+      }
     },
     "Gender" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geschlecht"
+          }
+        }
+      }
+    },
+    "Good Night" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gute Nacht"
+          }
+        }
+      }
     },
     "Hey, What's your email ?" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hey, wie lautet deine E-Mail-Adresse?"
+          }
+        }
+      }
     },
     "Hey, what's your name?" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hey, wie heißt du?"
+          }
+        }
+      }
     },
     "Hey, What's your registered email ?" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hey, wie lautet deine registrierte E-Mail-Adresse?"
+          }
+        }
+      }
     },
     "Hinzufügen" : {
 
     },
     "Home" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Startseite"
+          }
+        }
+      }
     },
     "Hoop Points" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reifenpunkte"
+          }
+        }
+      }
     },
     "It's time choose your username." : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Es ist Zeit, deinen Benutzernamen zu wählen."
+          }
+        }
+      }
     },
     "Jay vs Mansi" : {
 
@@ -265,8 +434,37 @@
     "Key" : {
       "extractionState" : "manual"
     },
+    "Key 1" : {
+      "extractionState" : "manual"
+    },
+    "Key 2" : {
+      "extractionState" : "manual"
+    },
+    "Key 3" : {
+      "extractionState" : "manual"
+    },
+    "Key 4" : {
+      "extractionState" : "manual"
+    },
     "Lade Courts..." : {
 
+    },
+    "Language" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sprache"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Language"
+          }
+        }
+      }
     },
     "Last Name" : {
 
@@ -290,7 +488,14 @@
 
     },
     "Logout" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abmelden"
+          }
+        }
+      }
     },
     "Löschen" : {
 
@@ -302,13 +507,43 @@
 
     },
     "Matches" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spiele"
+          }
+        }
+      }
     },
     "me" : {
 
     },
     "Messages" : {
 
+    },
+    "Near by Court Finder" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gerichtssuche in der Nähe"
+          }
+        }
+      }
+    },
+    "News or Ads" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nachrichten oder Anzeigen"
+          }
+        }
+      }
     },
     "NEXT" : {
 
@@ -374,16 +609,35 @@
 
     },
     "Privacy & Terms" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Privatsphäre & Bedingungen"
+          }
+        }
+      }
     },
     "Profile" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Profil"
+          }
+        }
+      }
     },
     "Ranking" : {
-
-    },
-    "Ranking #%lld" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rang"
+          }
+        }
+      }
     },
     "Ranking Board" : {
 
@@ -445,6 +699,17 @@
     "SEND" : {
 
     },
+    "SEND INVITE" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "EINLADUNG SENDEN"
+          }
+        }
+      }
+    },
     "SEND OTP" : {
 
     },
@@ -452,7 +717,25 @@
 
     },
     "Share App" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App teilen"
+          }
+        }
+      }
+    },
+    "Show here some" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zeigen Sie hier einige"
+          }
+        }
+      }
     },
     "Something went wrong !" : {
 
@@ -475,6 +758,17 @@
     "Timer" : {
 
     },
+    "Total Match" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gesamtübereinstimmung"
+          }
+        }
+      }
+    },
     "Type message..." : {
 
     },
@@ -496,14 +790,69 @@
     "VERIFY" : {
 
     },
+    "View All" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alle anzeigen"
+          }
+        }
+      }
+    },
     "VS" : {
 
     },
     "Waiting for %@ to accept the request" : {
 
     },
+    "We can show ads here" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hier können wir Werbung schalten."
+          }
+        }
+      }
+    },
+    "We will" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wir werden"
+          }
+        }
+      }
+    },
+    "Whether 1v1, 3v3 or 5v5, challenge others and dominate the court!" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ob 1v1, 3v3 oder 5v5, fordere andere heraus und dominiere den Court!"
+          }
+        }
+      }
+    },
     "XXX" : {
 
+    },
+    "years" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jahre"
+          }
+        }
+      }
     },
     "Yes" : {
 
@@ -533,7 +882,14 @@
 
     },
     "Your Rank" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dein Rang"
+          }
+        }
+      }
     }
   },
   "version" : "1.1"

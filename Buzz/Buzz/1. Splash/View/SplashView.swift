@@ -8,41 +8,61 @@ struct SplashView: View {
     @State private var isAnimating = false
     @State private var isAnimationCompleted = false
     @State private var hideLogo = false
-    
     var body: some View {
         if !isAnimationCompleted {
             ZStack {
-                Image("applogo")
+                Image("athlete")
                     .resizable()
-                    .scaledToFit()
-                    .frame(width: isAnimating ? 350 : 600, height: isAnimating ? 350 : 600)
-                    .opacity(hideLogo ? 0 : 1)
-                    .onAppear {
-                        withAnimation(.easeOut(duration: 1)) {
-                            isAnimating = true
-                        }
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                            withAnimation(.easeOut(duration: 2)) {
-                                hideLogo = true
-                            }
-                        }
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) { // Verzögerung für reibungslosen Übergang
-                            isAnimationCompleted = true
+                    .scaledToFill()
+                Spacer()
+                    .background(.black.opacity(0.6))
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                HStack(alignment: .center) {
+                    Image("SplashBasketball")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 99)
+                    CustomTextView(text: "BUZZ", textSize: 91, fontType: .BAHAMAS, textColor: AppColors.primaryColor)
+                        .fontWeight(.medium)
+                        .padding(.bottom, -20)
+                }
+                .frame(width: isAnimating ? 350 : 700, height: isAnimating ? 350 : 600)
+                .opacity(hideLogo ? 0 : 1)
+                .onAppear {
+                    withAnimation(.easeOut(duration: 1)) {
+                        isAnimating = true
+                    }
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                        withAnimation(.easeOut(duration: 2)) {
+                            hideLogo = true
                         }
                     }
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) { // Verzögerung für reibungslosen Übergang
+                        isAnimationCompleted = true
+                    }
+                }
             }
             .animation(.easeInOut(duration: 2), value: isAnimationCompleted)
         } else {
             NavigationStack(path: $nav.path) {
                 Group {
-                    if userStateViewModel.isLoggedIn == true {
+                    if userStateViewModel.isFirstTimeAppOpen == true {
+                        SelectLanguageView()
+                    } else if userStateViewModel.isLoggedIn == true {
                         NavigatorView()
+//                        SelectLanguageView()
                     } else {
                         LoginView()
                     }
                 }
                 .navigationDestination(for: Route.self) { route in
                     switch route {
+                    case .navigatorView:
+                        NavigatorView()
+                            .navigationBarBackButtonHidden(true)
+                    case .loginView:
+                        LoginView()
+                            .navigationBarBackButtonHidden(true)
                     case .registerView:
                         RegisterView()
                             .navigationBarBackButtonHidden(true)
@@ -82,11 +102,14 @@ struct SplashView: View {
                     case .gameHistoryView:
                         GameHistoryView()
                             .navigationBarBackButtonHidden(true)
-                    case .courtFinderView:
-                        CourtFinderView()
+                    case .courtFinderView(let homeViewModel):
+                        CourtFinderView(viewModel: homeViewModel)
                             .navigationBarBackButtonHidden(true)
                     case .webView(let WebviewName):
                         WebPageView(webviewName: WebviewName)
+                            .navigationBarBackButtonHidden(true)
+                    case .selectLanguageView:
+                        SelectLanguageView()
                             .navigationBarBackButtonHidden(true)
                     default: EmptyView()
                     }

@@ -12,7 +12,8 @@ struct NavigatorView: View {
         TabView {
             HomeView()
                 .tabItem {
-                    Label("Home", systemImage: "house")
+                    Label("Home", image: "house")
+                        .tint(.white)
                 }
             
 //            FavoritesView()
@@ -22,7 +23,7 @@ struct NavigatorView: View {
 //                }
             ProfileView()
                 .tabItem {
-                    Label("Profile", systemImage: "person.crop.circle.fill")
+                    Label("Profile", image: "user")
                 }
         }
         .tint(.orange)

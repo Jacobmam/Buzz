@@ -3,7 +3,9 @@ import SwiftUI
 import MapKit
 
 struct CourtFinderView: View {
-    @StateObject private var viewModel = CourtFinderViewModel()
+//    @StateObject private var viewModel = CourtFinderViewModel()
+    @ObservedObject var viewModel: HomeViewModel
+
     @State private var position: MapCameraPosition = .userLocation(fallback: .automatic)
     @Environment(\.dismiss) var dismiss
     

@@ -10,9 +10,10 @@ import Foundation
 
 struct AppStorageKeys {
     static let isLoggedIn = "isLoggedIn"
+    static let isFirstTimeAppOpen = "isFirstTimeAppOpen"
 }
 
-enum UserStateError: Error{
+enum UserStateError: Error {
     case signInError, signOutError
 }
 
@@ -20,6 +21,7 @@ enum UserStateError: Error{
 class UserStateViewModel: ObservableObject {
     @EnvironmentObject private var nav: NavigationManager
     @AppStorage(AppStorageKeys.isLoggedIn) var isLoggedIn: Bool?
+    @AppStorage(AppStorageKeys.isFirstTimeAppOpen) var isFirstTimeAppOpen: Bool = true
     @Published var isBusy = false
     @Published var canRedirect = false
     
