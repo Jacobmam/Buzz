@@ -123,9 +123,17 @@ struct ProfileView: View {
             }
         }
         .onAppear() {
-            profileViewModel.userData = UserLoginCache.get()
-            profileViewModel.getGamePlayedCount()
-            profileViewModel.getAgeFromBirthdate()
+            Task {
+                if let userData = UserLoginCache.get() {
+                    let loginViewModel = LoginViewModel()
+                    guard let userDataId = userData.id else { return }
+                    profileViewModel.userData = try await loginViewModel.find(by: userDataId)
+                }
+            }
+            
+//                profileViewModel.userData = UserLoginCache.get()
+                profileViewModel.getGamePlayedCount()
+                profileViewModel.getAgeFromBirthdate()
         }
         .fullScreenCover(isPresented: $showPhotoPicker) {
             ImagePicker(selectedImage: $profileViewModel.image)
@@ -385,7 +393,25 @@ struct ProfileView: View {
             } message: {
                 Text("Please configure a mail account in the Mail app.")
             }
-            
+            Button {
+                nav.path.append(Route.selectLanguageView)
+            } label: {
+                HStack(spacing: 16) {
+                    Image(systemName: "globe")
+                        .resizable()
+                        .scaledToFit()
+                        .foregroundStyle(.orange)
+                        .frame(width: 22, height: 24)
+                    
+                    Text("Change Language")
+                        .font(.system(size: 20, weight: .regular))
+                        .foregroundStyle(.white)
+                    
+                    Spacer()
+                }
+            }
+            .padding(.vertical)
+            .padding(.horizontal, 30)
             ShareLink(item: URL(string: Constants.APPSTORE_ID)!) {
                 HStack(spacing: 16) {
                     Image(systemName: "square.and.arrow.up")

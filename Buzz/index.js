@@ -186,13 +186,13 @@ exports.sendEmailOtp = functions.https.onCall(async (request) => {
         const transporter = nodemailer.createTransport({
             service: "gmail",
             auth: {
-                user: "mampuya1335@gmail.com", // replace
-                pass: "qvnsmhohpbujfhsp",
+                user: "buzzofficial.app@gmail.com", // replace
+                pass: "paxgctjgyolfktyl",
                 // replace (app password, not raw Gmail pass)
             },
         });
         await transporter.sendMail({
-            from: "mampuya1335@gmail.com", // replace
+            from: "buzzofficial.app@gmail.com", // replace
             to,
             subject,
             text,
@@ -260,13 +260,13 @@ exports.sendForgotPasswordEmailOtp = functions.https.onCall(async (request) => {
         const transporter = nodemailer.createTransport({
             service: "gmail",
             auth: {
-                user: "mampuya1335@gmail.com", // replace
-                pass: "qvnsmhohpbujfhsp",
+                user: "buzzofficial.app@gmail.com", // replace
+                pass: "paxgctjgyolfktyl",
                 // replace (app password, not raw Gmail pass)
             },
         });
         await transporter.sendMail({
-            from: "mampuya1335@gmail.com", // replace
+            from: "buzzofficial.app@gmail.com", // replace
             to,
             subject,
             text,

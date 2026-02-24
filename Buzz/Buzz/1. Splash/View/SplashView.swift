@@ -4,7 +4,8 @@ struct SplashView: View {
     @EnvironmentObject private var nav: NavigationManager
     @EnvironmentObject var userStateViewModel: UserStateViewModel
     @EnvironmentObject private var firebaseMessagesHelper: FirebaseMessagesHelper
-    
+    @EnvironmentObject private var firebaseCommonClass: FirebaseCommonClass
+
     @State private var isAnimating = false
     @State private var isAnimationCompleted = false
     @State private var hideLogo = false
@@ -35,14 +36,24 @@ struct SplashView: View {
         } else {
             NavigationStack(path: $nav.path) {
                 Group {
-                    if userStateViewModel.isLoggedIn == true {
+                    if userStateViewModel.isFirstTimeAppOpen == true {
+                        SelectLanguageView()
+                        
+                    } else if userStateViewModel.isLoggedIn == true {
                         NavigatorView()
+//                        SelectLanguageView()
                     } else {
                         LoginView()
                     }
                 }
                 .navigationDestination(for: Route.self) { route in
                     switch route {
+                    case .navigatorView:
+                        NavigatorView()
+                            .navigationBarBackButtonHidden(true)
+                    case .loginView:
+                        LoginView()
+                            .navigationBarBackButtonHidden(true)
                     case .registerView:
                         RegisterView()
                             .navigationBarBackButtonHidden(true)
@@ -88,6 +99,9 @@ struct SplashView: View {
                     case .webView(let WebviewName):
                         WebPageView(webviewName: WebviewName)
                             .navigationBarBackButtonHidden(true)
+                    case .selectLanguageView:
+                        SelectLanguageView()
+                            .navigationBarBackButtonHidden(true)
                     default: EmptyView()
                     }
                 }
@@ -107,6 +121,7 @@ struct SplashView: View {
                 }
             }
             .onAppear {
+                firebaseCommonClass.fetchSettings()
                 // Initial setup when app launches
                 if let userId = UserLoginCache.get()?.id {
                     firebaseMessagesHelper.observeChatRooms(for: userId)

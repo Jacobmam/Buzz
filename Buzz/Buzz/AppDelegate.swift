@@ -9,6 +9,7 @@
 @_exported import FirebaseFirestore
 @_exported import FirebaseMessaging
 @_exported import FirebaseFunctions
+import FirebaseAppCheck
 import UIKit
 
 class AppDelegate: NSObject, UIApplicationDelegate, ObservableObject {
@@ -19,6 +20,14 @@ class AppDelegate: NSObject, UIApplicationDelegate, ObservableObject {
         
         print("launchOptions: \(String(describing: launchOptions))")
         FirebaseApp.configure()
+        registerForPushNotifications()
+
+        #if DEBUG
+        AppCheck.setAppCheckProviderFactory(AppCheckDebugProviderFactory())
+        #else
+        AppCheck.setAppCheckProviderFactory(AppCheckAppAttestProviderFactory())
+        #endif
+        
         return true
     }
     
@@ -55,6 +64,13 @@ class AppDelegate: NSObject, UIApplicationDelegate, ObservableObject {
         return AppDelegate.orientationLock
     }
     
+//    @objc func application(
+//          _ app: UIApplication,
+//          open url: URL,
+//          options: [UIApplication.OpenURLOptionsKey : Any] = [:]
+//      ) -> Bool {
+//          return Auth.auth().canHandle(url)
+//      }
 }
 
 extension AppDelegate: UNUserNotificationCenterDelegate, MessagingDelegate {
@@ -89,7 +105,12 @@ extension AppDelegate: UNUserNotificationCenterDelegate, MessagingDelegate {
     
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         Messaging.messaging().apnsToken = deviceToken
+        #if DEBUG
         Auth.auth().setAPNSToken(deviceToken, type: .sandbox)
+        #else
+        Auth.auth().setAPNSToken(deviceToken, type: .prod)
+        #endif
+        
     }
     
     // DISPLAY NOTIFICATION WHILE APPLICATION IS IN FOREGROUND

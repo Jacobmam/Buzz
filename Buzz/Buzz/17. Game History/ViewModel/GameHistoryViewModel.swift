@@ -188,9 +188,11 @@ class GameHistoryViewModel: ObservableObject {
     }
     
     func getwinnerId(userScore: String, opponentScore: String, userId: String, opponentId: String) -> String {
-        if userScore > opponentScore {
+        let uScore = Int(userScore) ?? 0
+        let oScore = Int(opponentScore) ?? 0
+        if uScore > oScore {
             return userId
-        } else if userScore < opponentScore {
+        } else if uScore < oScore {
             return opponentId
         } else {
             return ""

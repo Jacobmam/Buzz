@@ -27,7 +27,8 @@ enum Route: Hashable {
     case gameHistoryView
     case courtFinderView
     case webView(webviewName: WebviewName)
-}
+    case selectLanguageView
+    case navigatorView}
 
 class NavigationManager: ObservableObject {
     @Published var path = NavigationPath()

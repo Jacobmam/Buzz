@@ -47,6 +47,9 @@ class RegisterViewModel: ObservableObject {
     @Published var phoneVerification: PhoneVerificationModel = .init(phoneNumber: "", otp: "")
     @Published var isLoading: Bool = false
     
+    @EnvironmentObject private var firebaseCommonClass : FirebaseCommonClass
+
+    
     // Your specific image dimensions
     @Published var imageWidth: CGFloat = 2391
     @Published var imageHeight: CGFloat = 3598
@@ -150,7 +153,8 @@ class RegisterViewModel: ObservableObject {
                 print("Email verified ✅  for data: \(data)")
                 completion(true, "Email verified ✅  for data: \(data)" , data["recordId"] as? String ?? "")
             } else {
-                completion(false, "Invalid OTP", "")
+                completion(false, "Invalid OTP", "--")
+              
             }
         }
     }
@@ -160,12 +164,26 @@ class RegisterViewModel: ObservableObject {
     // MARK: - PHONE VERIFICATION
     func phoneNumberValidation() {
         if self.testNumbers.contains(phoneVerification.phoneNumberPlain) {
-            self.sendOTPForPhoneNumber()
+            if firebaseCommonClass.isSMSAuthEnabled == true {
+                self.sendSmsOtp() { success in
+                    DispatchQueue.main.async {
+                        self.phoneVerification.isPhoneNumberVerificationCodeSent = success
+                        if success == false  {
+                            self.errorTitle = "Error"
+                            self.errorMessage = "Error sending otp, please try again later"
+                            self.showError = true
+                        }
+                    }
+                }
+            } else {
+                self.sendOTPForPhoneNumber()
+            }
         } else {
             let db = Firestore.firestore()
             let query = db.collection("users")
                 .whereField("phoneNumber", isEqualTo: phoneVerification.phoneNumberPlain)
                 .whereField("isPhoneNumberVerified", isEqualTo: true)
+                .whereField("isAccountDeleted", isNotEqualTo: true)
             
             query.count.getAggregation(source: .server) { snapshot, error in
                 if let error = error {
@@ -177,7 +195,20 @@ class RegisterViewModel: ObservableObject {
                         self.errorMessage = "Please use another number to sign up"
                         self.showError = true
                     } else {
-                        self.sendOTPForPhoneNumber()
+                        if self.firebaseCommonClass.isSMSAuthEnabled == true {
+                            self.sendSmsOtp() { success in
+                                DispatchQueue.main.async {
+                                    self.phoneVerification.isPhoneNumberVerificationCodeSent = success
+                                    if success == false  {
+                                        self.errorTitle = "Error"
+                                        self.errorMessage = "Error sending otp, please try again later"
+                                        self.showError = true
+                                    }
+                                }
+                            }
+                        } else {
+                            self.sendOTPForPhoneNumber()
+                        }
                     }
                 }
             }
@@ -185,7 +216,7 @@ class RegisterViewModel: ObservableObject {
     }
     
     func sendOTPForPhoneNumber() {
-        phoneVerification.isLoading = true
+     phoneVerification.isLoading = true
         PhoneAuthProvider.provider().verifyPhoneNumber(phoneVerification.phoneNumberPlain, uiDelegate: nil) { verificationID, error in
             if let error = error {
                 self.phoneVerification.isLoading = false
@@ -201,7 +232,53 @@ class RegisterViewModel: ObservableObject {
             self.phoneVerification.isPhoneNumberVerificationCodeSent = true
         }
     }
+
+    func sendSmsOtp(completion: @escaping (Bool) -> Void) {
+        phoneVerification.isLoading = true
+        let functions = Functions.functions(region: "us-central1")
+        functions.httpsCallable("sendPhoneOtp").call(["mobile": phoneVerification.phoneNumberPlain] as [String: String]) { result, error in
+            DispatchQueue.main.async {
+                self.phoneVerification.isLoading = false
+            }
+            if let error = error {
+                print("Error sending OTP: \(error.localizedDescription)")
+                completion(false)
+                return
+            } else {
+                if let data = result?.data as? [String: Any],
+                   let success = data["success"] as? Bool {
+                    self.phoneVerification.isLoading = false
+                    completion(success)
+                } else {
+                    completion(false)
+                }
+            }
+        }
+    }
     
+    func verifySmsOtp(completion: @escaping (Bool, String) -> Void) {
+        phoneVerification.isLoading = true
+        Functions.functions().httpsCallable("verifyPhoneOtp").call(["mobile": phoneVerification.phoneNumberPlain, "otp": phoneVerification.otp]) { result, error in
+            DispatchQueue.main.async {
+                self.phoneVerification.isLoading = false
+            }
+            if let error = error {
+                print("Error verifying OTP: \(error.localizedDescription)")
+                completion(false, error.localizedDescription)
+                return
+            }
+            if let data = result?.data as? [String: Any],
+               let verified = data["success"] as? Bool, verified {
+                print("Phone verified ✅  for data: \(data)")
+                completion(true, "OTP verified success")
+            } else {
+                completion(false, "Invalid Otp")
+              
+            }
+        }
+    }
+    
+       
     func verifyOTPForPhoneNumber() {
         phoneVerification.isLoading = true
         let verificationID = UserDefaults.standard.string(forKey: "authVerificationID") ?? ""
@@ -213,7 +290,6 @@ class RegisterViewModel: ObservableObject {
         Auth.auth().signIn(with: credential) { result, error in
             self.phoneVerification.isLoading = false
             if let error = error {
-                
                 print("OTP Verification Failed: \(error.localizedDescription)")
             } else {
                 print("Phone Verified ✅")
@@ -415,5 +491,9 @@ class RegisterViewModel: ObservableObject {
             }
         }
     }
-    
+    func showWhatsAppInfo() {
+        self.errorTitle = "WhatsApp"
+        self.errorMessage = "Please enter your WhatsApp number to get OTP."
+        self.showError.toggle()
+    }
 }

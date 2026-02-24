@@ -24,6 +24,7 @@ class NotificationTokenManager: NSObject {
             do {
                 let db = Firestore.firestore()
                 try await db.collection("users").document(id).setData(["fcmToken": notificationToken], merge: true)
+                self.isNotificationTokenChanged = false
             } catch let error {
                 print("error sendNotificationTokenAPICall: \(error.localizedDescription)")
             }

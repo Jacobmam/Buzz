@@ -326,7 +326,7 @@ struct GameScoreboardView: View {
                         .foregroundColor(.orange)
                         .font(.system(size: 42))
                     
-                    Text("Game Points")
+                    Text("Hoop Points")
                         .foregroundColor(.white)
                         .font(.system(size: 18))
                     

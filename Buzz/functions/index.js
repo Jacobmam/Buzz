@@ -256,7 +256,7 @@ exports.sendEmailOtp = functions.https.onCall(async (request) => {
     await sendEmail(
                     email,
                     "BlvckVenom - Email Verification",
-                    `Your OTP is: ${otp}`,
+                    `Your Code is: ${otp}`,
                     );
     /**
      * Sends an email using nodemailer
@@ -270,13 +270,13 @@ exports.sendEmailOtp = functions.https.onCall(async (request) => {
         const transporter = nodemailer.createTransport({
             service: "gmail",
             auth: {
-                user: "mampuya1335@gmail.com", // replace
-                pass: "qvnsmhohpbujfhsp",
+                user: "buzzofficial.app@gmail.com", // replace
+                pass: "paxgctjgyolfktyl",
                 // replace (app password, not raw Gmail pass)
             },
         });
         await transporter.sendMail({
-            from: "mampuya1335@gmail.com", // replace
+            from: "buzzofficial.app@gmail.com", // replace
             to,
             subject,
             text,
@@ -330,7 +330,7 @@ exports.sendForgotPasswordEmailOtp = functions.https.onCall(async (request) => {
     await sendEmail(
                     email,
                     "BlvckVenom - Email Verification",
-                    `Your OTP for forgot password is: ${otp}`,
+                    `Your code for forgot password is: ${otp}`,
                     );
     /**
      * Sends an email using nodemailer
@@ -344,13 +344,13 @@ exports.sendForgotPasswordEmailOtp = functions.https.onCall(async (request) => {
         const transporter = nodemailer.createTransport({
             service: "gmail",
             auth: {
-                user: "mampuya1335@gmail.com", // replace
-                pass: "qvnsmhohpbujfhsp",
+                user: "buzzofficial.app@gmail.com", // replace
+                pass: "paxgctjgyolfktyl",
                 // replace (app password, not raw Gmail pass)
             },
         });
         await transporter.sendMail({
-            from: "mampuya1335@gmail.com", // replace
+            from: "buzzofficial.app@gmail.com", // replace
             to,
             subject,
             text,
@@ -390,6 +390,50 @@ exports.verifyEmailOtp = functions.https.onCall(async (request) => {
         return {verified: true, recordId: userDoc.id};
     } else {
         throw new functions.https.HttpsError("invalid-argument", "Invalid OTP");
+    }
+});
+
+exports.sendPhoneOtp = functions.https.onCall(async (request) => {
+    const mobile = request.data.mobile;
+    const authkey = "490690AzKdkgRDUT699c4eadP1";
+    if (!mobile) {
+        throw new functions.https.HttpsError("invalid-argument",
+                                             "Mobile number must be provided");
+    }
+    const url = `https://control.msg91.com/api/v5/otp?mobile=${mobile}&authkey=${authkey}&otp_expiry=&template_id=699c4e02488bf47afa0ce182&realTimeResponse=`;
+    try {
+        const response = await fetch(url, {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+        });
+        const data = await response.json();
+        return {success: true, data: data};
+    } catch (error) {
+        logger.error("Error sending OTP via msg91:", error);
+        throw new functions.https.HttpsError("internal", "Failed to send OTP");
+    }
+});
+
+exports.verifyPhoneOtp = functions.https.onCall(async (request) => {
+    const mobile = request.data.mobile;
+    const otp = request.data.otp;
+    const authkey = "490690AzKdkgRDUT699c4eadP1";
+        if (!mobile || !otp) {
+        throw new functions.https.HttpsError("invalid-argument",
+        "Mobile number and OTP must be provided");
+    }
+    const url = `https://control.msg91.com/api/v5/otp/verify?otp=${otp}&mobile=${mobile}`;
+    try {
+        const response = await fetch(url, {
+            method: "GET",
+            headers: {"authkey": authkey},
+        });
+        const data = await response.json();
+        return {success: true, data: data};
+        } catch (error) {
+        logger.error("Error verifying OTP via msg91:", error);
+        throw new functions.https.HttpsError("internal",
+                                             "Failed to verify OTP");
     }
 });
 

@@ -83,17 +83,17 @@ struct HomeView: View {
                             Button {
                                 nav.path.append(Route.courtFinderView)
                             } label: {
-                                HomeFeatureCard(title: LocalizedStringKey("Court Finder"), description: "Entdecke die besten Basketball Courts in Deutschland! 🏀", image: "sportscourt")
+                                HomeFeatureCard(title: "Court Finder", description: "Discover the best Basketball courts near by! 🏀", image: "sportscourt")
                             }
                             Button {
                                 nav.path.append(Route.userSelectionView)
                             } label: {
-                                HomeFeatureCard(title: "Matches", description: "Ob 1v1, 3v3 oder 5v5, fordere andere heraus und dominiere den Court!", image: "figure.basketball")
+                                HomeFeatureCard(title: "Matches", description: "Whether 1v1, 3v3 or 5v5, challenge others and dominate the court!", image: "figure.basketball")
                             }
                             Button {
                                 nav.path.append(Route.rankingBoardView)
                             } label: {
-                                HomeFeatureCard(title: "Ranking", description: "Perfektioniere deine Skills und werde jeden Tag besser.", image: "basketball")
+                                HomeFeatureCard(title: "Ranking", description: "Find out who holds the top spot in the Ranking 👑", image: "basketball")
                             }
                         }
                     }
@@ -105,9 +105,9 @@ struct HomeView: View {
             }
         }
         .onAppear {
-            appDelegate.registerForPushNotifications()
-            //            homeViewModel.getUserData()
             Task {
+                await NotificationTokenManager.shared.sendNotificationTokenAPICall()
+                
                 if let userData = UserLoginCache.get() {
                     let loginViewModel = LoginViewModel()
                     guard let userDataId = userData.id else { return }
@@ -191,7 +191,7 @@ struct HomeView: View {
 
 struct HomeFeatureCard: View {
     var title: LocalizedStringKey
-    var description: String
+    var description: LocalizedStringKey
     var image: String
     
     var body: some View {

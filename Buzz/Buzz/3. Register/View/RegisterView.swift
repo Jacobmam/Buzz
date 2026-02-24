@@ -11,7 +11,9 @@ import SwiftUI
 struct RegisterView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel = RegisterViewModel()
-    
+    @State private var isNextEnabled = false
+    @EnvironmentObject private var firebaseCommonClass : FirebaseCommonClass
+
     private var minBirthDate: Date {
         Calendar.current.date(byAdding: .year, value: -6, to: Date()) ?? Date()
     }
@@ -57,11 +59,22 @@ struct RegisterView: View {
                 JBLoadingView()
             }
         }
+        .onChange(of: viewModel.usernameAvailabilityStatus) {
+            isNextEnabled = false
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                if viewModel.usernameAvailabilityStatus == .available {
+                    isNextEnabled = true
+                }
+            }
+        }
+
         .alert(isPresented: $viewModel.showError) {
             Alert(
                 title: Text(viewModel.errorTitle),
                 message: Text(viewModel.errorMessage ?? ""),
                 dismissButton: .default(Text("OK")) {
+                    viewModel.showError = false
                     if viewModel.errorTitle == "Registration Complete" {
                         dismiss()
                     }
@@ -127,6 +140,10 @@ struct RegisterView: View {
                                 viewModel.errorTitle = "Email already registered"
                                 viewModel.errorMessage = "Please register with another email, this email is already registered."
                                 viewModel.showError = true
+                            } else if success == false {
+                                viewModel.errorTitle = "Error"
+                                viewModel.errorMessage = message
+                                viewModel.showError = true
                             }
                         }
                     }
@@ -137,6 +154,11 @@ struct RegisterView: View {
                         DispatchQueue.main.async {
                             viewModel.emailVerification.isEmailVerified = success
                             viewModel.recordId  = recordId ?? ""
+                            if success == false {
+                                viewModel.errorTitle = "Error"
+                                viewModel.errorMessage = message
+                                viewModel.showError = true
+                            }
                         }
                     }
                 })
@@ -359,7 +381,20 @@ struct RegisterView: View {
                 viewModel.phoneNumberValidation()
             },
                                         onTapVerifyPhoneOTP: {
-                viewModel.verifyOTPForPhoneNumber()
+                if firebaseCommonClass.isSMSAuthEnabled == true {
+                    viewModel.verifySmsOtp() { success, message in
+                        DispatchQueue.main.async {
+                            viewModel.updatePhoneNumber()
+                            if success == false {
+                                viewModel.errorTitle = "Error"
+                                viewModel.errorMessage = message
+                                viewModel.showError = true
+                            }
+                        }
+                    }
+                } else {
+                    viewModel.verifyOTPForPhoneNumber()
+                }
             })
             
             if viewModel.phoneVerification.isPhoneNumberVerified {
@@ -378,7 +413,16 @@ struct RegisterView: View {
                     .clipShape(RoundedRectangle(cornerRadius: 10))
                 }
             }
+        }.alert(isPresented: $viewModel.showError) {
+            Alert(
+                title: Text(viewModel.errorTitle),
+                message: Text(viewModel.errorMessage ?? ""),
+                dismissButton: .default(Text("OK")) {
+                    viewModel.showError = false
+                }
+            )
         }
+        
     }
     
     var chooseUsernameView: some View {
@@ -473,8 +517,8 @@ struct RegisterView: View {
                 }
                 .background(.orange)
                 .clipShape(RoundedRectangle(cornerRadius: 10))
-                .disabled(!(viewModel.usernameAvailabilityStatus == .available))
-                .opacity(!(viewModel.usernameAvailabilityStatus == .available) ? 0.5 : 1)
+                .disabled(!isNextEnabled)
+                .opacity(!isNextEnabled ? 0.5 : 1)
             }
         }
     }
@@ -536,7 +580,7 @@ struct RegisterView: View {
                 title: Text("Error"),
                 message: Text(viewModel.errorMessage ?? ""),
                 dismissButton: .default(Text("OK")) {
-                    
+                    viewModel.showError = false
                 }
             )
         }

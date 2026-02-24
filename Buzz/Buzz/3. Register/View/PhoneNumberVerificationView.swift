@@ -26,11 +26,10 @@ struct PhoneNumberVerificationView: View {
     @State private var arrCountries: [Country] = []
     @State private var selectedCountry: Country? = Country(name: "United States", dial_code: "+1", code: "US")
 //    @State private var selectedCountry: Country? = Country(name: "India", dial_code: "+91", code: "IN")
-  
     @State private var showCountryPicker: Bool = false
     private let phoneNumberUtility = PhoneNumberUtility()
     @State var otpTimer: Timer!
-    
+    @EnvironmentObject private var firebaseCommonClass : FirebaseCommonClass
     func startResendOTPTimer() {
         guard phoneVerification.resendVerificationCodeLimit > 0 else { return }
         phoneVerification.resendVerificationCodeLimit -= 1
@@ -52,10 +51,35 @@ struct PhoneNumberVerificationView: View {
     var onTapSendOTPForPhone: () -> Void
     var onTapResendOTPForPhone: () -> Void
     var onTapVerifyPhoneOTP: () -> Void
+
     
     var body: some View {
         ZStack {
             VStack(alignment: .leading) {
+//                if firebaseCommonClass.isSMSAuthEnabled == true {
+//                    HStack {
+//                        Spacer()
+//                        HStack {
+//                            Image("WhatsApp_Logo_green")
+//                                .resizable()
+//                                .frame(width: 12, height: 12 )
+//                            Text ("WhatsApp")
+//                                .font(.system(size: 12))
+//                                .foregroundColor(.green)
+//                        }
+//                        .padding(10)
+//                        .background( Color.white.opacity(0.2))
+//                        .clipShape(RoundedRectangle(cornerRadius: 20))
+//                        Button {
+//                            onTapShowWhatsAppAlert()
+//                        } label: {
+//                                    Image(systemName: "questionmark.circle")
+//                                        .frame(width: 12, height: 12)
+//                                        .foregroundStyle(.white)
+//                        }
+//                    }
+//                       
+//                }
                 if let selectedCountry,
                    !phoneVerification.isPhoneNumberVerified {
                     HStack {
@@ -204,6 +228,12 @@ struct PhoneNumberVerificationView: View {
                 }
             }
         }
+//        .alert(isPresented: $showError) {
+//            Alert(title: Text(errorTitle),
+//                  message: Text(errorMessage),
+//                  dismissButton: .default(Text("OK"))
+//            )
+//        }
         .onChange(of: phoneVerification.isPhoneNumberVerificationCodeSent) {
             if phoneVerification.isPhoneNumberVerificationCodeSent {
                 startResendOTPTimer()
@@ -258,5 +288,5 @@ struct PhoneNumberVerificationView: View {
 
 #Preview {
     PhoneNumberVerificationView(phoneVerification: .constant(PhoneVerificationModel(phoneNumber: "", otp: "")),
-                                onTapSendOTPForPhone: { }, onTapResendOTPForPhone: { }, onTapVerifyPhoneOTP: { })
+                                  onTapSendOTPForPhone: { }, onTapResendOTPForPhone: { }, onTapVerifyPhoneOTP: { })
 }

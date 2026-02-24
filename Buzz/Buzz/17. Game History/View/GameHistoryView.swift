@@ -75,7 +75,7 @@ struct GameHistoryView: View {
                                     HStack {
                                         VStack(spacing: 0) {
                                             ZStack {
-                                                if  gameHistory.userScore > gameHistory.opponentScore {
+                                                if (Int(gameHistory.userScore) ?? 0) > (Int(gameHistory.opponentScore) ?? 0) {
                                                     RippleGlowAnimation()
                                                         .frame(width: 50, height: 50)
                                                 }
@@ -99,7 +99,7 @@ struct GameHistoryView: View {
                                                 .clipShape(Circle())
                                                 .frame(width: 50, height: 50)
                                                 
-                                                if gameHistory.userScore > gameHistory.opponentScore {
+                                                if (Int(gameHistory.userScore) ?? 0) > (Int(gameHistory.opponentScore) ?? 0) {
                                                     Image("winner_crown")
                                                         .resizable()
                                                         .frame(width:20, height: 20)
@@ -129,7 +129,7 @@ struct GameHistoryView: View {
                                         VStack(spacing: 0) {
                                             
                                             ZStack {
-                                                if  gameHistory.userScore < gameHistory.opponentScore {
+                                                if (Int(gameHistory.userScore) ?? 0) < (Int(gameHistory.opponentScore) ?? 0) {
                                                     RippleGlowAnimation()
                                                         .frame(width: 50, height: 50)
                                                 }
@@ -152,7 +152,7 @@ struct GameHistoryView: View {
                                                 }
                                                 .clipShape(Circle())
                                                 .frame(width: 50, height: 50)
-                                                if gameHistory.userScore < gameHistory.opponentScore {
+                                                if (Int(gameHistory.userScore) ?? 0) < (Int(gameHistory.opponentScore) ?? 0) {
                                                     Image("winner_crown")
                                                         .resizable()
                                                         .frame(width:20, height: 20)
